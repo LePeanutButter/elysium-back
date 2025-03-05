@@ -1,0 +1,4 @@
+edu\eci\cvds\elysium\controller\ReservaControllerTest.class
+edu\eci\cvds\elysium\dto\ReservaDTOTest.class
+edu\eci\cvds\elysium\model\ReservaModelTest.class
+edu\eci\cvds\elysium\service\ReservaServiceImplTest.class
