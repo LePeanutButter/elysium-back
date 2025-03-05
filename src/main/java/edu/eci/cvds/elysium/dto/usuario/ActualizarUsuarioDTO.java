@@ -7,15 +7,7 @@ public class ActualizarUsuarioDTO {
     private String correo;           // opcional
     private Boolean isAdmin;         // opcional
 
-    public ActualizarUsuarioDTO() {
-    }
-
-    public ActualizarUsuarioDTO(Integer idInstitucional, String nombre, String apellido, String correo, Boolean isAdmin) {
-        this.idInstitucional = idInstitucional;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.isAdmin = isAdmin;
+    public ActualizarUsuarioDTO() {        
     }
 
     public Integer getIdInstitucional() {   
@@ -36,5 +28,25 @@ public class ActualizarUsuarioDTO {
 
     public Boolean getIsAdmin() {
         return isAdmin;
+    }
+
+    public void setIdInstitucional(Integer idInstitucional) {
+        this.idInstitucional = idInstitucional;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

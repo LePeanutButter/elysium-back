@@ -1,4 +1,12 @@
-edu\eci\cvds\elysium\controller\ReservaControllerTest.class
 edu\eci\cvds\elysium\dto\ReservaDTOTest.class
-edu\eci\cvds\elysium\model\ReservaModelTest.class
+edu\eci\cvds\elysium\dto\RecursoDTOTest.class
+edu\eci\cvds\elysium\model\RecursoModelTest.class
+edu\eci\cvds\elysium\controller\usuario\UsuarioControllerTest.class
+edu\eci\cvds\elysium\controller\RecursoControllerTest.class
+edu\eci\cvds\elysium\controller\ReservaControllerTest.class
+edu\eci\cvds\elysium\service\impl\usuario\AdministradorServiceImplTest.class
 edu\eci\cvds\elysium\service\ReservaServiceImplTest.class
+edu\eci\cvds\elysium\service\RecursoServiceImplTest.class
+edu\eci\cvds\elysium\controller\usuario\EstandarControllerTest.class
+edu\eci\cvds\elysium\controller\usuario\AdministradorControllerTest.class
+edu\eci\cvds\elysium\model\ReservaModelTest.class
