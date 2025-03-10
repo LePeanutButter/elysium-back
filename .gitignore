@@ -30,6 +30,6 @@ build/
 !**/src/test/**/build/
 
 ## Property file that contains environment specific configuration properties ##
-application.properties
+# application.properties
 ### VS Code ###
 .vscode/
