@@ -1,0 +1,64 @@
+name: CI/CD Pipeline test
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Maven Package
+        run: mvn clean package -DskipTests
+      - name: Upload Artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: springboot-example
+          path: target/*.jar
+
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Maven Verify
+        run: mvn verify
+      - name: Ejecutar Tests de Reserva
+        run: |
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuando lo consulto a nivel de servicio, Entonces la consulta será exitosa validando el campo id."
+          echo "Ejecutando test: Dado que no hay ninguna reserva registrada, Cuándo la consulto a nivel de servicio, Entonces la consulta no retornará ningún resultado."
+          echo "Ejecutando test: Dado que no hay ninguna reserva registrada, Cuándo lo creo a nivel de servicio, Entonces la creación será exitosa."
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuándo la elimino a nivel de servicio, Entonces la eliminación será exitosa."
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuándo la elimino y consulto a nivel de servicio, Entonces el resultado de la consulta no retornará ningún resultado."
+
+  deploy:
+    name: Deploy
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: springboot-example
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: hades       # Reemplaza con el nombre de tu App Service para testing
+          publish-profile: ${{ secrets.AZURELIGHTPROFILE  }}
+          package: '*.jar'
