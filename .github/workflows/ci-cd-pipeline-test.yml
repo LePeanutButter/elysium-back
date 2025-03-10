@@ -60,5 +60,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: hades       # Reemplaza con el nombre de tu App Service para testing
-          publish-profile: ${{ secrets.AZURELIGHTPROFILE  }}
+          publish-profile: ${{ secrets.AZURETESTENVIRONMENT  }}
           package: '*.jar'
