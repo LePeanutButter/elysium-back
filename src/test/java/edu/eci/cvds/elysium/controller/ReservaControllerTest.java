@@ -16,6 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 
 
 public class ReservaControllerTest {
@@ -152,5 +155,51 @@ public class ReservaControllerTest {
 
         ResponseEntity<String> response = reservaController.rechazarReserva(idReserva);
         assertEquals("Reserva rechazada", response.getBody());
+    }
+
+    @Test
+    public void testCrearReservaConPrioridadValida() {
+        ReservaDTO reservaDTO = new ReservaDTO("1", LocalDate.now(), DiaSemanaModel.LUNES, "Meeting", "101", true, 3);
+
+        doNothing().when(reservaService).crearReserva(
+                anyString(),
+                any(LocalDate.class),
+                any(DiaSemanaModel.class),
+                anyString(),
+                anyString(),
+                anyBoolean(),
+                anyInt()
+        );
+
+        ResponseEntity<String> response = reservaController.crearReserva(reservaDTO);
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals("Reserva creada", response.getBody());
+    }
+
+    @Test
+    public void testActualizarReservaConPrioridadValida() {
+        ReservaDTO reservaDTO = new ReservaDTO("3", 'p', LocalDate.now(), DiaSemanaModel.MIERCOLES, "303", false, 4);
+
+        doNothing().when(reservaService).actualizarReserva(
+                anyString(), anyChar(), any(LocalDate.class), any(DiaSemanaModel.class), anyString(), anyBoolean(), anyInt()
+        );
+
+        ResponseEntity<String> response = reservaController.actualizarReserva(reservaDTO);
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals("Reserva actualizada", response.getBody());
+    }
+
+    @Test
+    public void testActualizarReservaConPrioridadInvalidaDebeLanzarExcepcion() {
+        ReservaDTO reservaDTO = new ReservaDTO("4", 'p', LocalDate.now(), DiaSemanaModel.JUEVES, "404", false, 3);
+
+        doThrow(new IllegalArgumentException("La prioridad debe estar entre 1 y 5."))
+                .when(reservaService)
+                .actualizarReserva(anyString(), anyChar(), any(LocalDate.class), any(DiaSemanaModel.class), anyString(), anyBoolean(), anyInt());
+
+        ResponseEntity<String> response = reservaController.actualizarReserva(reservaDTO);
+
+        assertEquals(400, response.getStatusCodeValue());
+        assertTrue(response.getBody().contains("La prioridad debe estar entre 1 y 5."));
     }
 }
