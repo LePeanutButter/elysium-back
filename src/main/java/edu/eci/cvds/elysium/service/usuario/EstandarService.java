@@ -1,9 +1,9 @@
 package edu.eci.cvds.elysium.service.usuario;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
-import edu.eci.cvds.elysium.model.Reserva;
+import edu.eci.cvds.elysium.model.DiaSemanaModel;
 
 public interface EstandarService extends UsuarioService {
-    Reserva crearReserva(int idInstitucional, LocalTime fechaInicio, String proposito, String mnemonico);
+    void crearReserva(String idReserva,LocalDate fechaReserva, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque);
 }
