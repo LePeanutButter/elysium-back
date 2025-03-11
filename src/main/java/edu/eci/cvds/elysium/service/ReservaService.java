@@ -26,5 +26,5 @@ public interface ReservaService {
     void deleteReserva(String idReserva);
     void cancelReserva(String idReserva);
     void rechazarReserva(String idReserva);
-
+    void generarReservasAleatorias();
 }

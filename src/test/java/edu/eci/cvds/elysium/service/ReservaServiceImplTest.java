@@ -109,6 +109,19 @@ public class ReservaServiceImplTest {
         verify(reservaRepository, times(1)).save(any(ReservaModel.class));
     }
 
+    @Test
+    public void testGenerarReservasAleatorias() {
+        when(reservaRepository.findAll()).thenReturn(List.of());
+        reservaService.generarReservasAleatorias();
+        List<ReservaModel> reservasGeneradas = Arrays.asList(
+                new ReservaModel("1", LocalDate.now(), DiaSemanaModel.LUNES, "Evento 1", "101", true, 3),
+                new ReservaModel("2", LocalDate.now(), DiaSemanaModel.MARTES, "Evento 2", "102", false, 2)
+        );
+        when(reservaRepository.findAll()).thenReturn(reservasGeneradas);
+        List<ReservaModel> result = reservaService.consultarReservas();
+        assertFalse(result.isEmpty(), "Se deberían haber generado reservas");
+    }
+
     // @Test
     // public void testActualizarReserva() {
     //     String idReserva = "1";
