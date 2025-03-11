@@ -37,7 +37,7 @@ public class SalonControllerTest {
 
     @BeforeEach
     public void setUp() {
-        testSalon = new Salon("Nuevo", "N1", "UbicacionNueva", 200);
+        testSalon = new Salon("Nuevo", "N1", "UbicacionNueva", 200,"Descripcion");
     }
 
     @Test
@@ -171,10 +171,10 @@ public class SalonControllerTest {
     public void testAgregarSalon() {
         
 
-        Salon newSalon = new Salon("Nuevo", "N1", "UbicacionNueva", 200);
+        Salon newSalon = new Salon("Nuevo", "N1", "UbicacionNueva", 200,"Descripcion");
         
         ResponseEntity<Void> response = salonController.agregarSalon(newSalon);
-        verify(salonService).agregarSalon("Nuevo", "N1", "UbicacionNueva", 200);
+        verify(salonService).agregarSalon("Nuevo", "N1", "UbicacionNueva", 200,"Descripcion");
         assertEquals(200, response.getStatusCodeValue());
     }
 

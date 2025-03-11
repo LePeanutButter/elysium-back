@@ -95,10 +95,10 @@ public class SalonServiceImpl implements SalonService {
      * Agrega y persiste un nuevo salón.
      */
     @Override
-    public void agregarSalon(String nombre, String mnemonico, String ubicacion, int capacidad) {
+    public void agregarSalon(String nombre, String mnemonico, String ubicacion, int capacidad, String description) {
         // Se asume que el constructor de Salon es:
         // Salon(String nombre, String mnemonico, String ubicacion, int capacidad, boolean activo, boolean disponible)
-        Salon nuevoSalon = new Salon(nombre, mnemonico, ubicacion, capacidad);
+        Salon nuevoSalon = new Salon(nombre, mnemonico, ubicacion, capacidad, description);
         salonRepository.save(nuevoSalon);
     }
 

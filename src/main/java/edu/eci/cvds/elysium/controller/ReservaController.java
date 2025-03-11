@@ -1,26 +1,25 @@
 package edu.eci.cvds.elysium.controller;
 
-import edu.eci.cvds.elysium.model.DiaSemanaModel;
-import edu.eci.cvds.elysium.model.EstadoReservaModel;
-import edu.eci.cvds.elysium.model.ReservaModel;
-import edu.eci.cvds.elysium.service.ReservaService;
-import edu.eci.cvds.elysium.dto.*;
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import edu.eci.cvds.elysium.dto.ReservaDTO;
+import edu.eci.cvds.elysium.model.DiaSemanaModel;
+import edu.eci.cvds.elysium.model.EstadoReservaModel;
+import edu.eci.cvds.elysium.model.ReservaModel;
+import edu.eci.cvds.elysium.service.ReservaService;
 
 @RestController
 @RequestMapping("/api/reserva")
@@ -94,4 +93,6 @@ public class ReservaController {
         return ResponseEntity.ok("Reserva rechazada");
     }
 
+
+    
 }

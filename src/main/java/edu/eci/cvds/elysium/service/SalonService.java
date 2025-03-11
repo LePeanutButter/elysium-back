@@ -37,7 +37,7 @@ public interface SalonService {
 
     List<Salon> findByNombreAndUbicacionContainingIgnoreCase(String nombre, String ubicacion);
 
-    void agregarSalon(String nombre, String mnemonico, String ubicacion, int capacidad);
+    void agregarSalon(String nombre, String mnemonico, String ubicacion, int capacidad, String description);
     void deshabilitarSalon(String mnemonico);
     void habilitarSalon(String mnemonico);
     boolean getActivo(String mnemonico);  

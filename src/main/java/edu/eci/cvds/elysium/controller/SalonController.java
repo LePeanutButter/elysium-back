@@ -113,7 +113,9 @@ public class SalonController {
                 salonRequest.getNombre(),
                 salonRequest.getMnemonico(),
                 salonRequest.getUbicacion(),
-                salonRequest.getCapacidad());
+                salonRequest.getCapacidad(),
+                salonRequest.getDescription()
+                );      
 
         return ResponseEntity.ok().build();
     }
@@ -160,5 +162,8 @@ public class SalonController {
         salonService.actualizarSalon(mnemonico, dto);
         return ResponseEntity.noContent().build();
     }
+
+
+    
 
 }

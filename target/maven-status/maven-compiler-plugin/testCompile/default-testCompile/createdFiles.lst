@@ -10,9 +10,7 @@ edu\eci\cvds\elysium\service\impl\usuario\AdministradorServiceImplTest.class
 edu\eci\cvds\elysium\service\ReservaServiceImplTest.class
 edu\eci\cvds\elysium\service\EstandarServiceTest.class
 edu\eci\cvds\elysium\service\RecursoServiceImplTest.class
-edu\eci\cvds\elysium\controller\SalonControllerTest.class
 edu\eci\cvds\elysium\controller\usuario\EstandarControllerTest.class
-edu\eci\cvds\elysium\service\impl\SalonServiceImplTest.class
 edu\eci\cvds\elysium\controller\usuario\AdministradorControllerTest.class
 edu\eci\cvds\elysium\ElysiumApplicationTest.class
 edu\eci\cvds\elysium\model\ReservaModelTest.class

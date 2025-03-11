@@ -7,6 +7,7 @@ public class ActualizarSalonDTO {
     private String nombre;
     private String ubicacion;
     private Integer capacidad;
+    private String description;
 
     public ActualizarSalonDTO() {}
 
@@ -41,5 +42,13 @@ public class ActualizarSalonDTO {
 
     public void setCapacidad(Integer capacidad) {
         this.capacidad = capacidad;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
