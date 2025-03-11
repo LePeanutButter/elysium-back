@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import edu.eci.cvds.elysium.model.DiaSemanaModel;
 
-
 public class ReservaDTOTest {
 
     @Test
@@ -23,7 +22,9 @@ public class ReservaDTOTest {
     public void testConstructorWithParameters() {
         LocalDate fechaReserva = LocalDate.now();
         DiaSemanaModel diaSemana = DiaSemanaModel.LUNES;
-        ReservaDTO reserva = new ReservaDTO("1", fechaReserva, diaSemana, "Meeting", "101", true);
+        int prioridad = 3;
+
+        ReservaDTO reserva = new ReservaDTO("1", fechaReserva, diaSemana, "Meeting", "101", true, prioridad);
 
         assertEquals("1", reserva.getIdReserva());
         assertEquals(fechaReserva, reserva.getFechaReserva());
@@ -31,13 +32,16 @@ public class ReservaDTOTest {
         assertEquals("Meeting", reserva.getProposito());
         assertEquals("101", reserva.getIdSalon());
         assertTrue(reserva.isDuracionBloque());
+        assertEquals(prioridad, reserva.getPrioridad());
     }
 
     @Test
     public void testConstructorWithTipoCampo() {
         LocalDate fechaReserva = LocalDate.now();
         DiaSemanaModel diaSemana = DiaSemanaModel.LUNES;
-        ReservaDTO reserva = new ReservaDTO("1", 'A', fechaReserva, diaSemana, "101", true);
+        int prioridad = 4;  // Agregamos la prioridad requerida
+
+        ReservaDTO reserva = new ReservaDTO("1", 'A', fechaReserva, diaSemana, "101", true, prioridad);
 
         assertEquals("1", reserva.getIdReserva());
         assertEquals('A', reserva.getTipoCampo());
@@ -45,5 +49,6 @@ public class ReservaDTOTest {
         assertEquals(diaSemana, reserva.getDiaSemana());
         assertEquals("101", reserva.getIdSalon());
         assertTrue(reserva.isDuracionBloque());
+        assertEquals(prioridad, reserva.getPrioridad());
     }
 }

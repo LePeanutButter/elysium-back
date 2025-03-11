@@ -15,7 +15,6 @@ public class ReservaServiceImpl implements ReservaService {
     @Autowired
     private ReservaRepository reservaRepository;
 
-
     @Override
     public List<ReservaModel> consultarReservas() {
         return reservaRepository.findAll();
@@ -52,19 +51,20 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public void crearReserva(String idReserva, LocalDate fechaReserva, DiaSemanaModel diaSemana,String proposito, String idSalon,boolean duracionBloque) {
-        ReservaModel reserva = new ReservaModel(idReserva, fechaReserva, diaSemana, proposito, idSalon, duracionBloque);
-        reserva.crearReserva(idReserva, fechaReserva, diaSemana, proposito, idSalon, duracionBloque);
+    public void crearReserva(String idReserva, LocalDate fechaReserva, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+        ReservaModel reserva = new ReservaModel(idReserva, fechaReserva, diaSemana, proposito, idSalon, duracionBloque, prioridad);
         EstadoReservaModel estado = EstadoReservaModel.ACTIVA;
         reserva.setEstado(estado);
+
         reservaRepository.save(reserva);
     }
 
     @Override
-    public void actualizarReserva(String idReserva, char tipoCampo, LocalDate value1, DiaSemanaModel value2, String value3, boolean value4) {
+    public void actualizarReserva(String idReserva, char tipoCampo, LocalDate value1, DiaSemanaModel value2, String value3, boolean value4, int prioridad) {
         ReservaModel reserva = reservaRepository.findByIdReserva(idReserva);
         if (reserva != null) {
-            reserva.actualizar(idReserva, tipoCampo, value1, value2, value3, value4);
+            reserva.actualizar(idReserva, tipoCampo, value1, value2, value3, value4, reserva.getPrioridad());
+
             switch (tipoCampo) {
                 case 'f':
                     reserva.setFechaReserva(value1);
@@ -97,7 +97,7 @@ public class ReservaServiceImpl implements ReservaService {
             reservaRepository.save(reserva);
         }
     }
-    
+
     @Override
     public void cancelReserva(String idReserva) {
         ReservaModel reserva = reservaRepository.findByIdReserva(idReserva);
@@ -106,7 +106,6 @@ public class ReservaServiceImpl implements ReservaService {
             EstadoReservaModel estado = EstadoReservaModel.CANCELADA;
             reserva.setEstado(estado);
             reservaRepository.save(reserva);
-
         }
     }
 

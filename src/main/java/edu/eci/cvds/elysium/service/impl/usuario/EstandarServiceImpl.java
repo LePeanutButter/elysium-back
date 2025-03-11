@@ -18,12 +18,11 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
     private UsuarioRepository usuarioRepository;
 
     @Override
-    public Reserva crearReserva(int idInstitucional, LocalTime fechaInicio, String proposito, String mnemonico) {
-        // Se utiliza el método definido en el repository para Mongo
+    public Reserva crearReserva(int idInstitucional, LocalTime fechaInicio, String proposito, String mnemonico, int prioridad) {
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
         if (usuario != null && usuario instanceof Estandar) {
             Estandar estandar = (Estandar) usuario;
-            return estandar.crearReserva(fechaInicio, proposito, mnemonico);
+            return estandar.crearReserva(fechaInicio, proposito, mnemonico, prioridad); // Se agregó el parámetro faltante
         }
         return null;
     }

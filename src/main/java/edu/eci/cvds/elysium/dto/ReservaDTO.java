@@ -16,9 +16,10 @@ public class ReservaDTO {
     // Se utiliza el objeto Salón para identificar el salón (1..1)
     private String idSalon;
 
-    
     // true: reserva de bloque; false: reserva corta
     private boolean duracionBloque;
+
+    private int prioridad;
 
     /*
      * Constructor de la clase ReservaDTO
@@ -34,23 +35,26 @@ public class ReservaDTO {
      * @param proposito
      * @param idSalon
      * @param duracionBloque
+     * @param prioridad
      */
-    public ReservaDTO(String idReserva, LocalDate fechaReserva, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque) {
+    public ReservaDTO(String idReserva, LocalDate fechaReserva, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
         this.idReserva = idReserva;
         this.fechaReserva = fechaReserva;
         this.diaSemana = diaSemana;
         this.proposito = proposito;
         this.idSalon = idSalon;
         this.duracionBloque = duracionBloque;
+        setPrioridad(prioridad); // Validación dentro del setter
     }
 
-    public ReservaDTO(String idReserva,char tipoCampo, LocalDate fechaReserva, DiaSemanaModel diaSemana, String idSalon, boolean duracionBloque) {
+    public ReservaDTO(String idReserva, char tipoCampo, LocalDate fechaReserva, DiaSemanaModel diaSemana, String idSalon, boolean duracionBloque, int prioridad) {
         this.idReserva = idReserva;
         this.tipoCampo = tipoCampo;
         this.fechaReserva = fechaReserva;
         this.diaSemana = diaSemana;
         this.idSalon = idSalon;
         this.duracionBloque = duracionBloque;
+        setPrioridad(prioridad);
     }
 
     //Getters
@@ -62,4 +66,15 @@ public class ReservaDTO {
     public String getIdSalon() {return idSalon;}
     public boolean isDuracionBloque() {return duracionBloque;}
 
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+    // Setters
+    public void setPrioridad(int prioridad) {
+        if (prioridad < 1 || prioridad > 5) {
+            throw new IllegalArgumentException("La prioridad debe estar entre 1 y 5.");
+        }
+        this.prioridad = prioridad;
+    }
 }

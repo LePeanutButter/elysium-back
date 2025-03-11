@@ -65,15 +65,39 @@ public class ReservaController {
     }
 
     @PostMapping("/crearReserva")
-    public ResponseEntity<String> crearReserva(@RequestBody ReservaDTO reservaDTO ) {
-        reservaService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque());
-        return ResponseEntity.ok("Reserva creada");
+    public ResponseEntity<String> crearReserva(@RequestBody ReservaDTO reservaDTO) {
+        try {
+            reservaService.crearReserva(
+                    reservaDTO.getIdReserva(),
+                    reservaDTO.getFechaReserva(),
+                    reservaDTO.getDiaSemana(),
+                    reservaDTO.getProposito(),
+                    reservaDTO.getIdSalon(),
+                    reservaDTO.isDuracionBloque(),
+                    reservaDTO.getPrioridad()
+            );
+            return ResponseEntity.ok("Reserva creada");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
     @PutMapping("/actualizarReserva")
     public ResponseEntity<String> actualizarReserva(@RequestBody ReservaDTO reservaDTO) {
-        reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque());
-        return ResponseEntity.ok("Reserva actualizada");
+        try {
+            reservaService.actualizarReserva(
+                    reservaDTO.getIdReserva(),
+                    reservaDTO.getTipoCampo(),
+                    reservaDTO.getFechaReserva(),
+                    reservaDTO.getDiaSemana(),
+                    reservaDTO.getIdSalon(),
+                    reservaDTO.isDuracionBloque(),
+                    reservaDTO.getPrioridad()
+            );
+            return ResponseEntity.ok("Reserva actualizada");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("{idReserva}/deleteReserva")

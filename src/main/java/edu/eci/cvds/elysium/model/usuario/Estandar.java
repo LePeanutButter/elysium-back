@@ -20,8 +20,8 @@ public class Estandar extends Usuario {
     }
 
     // Método para crear reserva
-    public Reserva crearReserva(LocalTime fechaInicio, String proposito, String mnemonico) {
-        return new Reserva(fechaInicio, proposito, mnemonico, this);
+    public Reserva crearReserva(LocalTime fechaInicio, String proposito, String mnemonico, int prioridad) {
+        return new Reserva(fechaInicio, proposito, mnemonico, this, prioridad);
     }
 }
 

@@ -20,10 +20,11 @@ public class EstandarController extends UsuarioController {
 
     @PostMapping("/crearReserva")
     public Reserva crearReserva(@RequestParam int id,
-                                @RequestParam String fechaInicio,  // formato "HH:mm"
+                                @RequestParam String fechaInicio,
                                 @RequestParam String proposito,
-                                @RequestParam String mnemonico) {
+                                @RequestParam String mnemonico,
+                                @RequestParam int prioridad) {
         LocalTime time = LocalTime.parse(fechaInicio);
-        return estandarService.crearReserva(id, time, proposito, mnemonico);
+        return estandarService.crearReserva(id, time, proposito, mnemonico, prioridad);
     }
 }

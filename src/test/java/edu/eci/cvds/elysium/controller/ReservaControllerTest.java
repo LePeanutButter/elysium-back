@@ -103,7 +103,16 @@ public class ReservaControllerTest {
     @Test
     public void testCrearReserva() {
         ReservaDTO reservaDTO = new ReservaDTO();
-        doNothing().when(reservaService).crearReserva(anyString(), any(LocalDate.class), any(DiaSemanaModel.class), anyString(), anyString(), anyBoolean());
+
+        doNothing().when(reservaService).crearReserva(
+                anyString(),
+                any(LocalDate.class),
+                any(DiaSemanaModel.class),
+                anyString(),
+                anyString(),
+                anyBoolean(),
+                anyInt()
+        );
 
         ResponseEntity<String> response = reservaController.crearReserva(reservaDTO);
         assertEquals("Reserva creada", response.getBody());
