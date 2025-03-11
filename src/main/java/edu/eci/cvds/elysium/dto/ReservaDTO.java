@@ -44,7 +44,7 @@ public class ReservaDTO {
         this.proposito = proposito;
         this.idSalon = idSalon;
         this.duracionBloque = duracionBloque;
-        setPrioridad(prioridad); // Validación dentro del setter
+        setPrioridad(prioridad);
     }
 
     public ReservaDTO(String idReserva, char tipoCampo, LocalDate fechaReserva, DiaSemanaModel diaSemana, String idSalon, boolean duracionBloque, int prioridad) {

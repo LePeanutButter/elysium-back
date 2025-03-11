@@ -103,7 +103,7 @@ public class ReservaServiceImplTest {
         String proposito = "Meeting";
         String idSalon = "101";
         boolean duracionBloque = true;
-        int prioridad = 1;  // Se agregó el parámetro prioridad
+        int prioridad = 1;
 
         reservaService.crearReserva(idReserva, fechaReserva, diaSemana, proposito, idSalon, duracionBloque, prioridad);
         verify(reservaRepository, times(1)).save(any(ReservaModel.class));

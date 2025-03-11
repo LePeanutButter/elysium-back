@@ -22,7 +22,7 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
         if (usuario != null && usuario instanceof Estandar) {
             Estandar estandar = (Estandar) usuario;
-            return estandar.crearReserva(fechaInicio, proposito, mnemonico, prioridad); // Se agregó el parámetro faltante
+            return estandar.crearReserva(fechaInicio, proposito, mnemonico, prioridad);
         }
         return null;
     }
