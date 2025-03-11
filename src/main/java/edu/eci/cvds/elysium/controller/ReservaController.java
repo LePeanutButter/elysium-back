@@ -118,4 +118,10 @@ public class ReservaController {
         return ResponseEntity.ok("Reserva rechazada");
     }
 
+
+    @PostMapping("/generarReservas")
+    public ResponseEntity<String> generarReservas() {
+        reservaService.generarReservasAleatorias();
+        return ResponseEntity.ok("Reservas aleatorias generadas correctamente.");
+    }
 }

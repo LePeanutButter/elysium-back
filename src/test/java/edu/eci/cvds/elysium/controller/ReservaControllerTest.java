@@ -202,4 +202,11 @@ public class ReservaControllerTest {
         assertEquals(400, response.getStatusCodeValue());
         assertTrue(response.getBody().contains("La prioridad debe estar entre 1 y 5."));
     }
+
+    @Test
+    public void testGenerarReservas() {
+        doNothing().when(reservaService).generarReservasAleatorias();
+        ResponseEntity<String> response = reservaController.generarReservas();
+        assertEquals("Reservas aleatorias generadas correctamente.", response.getBody());
+    }
 }
