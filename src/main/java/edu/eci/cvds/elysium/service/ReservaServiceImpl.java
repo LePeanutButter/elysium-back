@@ -3,6 +3,7 @@ package edu.eci.cvds.elysium.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,6 +141,23 @@ public class ReservaServiceImpl implements ReservaService {
             EstadoReservaModel estado = EstadoReservaModel.RECHAZADA;
             reserva.setEstado(estado);
             reservaRepository.save(reserva);
+        }
+    }
+
+    @Override
+    public void generarReservasAleatorias() {
+        Random random = new Random();
+        int cantidad = random.nextInt(901) + 100;
+        for (int i = 0; i < cantidad; i++) {
+            String idReserva = String.valueOf(System.currentTimeMillis());
+            LocalDate fechaReserva = LocalDate.now().plusDays(random.nextInt(30));
+            DiaSemanaModel diaSemana = DiaSemanaModel.values()[random.nextInt(DiaSemanaModel.values().length)];
+            String proposito = "Reserva generada automáticamente";
+            String idSalon = String.valueOf(random.nextInt(101) + 50);
+            boolean duracionBloque = random.nextBoolean();
+            int prioridad = random.nextInt(5) + 1;
+            int hora = random.nextInt(24);
+            crearReserva(idReserva, fechaReserva, hora,diaSemana, proposito, idSalon, duracionBloque, prioridad);
         }
     }
 }
