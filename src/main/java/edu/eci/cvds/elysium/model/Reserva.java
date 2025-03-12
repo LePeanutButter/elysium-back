@@ -2,19 +2,17 @@ package edu.eci.cvds.elysium.model;
 
 import java.time.LocalTime;
 
-import edu.eci.cvds.elysium.model.usuario.Usuario;
-
 public class Reserva {
     private LocalTime fechaInicio;
     private String proposito;
     private String mnemonico;
-    private Usuario usuario;
+    private int usuarioId;
 
-    public Reserva(LocalTime fechaInicio, String proposito, String mnemonico, Usuario usuario) {
+    public Reserva(LocalTime fechaInicio, String proposito, String mnemonico, int usuarioId) {
         this.fechaInicio = fechaInicio;
         this.proposito = proposito;
         this.mnemonico = mnemonico;
-        this.usuario = usuario;
+        this.usuarioId = usuarioId;
     }
 
     // Getters y setters
@@ -36,10 +34,10 @@ public class Reserva {
     public void setMnemonico(String mnemonico) {
         this.mnemonico = mnemonico;
     }
-    public Usuario getUsuario() {
-        return usuario;
+    public int getUsuario() {
+        return usuarioId;
     }
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 }
