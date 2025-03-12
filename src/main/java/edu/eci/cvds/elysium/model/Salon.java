@@ -5,7 +5,13 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Represents a salon model for the "salones" collection.
+ */
+// We declare the class as a document
+@Document(collection = "salones")
 public class Salon {
     //We declare mnemonico as the id of the salon
     @Id
