@@ -21,8 +21,15 @@ public class Estandar extends Usuario {
     //     return Collections.emptyList();
     // }
 
+<<<<<<< HEAD
     // // Método para crear reserva
     // public ReservaModel crearReserva(String idReserva, LocalDate fecha,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque) {
     //     return new ReservaModel(idReserva, fecha,hora,diaSemana, proposito, idSalon, duracionBloque);
     // }
+=======
+    // Método para crear reserva
+    public ReservaModel crearReserva(String idReserva, LocalDate fecha,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+        return new ReservaModel(idReserva, fecha,hora,diaSemana, proposito, idSalon, duracionBloque,prioridad);
+    }
+>>>>>>> e63ef6c391d7ee4c24dfeafedc418ca574933724
 }

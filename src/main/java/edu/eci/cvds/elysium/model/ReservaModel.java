@@ -20,6 +20,7 @@ public class ReservaModel {
     private String idSalon;
     private EstadoReservaModel estado;
     private boolean duracionBloque;
+    private int prioridad;
 
     /**
      * Default constructor for a ReservaModel instance.
@@ -34,10 +35,16 @@ public class ReservaModel {
      * @param fechaReserva   the date of the reservation
      * @param diaSemana      the day of the week of the reservation
      * @param proposito      the purpose of the reservation
-     * @param idSalon          the salon associated with the reservation
+     * @param idSalon        the salon associated with the reservation
      * @param duracionBloque the duration block of the reservation
+     * @param prioridad      the priority of the reservation (1 to 5)
      */
+<<<<<<< HEAD
     public ReservaModel(LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque) {
+=======
+    public ReservaModel(String idReserva,LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad) {
+        this.idReserva = idReserva;
+>>>>>>> e63ef6c391d7ee4c24dfeafedc418ca574933724
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
@@ -45,6 +52,7 @@ public class ReservaModel {
         this.idSalon = idSalon;
         this.estado = EstadoReservaModel.ACTIVA;
         this.duracionBloque = duracionBloque;
+        setPrioridad(prioridad); // Validación dentro del setter
     }
 
     /**
@@ -183,6 +191,16 @@ public class ReservaModel {
         this.duracionBloque = duracionBloque;
     }
 
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(int prioridad) {
+        if (prioridad < 1 || prioridad > 5) {
+            throw new IllegalArgumentException("La prioridad debe estar entre 1 y 5.");
+        }
+        this.prioridad = prioridad;
+    }
     /**
      * Creates a new reservation.
      *
@@ -195,10 +213,14 @@ public class ReservaModel {
      * @param duracionBloque the duration block of the reservation
      * @return the new reservation
      */
+<<<<<<< HEAD
     /* BUILDING - La lógica debe ir en la capa de servicio */
     public ReservaModel crearReserva(LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque) {
+=======
+    public ReservaModel crearReserva(String idReserva, LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad) {
+>>>>>>> e63ef6c391d7ee4c24dfeafedc418ca574933724
         this.estado = EstadoReservaModel.ACTIVA;
-        return new ReservaModel(idReserva, fechaReserva, hora,diaSemana, proposito, idSalon, duracionBloque);
+        return new ReservaModel(idReserva, fechaReserva, hora,diaSemana, proposito, idSalon, duracionBloque, prioridad);
     }
     /**
      * Updates the reservation with the new data.
@@ -209,7 +231,7 @@ public class ReservaModel {
      * @param value3 the new value
      * @param value4 the new value
      */
-    public void actualizar(String idReserva, char tipoCampo, LocalDate value1,double value2,DiaSemanaModel value3,String value4,boolean value5) {
+    public void actualizar(String idReserva, char tipoCampo, LocalDate value1,double value2,DiaSemanaModel value3,String value4,boolean value5, int value6) {
         if(this.idReserva.equals(idReserva)) {
             switch(tipoCampo) {
                 case 'f': //fecha
@@ -227,6 +249,9 @@ public class ReservaModel {
                 case 'b': //bloque
                     this.duracionBloque = value5;
                     break;
+                case 'p': // Prioridad
+                    this.prioridad = value6;
+                    break;
                 default:
                     break;
             }
@@ -239,7 +264,7 @@ public class ReservaModel {
      * @param idReserva the reservation ID  
      */
     public void deleteReserva(String idReserva) {
-        if(this.idReserva.equals(idReserva)) {
+        if (this.idReserva.equals(idReserva)) {
             this.estado = EstadoReservaModel.ELIMINADA;
         }
     }
@@ -249,7 +274,7 @@ public class ReservaModel {
      * @param idReserva the reservation ID
      */
     public void cancelReserva(String idReserva) {
-        if(this.idReserva.equals(idReserva)) {
+        if (this.idReserva.equals(idReserva)) {
             this.estado = EstadoReservaModel.CANCELADA;
         }
     }
@@ -259,7 +284,7 @@ public class ReservaModel {
      * @param idReserva the reservation ID
      */
     public void rechazarReserva(String idReserva) {
-        if(this.idReserva.equals(idReserva)) {
+        if (this.idReserva.equals(idReserva)) {
             this.estado = EstadoReservaModel.RECHAZADA;
         }
     }

@@ -29,6 +29,7 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
 
     @Override
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void crearReserva(String idReserva,LocalDate fechaReserva, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque) {
         // Se utiliza el método definido en el repository para Mongo
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
@@ -43,6 +44,13 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
             Estandar estandar = (Estandar) usuario;
             return estandar.crearReserva(idReserva,fecha,hora, diaSemana, proposito, idSalon, duracionBloque);
 >>>>>>> c899553fd22ec883a338597135e1b0a523a2d98f
+=======
+    public ReservaModel crearReserva(String idReserva, LocalDate fecha,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+        Usuario usuario = usuarioRepository.findByIdInstitucional(estandar.getIdInstitucional());
+        if (usuario != null && usuario instanceof Estandar) {
+            Estandar estandar = (Estandar) usuario;
+            return estandar.crearReserva(idReserva,fecha,hora, diaSemana, proposito, idSalon, duracionBloque, prioridad);
+>>>>>>> e63ef6c391d7ee4c24dfeafedc418ca574933724
         }
     }
 }

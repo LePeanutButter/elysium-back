@@ -7,7 +7,6 @@ import edu.eci.cvds.elysium.model.DiaSemanaModel;
 import edu.eci.cvds.elysium.model.EstadoReservaModel;
 import edu.eci.cvds.elysium.model.ReservaModel;
 
-
 public interface ReservaService {
 
     List<ReservaModel> consultarReservas();
@@ -19,11 +18,10 @@ public interface ReservaService {
     List<ReservaModel> consultarReservasPorDuracionBloque(boolean duracionBloque);
     List<ReservaModel> consultarReservasPorSalonAndEstado(String idSalon, EstadoReservaModel estado);
     ReservaModel consultarReserva(String idReserva);
-    void crearReserva(String idReserva,LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque);
-    void actualizarReserva(String idReserva,char tipoCampo,LocalDate value1,double value2,DiaSemanaModel value3,String value4,boolean value5 );
+    void crearReserva(String idReserva,LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad);
+    void actualizarReserva(String idReserva,char tipoCampo,LocalDate value1,double value2,DiaSemanaModel value3,String value4,boolean value5, int value6);
     void deleteReserva(String idReserva);
     void cancelReserva(String idReserva);
     void rechazarReserva(String idReserva);
-
-} 
-
+    void generarReservasAleatorias();
+}

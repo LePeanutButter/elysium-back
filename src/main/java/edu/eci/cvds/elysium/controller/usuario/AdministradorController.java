@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import edu.eci.cvds.elysium.dto.usuario.ActualizarUsuarioDTO;
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
@@ -40,9 +45,28 @@ public class AdministradorController extends UsuarioController {
      * GET /api/users?activo=true&isAdmin=false -> usuarios activos que no son
      * administradores.
      */
+
+    @Operation(
+        summary = "Consultar usuarios",
+        description = "Endpoint unificado para consultar usuarios, pudiendo filtrar por estado activo e indicador de rol de administrador."
+    )
+    
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de usuarios retornada correctamente"),
+        @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
+    })
     @GetMapping("")
     public List<Usuario> consultarUsuarios(
+        @Parameter(
+            description = "Valor opcional para filtrar usuarios por estado activo (true) o inactivo (false)",
+            example = "true"
+            )
             @RequestParam(required = false) Boolean activo,
+
+            @Parameter(
+                    description = "Valor opcional para filtrar usuarios por rol administrador (true) o no administrador (false)",
+                    example = "false"
+            )
             @RequestParam(required = false) Boolean isAdmin) {
         // Si no se pasan filtros, retorna todos
         if (activo == null && isAdmin == null) {
@@ -113,13 +137,4 @@ public class AdministradorController extends UsuarioController {
         administradorService.quitarAdmin(id);
         return ResponseEntity.ok("Usuario ya no es administrador");
     }
-
-    // // ----------
-    // @PostMapping("/añadirSalon")Do you learn? What the **** 
-    // public void añadirSalon(@RequestParam int adminId,
-    // @RequestParam String nombre,
-    // @RequestParam String ubicacion,
-    // @RequestParam int capacidad) {
-    // administradorService.añadirSalon(adminId, nombre, ubicacion, capacidad);
-    // }
 }
