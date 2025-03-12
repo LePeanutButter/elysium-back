@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 edu\eci\cvds\elysium\dto\ReservaDTOTest.class
 edu\eci\cvds\elysium\service\impl\usuario\UsuarioServiceImplTest.class
 edu\eci\cvds\elysium\dto\RecursoDTOTest.class
@@ -14,3 +15,6 @@ edu\eci\cvds\elysium\controller\usuario\EstandarControllerTest.class
 edu\eci\cvds\elysium\controller\usuario\AdministradorControllerTest.class
 edu\eci\cvds\elysium\ElysiumApplicationTest.class
 edu\eci\cvds\elysium\model\ReservaModelTest.class
+=======
+edu\eci\cvds\elysium\controller\RecursoControllerTest.class
+>>>>>>> c899553fd22ec883a338597135e1b0a523a2d98f

@@ -10,14 +10,20 @@ edu\eci\cvds\elysium\service\SalonService.class
 edu\eci\cvds\elysium\model\ReservaModel.class
 edu\eci\cvds\elysium\model\Salon.class
 edu\eci\cvds\elysium\service\usuario\EstandarService.class
+<<<<<<< HEAD
 edu\eci\cvds\elysium\model\Recurso.class
+=======
+>>>>>>> c899553fd22ec883a338597135e1b0a523a2d98f
 edu\eci\cvds\elysium\repository\ReservaRepository.class
 edu\eci\cvds\elysium\service\usuario\UsuarioService.class
 edu\eci\cvds\elysium\model\DiaSemanaModel.class
 edu\eci\cvds\elysium\model\RecursoModel.class
 edu\eci\cvds\elysium\repository\RecursoRepository.class
 edu\eci\cvds\elysium\service\impl\SalonServiceImpl.class
+<<<<<<< HEAD
 edu\eci\cvds\elysium\model\Reserva.class
+=======
+>>>>>>> c899553fd22ec883a338597135e1b0a523a2d98f
 edu\eci\cvds\elysium\controller\SalonController.class
 edu\eci\cvds\elysium\dto\salon\ActualizarSalonDTO.class
 edu\eci\cvds\elysium\controller\usuario\AdministradorController.class

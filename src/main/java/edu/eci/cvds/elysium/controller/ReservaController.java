@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,9 @@ import edu.eci.cvds.elysium.model.DiaSemanaModel;
 import edu.eci.cvds.elysium.model.EstadoReservaModel;
 import edu.eci.cvds.elysium.model.ReservaModel;
 import edu.eci.cvds.elysium.service.ReservaService;
+=======
+
+>>>>>>> c899553fd22ec883a338597135e1b0a523a2d98f
 
 @RestController
 @RequestMapping("/api/reserva")
@@ -28,34 +32,35 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    @GetMapping("/consultarReservas")
-    public List<ReservaModel> consultarReservas() {
-        return reservaService.consultarReservas();
-    }
-    
-    @GetMapping("/consultarReservasPorSalon")
-    public List<ReservaModel> consultarReservasPorSalon(@RequestParam String idSalon) {
-        return reservaService.consultarReservasPorSalon(idSalon);
-    }
-
-    @GetMapping("/consultarReservasPorFecha")
-    public List<ReservaModel> consultarReservasPorFecha(@RequestParam LocalDate fecha) {
-        return reservaService.consultarReservasPorFecha(fecha);
-    }
-
-    @GetMapping("/consultarReservasPorDiaSemana")
-    public List<ReservaModel> consultarReservasPorDiaSemana(@RequestParam DiaSemanaModel diaSemana) {
-        return reservaService.consultarReservasPorDiaSemana(diaSemana);
-    }
-
-    @GetMapping("/consultarReservasPorEstado")
-    public List<ReservaModel> consultarReservasPorEstado(@RequestParam EstadoReservaModel estado) {
-        return reservaService.consultarReservasPorEstado(estado);
-    }
-
-    @GetMapping("/consultarReservasPorDuracionBloque")
-    public List<ReservaModel> consultarReservasPorDuracionBloque(@RequestParam boolean duracionBloque) {
-        return reservaService.consultarReservasPorDuracionBloque(duracionBloque);
+    @GetMapping("")
+    public ResponseEntity<List<ReservaModel>> getReservas(
+            @RequestParam(required = false) String idSalon,
+            @RequestParam(required = false) LocalDate fecha,
+            @RequestParam(required = false) double hora,
+            @RequestParam(required = false) DiaSemanaModel diaSemana,
+            @RequestParam(required = false) EstadoReservaModel estado,
+            @RequestParam(required = false) Boolean duracionBloque) {
+        List<ReservaModel> reservas;
+        
+        // Si se reciben ambos filtros: idSalon y estado
+        if (idSalon != null && estado != null) {
+            reservas = reservaService.consultarReservasPorSalonAndEstado(idSalon, estado);
+        } else if (idSalon != null) {
+            reservas = reservaService.consultarReservasPorSalon(idSalon);
+        } else if (fecha != null) {
+            reservas = reservaService.consultarReservasPorFecha(fecha);
+        } else if (hora != 0) {
+            reservas = reservaService.consultarReservasPorHora(hora);
+        } else if (diaSemana != null) {
+            reservas = reservaService.consultarReservasPorDiaSemana(diaSemana);
+        } else if (estado != null) {
+            reservas = reservaService.consultarReservasPorEstado(estado);
+        } else if (duracionBloque != null) {
+            reservas = reservaService.consultarReservasPorDuracionBloque(duracionBloque);
+        } else {
+            reservas = reservaService.consultarReservas();
+        }
+        return ResponseEntity.ok(reservas);
     }
 
     @GetMapping("/consultarReserva")
@@ -65,13 +70,13 @@ public class ReservaController {
 
     @PostMapping("/crearReserva")
     public ResponseEntity<String> crearReserva(@RequestBody ReservaDTO reservaDTO ) {
-        reservaService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque());
+        reservaService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque());
         return ResponseEntity.ok("Reserva creada");
     }
 
     @PutMapping("/actualizarReserva")
     public ResponseEntity<String> actualizarReserva(@RequestBody ReservaDTO reservaDTO) {
-        reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque());
+        reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque());
         return ResponseEntity.ok("Reserva actualizada");
     }
 
