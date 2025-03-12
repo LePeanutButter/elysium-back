@@ -22,9 +22,10 @@ public class ReservaDTOTest {
     public void testConstructorWithParameters() {
         LocalDate fechaReserva = LocalDate.now();
         DiaSemanaModel diaSemana = DiaSemanaModel.LUNES;
+        double hora = 8.0;
         int prioridad = 3;
 
-        ReservaDTO reserva = new ReservaDTO("1", fechaReserva, diaSemana, "Meeting", "101", true, prioridad);
+        ReservaDTO reserva = new ReservaDTO("1", fechaReserva, hora,diaSemana, "Meeting", "101", true, prioridad);
 
         assertEquals("1", reserva.getIdReserva());
         assertEquals(fechaReserva, reserva.getFechaReserva());
@@ -39,9 +40,10 @@ public class ReservaDTOTest {
     public void testConstructorWithTipoCampo() {
         LocalDate fechaReserva = LocalDate.now();
         DiaSemanaModel diaSemana = DiaSemanaModel.LUNES;
+        int hora = 8;
         int prioridad = 4;  // Agregamos la prioridad requerida
 
-        ReservaDTO reserva = new ReservaDTO("1", 'A', fechaReserva, diaSemana, "101", true, prioridad);
+        ReservaDTO reserva = new ReservaDTO("1", 'A', fechaReserva,hora, diaSemana, "101", true, prioridad);
 
         assertEquals("1", reserva.getIdReserva());
         assertEquals('A', reserva.getTipoCampo());

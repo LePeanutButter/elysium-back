@@ -14,6 +14,7 @@ public class ReservaModel {
     @Id
     private String idReserva;
     private LocalDate fechaReserva;
+    private double hora;
     private DiaSemanaModel diaSemana;
     private String proposito;
     private String idSalon;
@@ -38,9 +39,10 @@ public class ReservaModel {
      * @param duracionBloque the duration block of the reservation
      * @param prioridad      the priority of the reservation (1 to 5)
      */
-    public ReservaModel(String idReserva, LocalDate fechaReserva, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+    public ReservaModel(String idReserva,LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad) {
         this.idReserva = idReserva;
         this.fechaReserva = fechaReserva;
+        this.hora = hora;
         this.diaSemana = diaSemana;
         this.proposito = proposito;
         this.idSalon = idSalon;
@@ -83,6 +85,24 @@ public class ReservaModel {
      */
     public void setFechaReserva(LocalDate fechaReserva) {
         this.fechaReserva = fechaReserva;
+    }
+
+    /**
+     * Gets the hour of the reservation.
+     *
+     * @return the hour of the reservation
+     */
+    public double getHora() {
+        return hora;
+    }
+
+    /**
+     * Sets the hour of the reservation.
+     *
+     * @param hora the hour of the reservation
+     */
+    public void setHora(double hora) {
+        this.hora = hora;
     }
 
     /**
@@ -197,9 +217,9 @@ public class ReservaModel {
      * @param duracionBloque the duration block of the reservation
      * @return the new reservation
      */
-    public ReservaModel crearReserva(String idReserva, LocalDate fechaReserva, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+    public ReservaModel crearReserva(String idReserva, LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad) {
         this.estado = EstadoReservaModel.ACTIVA;
-        return new ReservaModel(idReserva, fechaReserva, diaSemana, proposito, idSalon, duracionBloque, prioridad);
+        return new ReservaModel(idReserva, fechaReserva, hora,diaSemana, proposito, idSalon, duracionBloque, prioridad);
     }
     /**
      * Updates the reservation with the new data.
@@ -210,25 +230,26 @@ public class ReservaModel {
      * @param value3 the new value
      * @param value4 the new value
      */
-    public void actualizar(String idReserva, char tipoCampo, LocalDate value1, DiaSemanaModel value2, String value3, boolean value4, Integer prioridad) {
-        if (this.idReserva.equals(idReserva)) {
-            switch (tipoCampo) {
-                case 'f': // Fecha
+    public void actualizar(String idReserva, char tipoCampo, LocalDate value1,double value2,DiaSemanaModel value3,String value4,boolean value5, int value6) {
+        if(this.idReserva.equals(idReserva)) {
+            switch(tipoCampo) {
+                case 'f': //fecha
                     this.fechaReserva = value1;
                     break;
-                case 'd': // Día
-                    this.diaSemana = value2;
+                case 'h': //hora
+                    this.hora = value2;
                     break;
-                case 's': // Salón
-                    this.idSalon = value3;
+                case 'd': //día
+                    this.diaSemana = value3;
                     break;
-                case 'b': // Bloque
-                    this.duracionBloque = value4;
+                case 's': //salón
+                    this.idSalon = value4;
+                    break;
+                case 'b': //bloque
+                    this.duracionBloque = value5;
                     break;
                 case 'p': // Prioridad
-                    if (prioridad != null) {
-                        setPrioridad(prioridad);
-                    }
+                    this.prioridad = value6;
                     break;
                 default:
                     break;

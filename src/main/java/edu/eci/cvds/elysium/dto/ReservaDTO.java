@@ -2,12 +2,13 @@ package edu.eci.cvds.elysium.dto;
 
 import java.time.LocalDate;
 import edu.eci.cvds.elysium.model.DiaSemanaModel;
-import edu.eci.cvds.elysium.model.EstadoReservaModel;
+
 
 public class ReservaDTO {
     
     private String idReserva;
     private LocalDate fechaReserva;
+    private double hora;
     private char tipoCampo;
     // Se representa el día de la semana como String (por ejemplo, "LUNES")
     private DiaSemanaModel diaSemana;
@@ -37,9 +38,11 @@ public class ReservaDTO {
      * @param duracionBloque
      * @param prioridad
      */
-    public ReservaDTO(String idReserva, LocalDate fechaReserva, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+    
+    public ReservaDTO(String idReserva, LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
         this.idReserva = idReserva;
         this.fechaReserva = fechaReserva;
+        this.hora = hora;
         this.diaSemana = diaSemana;
         this.proposito = proposito;
         this.idSalon = idSalon;
@@ -47,10 +50,11 @@ public class ReservaDTO {
         setPrioridad(prioridad);
     }
 
-    public ReservaDTO(String idReserva, char tipoCampo, LocalDate fechaReserva, DiaSemanaModel diaSemana, String idSalon, boolean duracionBloque, int prioridad) {
+    public ReservaDTO(String idReserva,char tipoCampo, LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String idSalon, boolean duracionBloque, int prioridad) {
         this.idReserva = idReserva;
         this.tipoCampo = tipoCampo;
         this.fechaReserva = fechaReserva;
+        this.hora = hora;
         this.diaSemana = diaSemana;
         this.idSalon = idSalon;
         this.duracionBloque = duracionBloque;
@@ -60,6 +64,7 @@ public class ReservaDTO {
     //Getters
     public String getIdReserva() {return idReserva;}
     public LocalDate getFechaReserva() {return fechaReserva;}
+    public double getHora() {return hora;}
     public char getTipoCampo() {return tipoCampo;}
     public DiaSemanaModel getDiaSemana() {return diaSemana;}
     public String getProposito() {return proposito;}
