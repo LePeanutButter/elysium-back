@@ -67,13 +67,13 @@ public class ReservaController {
 
     @PostMapping("/crearReserva")
     public ResponseEntity<String> crearReserva(@RequestBody ReservaDTO reservaDTO ) {
-        reservaService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque());
+        reservaService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(),reservaDTO.getPrioridad());
         return ResponseEntity.ok("Reserva creada");
     }
 
     @PutMapping("/actualizarReserva")
     public ResponseEntity<String> actualizarReserva(@RequestBody ReservaDTO reservaDTO) {
-        reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque());
+        reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque(),reservaDTO.getPrioridad());
         return ResponseEntity.ok("Reserva actualizada");
     }
 
@@ -95,4 +95,10 @@ public class ReservaController {
         return ResponseEntity.ok("Reserva rechazada");
     }
 
+
+    @PostMapping("/generarReservas")
+    public ResponseEntity<String> generarReservas() {
+        reservaService.generarReservasAleatorias();
+        return ResponseEntity.ok("Reservas aleatorias generadas correctamente.");
+    }
 }

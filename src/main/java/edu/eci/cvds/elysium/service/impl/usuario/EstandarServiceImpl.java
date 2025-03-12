@@ -21,11 +21,11 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
     private Estandar estandar;
 
     @Override
-    public ReservaModel crearReserva(String idReserva, LocalDate fecha,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque) {
+    public ReservaModel crearReserva(String idReserva, LocalDate fecha,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
         Usuario usuario = usuarioRepository.findByIdInstitucional(estandar.getIdInstitucional());
         if (usuario != null && usuario instanceof Estandar) {
             Estandar estandar = (Estandar) usuario;
-            return estandar.crearReserva(idReserva,fecha,hora, diaSemana, proposito, idSalon, duracionBloque);
+            return estandar.crearReserva(idReserva,fecha,hora, diaSemana, proposito, idSalon, duracionBloque, prioridad);
         }
         return null;
     }
