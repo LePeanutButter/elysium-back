@@ -1,5 +1,6 @@
 package edu.eci.cvds.elysium.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,4 +191,11 @@ public void actualizarSalon(String mnemonico, ActualizarSalonDTO dto) {
         }
         return false;
     }
+
+    @Override
+    public void asignarRecurso(String nombre, int cantidad, ArrayList<String> especificacion) {
+        // TODO Auto-generated method stub
+    }
+
+
 }

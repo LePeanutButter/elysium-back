@@ -1,5 +1,6 @@
 package edu.eci.cvds.elysium.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.eci.cvds.elysium.dto.salon.ActualizarSalonDTO;
@@ -45,5 +46,5 @@ public interface SalonService {
     boolean getDisponible(String mnemonico);  
     boolean setDisponible(String mnemonico);
     boolean setNoDisponible(String mnemonico);    
-    // void asignarRecurso(String nombre,int cantidad,ArrayList<String> especificacion);
+    void asignarRecurso(String nombre,int cantidad,ArrayList<String> especificacion);
 }

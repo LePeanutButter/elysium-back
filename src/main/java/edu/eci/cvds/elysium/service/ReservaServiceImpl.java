@@ -2,6 +2,7 @@ package edu.eci.cvds.elysium.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,11 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
+    public List<ReservaModel> consultarReservasPorHora(double hora) {
+        return reservaRepository.findByHora(hora);
+    }
+
+    @Override
     public List<ReservaModel> consultarReservasPorDiaSemana(DiaSemanaModel diaSemana) {
         return reservaRepository.findByDiaSemana(diaSemana);
     }
@@ -46,37 +52,51 @@ public class ReservaServiceImpl implements ReservaService {
         return reservaRepository.findByDuracionBloque(duracionBloque);
     }
 
+
+    @Override
+    public List<ReservaModel> consultarReservasPorSalonAndEstado(String idSalon, EstadoReservaModel estado) {
+        // Primero se obtienen todas las reservas del salón especificado
+        List<ReservaModel> reservasPorSalon = reservaRepository.findByIdSalon(idSalon);
+        // Luego se filtran por el estado deseado
+        return reservasPorSalon.stream()
+                .filter(reserva -> reserva.getEstado().equals(estado))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public ReservaModel consultarReserva(String idReserva) {
         return reservaRepository.findByIdReserva(idReserva);
     }
 
     @Override
-    public void crearReserva(String idReserva, LocalDate fechaReserva, DiaSemanaModel diaSemana,String proposito, String idSalon,boolean duracionBloque) {
-        ReservaModel reserva = new ReservaModel(idReserva, fechaReserva, diaSemana, proposito, idSalon, duracionBloque);
-        reserva.crearReserva(idReserva, fechaReserva, diaSemana, proposito, idSalon, duracionBloque);
+    public void crearReserva(String idReserva, LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana,String proposito, String idSalon,boolean duracionBloque) {
+        ReservaModel reserva = new ReservaModel(idReserva, fechaReserva,hora, diaSemana, proposito, idSalon, duracionBloque);
+        reserva.crearReserva(idReserva, fechaReserva,hora, diaSemana, proposito, idSalon, duracionBloque);
         EstadoReservaModel estado = EstadoReservaModel.ACTIVA;
         reserva.setEstado(estado);
         reservaRepository.save(reserva);
     }
 
     @Override
-    public void actualizarReserva(String idReserva, char tipoCampo, LocalDate value1, DiaSemanaModel value2, String value3, boolean value4) {
+    public void actualizarReserva(String idReserva, char tipoCampo, LocalDate value1,double value2, DiaSemanaModel value3, String value4, boolean value5) {
         ReservaModel reserva = reservaRepository.findByIdReserva(idReserva);
         if (reserva != null) {
-            reserva.actualizar(idReserva, tipoCampo, value1, value2, value3, value4);
+            reserva.actualizar(idReserva, tipoCampo, value1, value2, value3, value4,value5);
             switch (tipoCampo) {
                 case 'f':
                     reserva.setFechaReserva(value1);
                     break;
+                case 'h':
+                    reserva.setHora(value2);
+                    break;
                 case 'd':
-                    reserva.setDiaSemana(value2);
+                    reserva.setDiaSemana(value3);
                     break;
                 case 's':
-                    reserva.setIdSalon(value3);
+                    reserva.setIdSalon(value4);
                     break;
                 case 'b':
-                    reserva.setDuracionBloque(value4);
+                    reserva.setDuracionBloque(value5);
                     break;
                 default:
                     break;

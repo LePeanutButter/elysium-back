@@ -1,10 +1,12 @@
 package edu.eci.cvds.elysium.model.usuario;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
-import edu.eci.cvds.elysium.model.Reserva;
+import edu.eci.cvds.elysium.model.DiaSemanaModel;
+import edu.eci.cvds.elysium.model.ReservaModel;
 import edu.eci.cvds.elysium.model.Salon;
 
 public class Estandar extends Usuario {
@@ -20,9 +22,7 @@ public class Estandar extends Usuario {
     }
 
     // Método para crear reserva
-    public Reserva crearReserva(LocalTime fechaInicio, String proposito, String mnemonico) {
-        return new Reserva(fechaInicio, proposito, mnemonico, this);
+    public ReservaModel crearReserva(String idReserva, LocalDate fecha,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque) {
+        return new ReservaModel(idReserva, fecha,hora,diaSemana, proposito, idSalon, duracionBloque);
     }
 }
-
-

@@ -13,9 +13,11 @@ import edu.eci.cvds.elysium.model.ReservaModel;
 @Repository
 public interface ReservaRepository extends MongoRepository<ReservaModel, String> {
     ReservaModel findByIdReserva(String idReserva);
+    @SuppressWarnings("null")
     List<ReservaModel> findAll();
     List<ReservaModel> findByIdSalon(String idSalon);
     List<ReservaModel> findByFechaReserva(LocalDate fechaReserva);
+    List<ReservaModel> findByHora(double hora);
     List<ReservaModel> findByDiaSemana(DiaSemanaModel diaSemana);
     List<ReservaModel> findByDuracionBloque(boolean duracionBloque);
     List<ReservaModel> findByEstado(EstadoReservaModel estado);
