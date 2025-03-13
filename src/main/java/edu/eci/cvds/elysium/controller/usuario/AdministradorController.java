@@ -29,6 +29,22 @@ public class AdministradorController extends UsuarioController {
     private AdministradorService administradorService;
 
     /**
+     * Endpoint para consultar un usuario por su identificador.
+     * 
+     * @param id Identificador del usuario a consultar (proveniente de la URL).
+     * @return Usuario con el identificador dado.
+     */
+    @Operation(summary = "Consultar usuario", description = "Endpoint para consultar un usuario por su identificador.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @GetMapping("/{id}")
+    public Usuario consultarUsuario(@PathVariable int id) {
+        return administradorService.consultarUsuario(id);
+    }
+
+    /**
      * Endpoint unificado para consultar usuarios.
      * Se pueden usar los parámetros opcionales:
      * - activo: true/false para filtrar por estado activo.
