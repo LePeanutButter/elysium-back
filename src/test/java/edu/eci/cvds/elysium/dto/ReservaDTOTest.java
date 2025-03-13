@@ -3,7 +3,7 @@ package edu.eci.cvds.elysium.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
-import edu.eci.cvds.elysium.model.DiaSemanaModel;
+import edu.eci.cvds.elysium.model.DiaSemana;
 
 public class ReservaDTOTest {
 
@@ -21,7 +21,7 @@ public class ReservaDTOTest {
     @Test
     public void testConstructorWithParameters() {
         LocalDate fechaReserva = LocalDate.now();
-        DiaSemanaModel diaSemana = DiaSemanaModel.LUNES;
+        DiaSemana diaSemana = DiaSemana.LUNES;
         double hora = 8.0;
         int prioridad = 3;
 
@@ -39,7 +39,7 @@ public class ReservaDTOTest {
     @Test
     public void testConstructorWithTipoCampo() {
         LocalDate fechaReserva = LocalDate.now();
-        DiaSemanaModel diaSemana = DiaSemanaModel.LUNES;
+        DiaSemana diaSemana = DiaSemana.LUNES;
         int hora = 8;
         int prioridad = 4;  // Agregamos la prioridad requerida
 

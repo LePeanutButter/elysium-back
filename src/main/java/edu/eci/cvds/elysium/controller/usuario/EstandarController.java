@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.eci.cvds.elysium.dto.ReservaDTO;
-import edu.eci.cvds.elysium.model.ReservaModel;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.service.usuario.EstandarService;
 
@@ -31,7 +30,7 @@ public class EstandarController extends UsuarioController {
     @PostMapping("/reserva")
     public ResponseEntity<String> crearReserva(@RequestBody
     ReservaDTO reservaDTO){
-        estandarService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque());
+        estandarService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), reservaDTO.getIdUsuario());
         return ResponseEntity.ok("Reserva creada");
     }
     

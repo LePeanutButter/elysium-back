@@ -15,12 +15,13 @@ public class Reserva {
     private String idReserva;
     private LocalDate fechaReserva;
     private double hora;
-    private DiaSemanaModel diaSemana;
+    private DiaSemana diaSemana;
     private String proposito;
     private String idSalon;
     private EstadoReserva estado;
     private boolean duracionBloque;
     private int prioridad;
+    private int idUsuario;
 
     /**
      * Default constructor for a ReservaModel instance.
@@ -39,7 +40,7 @@ public class Reserva {
      * @param duracionBloque the duration block of the reservation
      * @param prioridad      the priority of the reservation (1 to 5)
      */
-    public Reserva(String idReserva,LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad) {
+    public Reserva(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad, int idUsuario) {
         this.idReserva = idReserva;
         this.fechaReserva = fechaReserva;
         this.hora = hora;
@@ -49,6 +50,8 @@ public class Reserva {
         this.estado = EstadoReserva.ACTIVA;
         this.duracionBloque = duracionBloque;
         setPrioridad(prioridad); // Validación dentro del setter
+        // each reserva knows its user
+        this.idUsuario = idUsuario;
     }
 
     /**
@@ -110,7 +113,7 @@ public class Reserva {
      *
      * @return the day of the week of the reservation
      */
-    public DiaSemanaModel getDiaSemana() {
+    public DiaSemana getDiaSemana() {
         return diaSemana;
     }
 
@@ -119,7 +122,7 @@ public class Reserva {
      *
      * @param diaSemana the day of the week of the reservation
      */
-    public void setDiaSemana(DiaSemanaModel diaSemana) {
+    public void setDiaSemana(DiaSemana diaSemana) {
         this.diaSemana = diaSemana;
     }
 
@@ -215,5 +218,23 @@ public class Reserva {
             throw new IllegalArgumentException("La prioridad debe estar entre 1 y 5.");
         }
         this.prioridad = prioridad;
+    }
+
+    /**
+     * Gets the user ID associated with the reservation.
+     *
+     * @return the user ID.
+     */
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    /**
+     * Sets the user ID associated with the reservation.
+     *
+     * @param idUsuario the user ID.
+     */
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

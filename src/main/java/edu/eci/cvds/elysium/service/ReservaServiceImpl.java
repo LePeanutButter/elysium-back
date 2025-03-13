@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.eci.cvds.elysium.model.DiaSemanaModel;
+import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.EstadoReserva;
 import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.repository.ReservaRepository;
@@ -40,7 +40,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public List<Reserva> consultarReservasPorDiaSemana(DiaSemanaModel diaSemana) {
+    public List<Reserva> consultarReservasPorDiaSemana(DiaSemana diaSemana) {
         return reservaRepository.findByDiaSemana(diaSemana);
     }
 
@@ -82,10 +82,11 @@ public class ReservaServiceImpl implements ReservaService {
      * @return the new reservation
      */
     @Override
-    public void crearReserva(String idReserva, LocalDate fechaReserva, double hora, DiaSemanaModel diaSemana,
-            String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+    public void crearReserva(String idReserva, LocalDate fechaReserva, double hora, DiaSemana diaSemana,
+            String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {
         Reserva reserva = new Reserva(idReserva, fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
-                prioridad);
+                prioridad, idInstitucional);
+
         reserva.setEstado(EstadoReserva.ACTIVA);
         reservaRepository.save(reserva);
     }
@@ -103,7 +104,7 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     public void actualizarReserva(String idReserva, char tipoCampo, LocalDate value1, double value2,
-            DiaSemanaModel value3, String value4, boolean value5, int value6) {
+            DiaSemana value3, String value4, boolean value5, int value6) {
         Reserva reserva = reservaRepository.findByIdReserva(idReserva);
         if (reserva != null) {
             switch (tipoCampo) {
@@ -186,13 +187,15 @@ public class ReservaServiceImpl implements ReservaService {
         for (int i = 0; i < cantidad; i++) {
             String idReserva = String.valueOf(System.currentTimeMillis());
             LocalDate fechaReserva = LocalDate.now().plusDays(random.nextInt(30));
-            DiaSemanaModel diaSemana = DiaSemanaModel.values()[random.nextInt(DiaSemanaModel.values().length)];
+            DiaSemana diaSemana = DiaSemana.values()[random.nextInt(DiaSemana.values().length)];
             String proposito = "Reserva generada automáticamente";
             String idSalon = String.valueOf(random.nextInt(101) + 50);
             boolean duracionBloque = random.nextBoolean();
             int prioridad = random.nextInt(5) + 1;
             int hora = random.nextInt(24);
-            crearReserva(idReserva, fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque, prioridad);
+            int idInstitucional = random.nextInt(6) + 1;
+            
+            crearReserva(idReserva, fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque, prioridad, idInstitucional);
         }
     }
 }

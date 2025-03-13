@@ -1,7 +1,8 @@
 package edu.eci.cvds.elysium.dto;
 
 import java.time.LocalDate;
-import edu.eci.cvds.elysium.model.DiaSemanaModel;
+
+import edu.eci.cvds.elysium.model.DiaSemana;
 
 
 public class ReservaDTO {
@@ -11,7 +12,7 @@ public class ReservaDTO {
     private double hora;
     private char tipoCampo;
     // Se representa el día de la semana como String (por ejemplo, "LUNES")
-    private DiaSemanaModel diaSemana;
+    private DiaSemana diaSemana;
     private String proposito;
 
     // Se utiliza el objeto Salón para identificar el salón (1..1)
@@ -21,6 +22,7 @@ public class ReservaDTO {
     private boolean duracionBloque;
 
     private int prioridad;
+    private int idUsuario;
 
     /*
      * Constructor de la clase ReservaDTO
@@ -39,7 +41,7 @@ public class ReservaDTO {
      * @param prioridad
      */
     
-    public ReservaDTO(String idReserva, LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+    public ReservaDTO(String idReserva, LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
         this.idReserva = idReserva;
         this.fechaReserva = fechaReserva;
         this.hora = hora;
@@ -50,7 +52,7 @@ public class ReservaDTO {
         setPrioridad(prioridad);
     }
 
-    public ReservaDTO(String idReserva,char tipoCampo, LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String idSalon, boolean duracionBloque, int prioridad) {
+    public ReservaDTO(String idReserva,char tipoCampo, LocalDate fechaReserva,double hora, DiaSemana diaSemana, String idSalon, boolean duracionBloque, int prioridad) {
         this.idReserva = idReserva;
         this.tipoCampo = tipoCampo;
         this.fechaReserva = fechaReserva;
@@ -66,7 +68,7 @@ public class ReservaDTO {
     public LocalDate getFechaReserva() {return fechaReserva;}
     public double getHora() {return hora;}
     public char getTipoCampo() {return tipoCampo;}
-    public DiaSemanaModel getDiaSemana() {return diaSemana;}
+    public DiaSemana getDiaSemana() {return diaSemana;}
     public String getProposito() {return proposito;}
     public String getIdSalon() {return idSalon;}
     public boolean isDuracionBloque() {return duracionBloque;}
@@ -81,5 +83,23 @@ public class ReservaDTO {
             throw new IllegalArgumentException("La prioridad debe estar entre 1 y 5.");
         }
         this.prioridad = prioridad;
+    }
+
+    /**
+     * Gets the user ID associated with the reservation.
+     *
+     * @return the user ID.
+     */
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    /**
+     * Sets the user ID associated with the reservation.
+     *
+     * @param idUsuario the user ID.
+     */
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }
