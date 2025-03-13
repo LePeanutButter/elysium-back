@@ -32,7 +32,6 @@ public class Reserva {
     /**
      * Constructor to create a new ReservaModel instance.
      *
-     * @param idReserva      the reservation ID
      * @param fechaReserva   the date of the reservation
      * @param diaSemana      the day of the week of the reservation
      * @param proposito      the purpose of the reservation
@@ -40,8 +39,7 @@ public class Reserva {
      * @param duracionBloque the duration block of the reservation
      * @param prioridad      the priority of the reservation (1 to 5)
      */
-    public Reserva(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad, int idUsuario) {
-        this.idReserva = idReserva;
+    public Reserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad, int idUsuario) {
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
@@ -61,15 +59,6 @@ public class Reserva {
      */
     public String getIdReserva() {
         return idReserva;
-    }
-
-    /**
-     * Sets the reservation ID.
-     *
-     * @param idReserva the reservation ID
-     */
-    public void setIdReserva(String idReserva) {
-        this.idReserva = idReserva;
     }
 
     /**
@@ -218,23 +207,5 @@ public class Reserva {
             throw new IllegalArgumentException("La prioridad debe estar entre 1 y 5.");
         }
         this.prioridad = prioridad;
-    }
-
-    /**
-     * Gets the user ID associated with the reservation.
-     *
-     * @return the user ID.
-     */
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    /**
-     * Sets the user ID associated with the reservation.
-     *
-     * @param idUsuario the user ID.
-     */
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
     }
 }
