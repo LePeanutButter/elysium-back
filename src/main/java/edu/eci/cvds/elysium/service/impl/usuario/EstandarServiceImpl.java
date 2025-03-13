@@ -27,7 +27,7 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
 
 
         if (usuario != null && usuario instanceof Estandar) {           
-            reservaService.crearReserva(idReserva, fechaReserva,hora, diaSemana, proposito, idSalon, duracionBloque, prioridad, idInstitucional);
+            reservaService.crearReserva(fechaReserva,hora, diaSemana, proposito, idSalon, duracionBloque, prioridad, idInstitucional);
             
         }  
     }

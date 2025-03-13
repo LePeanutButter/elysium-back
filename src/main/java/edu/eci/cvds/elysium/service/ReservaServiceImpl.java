@@ -82,9 +82,9 @@ public class ReservaServiceImpl implements ReservaService {
      * @return the new reservation
      */
     @Override
-    public void crearReserva(String idReserva, LocalDate fechaReserva, double hora, DiaSemana diaSemana,
+    public void crearReserva(LocalDate fechaReserva, double hora, DiaSemana diaSemana,
             String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {
-        Reserva reserva = new Reserva(idReserva, fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
+        Reserva reserva = new Reserva( fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
                 prioridad, idInstitucional);
 
         reserva.setEstado(EstadoReserva.ACTIVA);
@@ -185,7 +185,6 @@ public class ReservaServiceImpl implements ReservaService {
         Random random = new Random();
         int cantidad = random.nextInt(901) + 100;
         for (int i = 0; i < cantidad; i++) {
-            String idReserva = String.valueOf(System.currentTimeMillis());
             LocalDate fechaReserva = LocalDate.now().plusDays(random.nextInt(30));
             DiaSemana diaSemana = DiaSemana.values()[random.nextInt(DiaSemana.values().length)];
             String proposito = "Reserva generada automáticamente";
@@ -195,7 +194,7 @@ public class ReservaServiceImpl implements ReservaService {
             int hora = random.nextInt(24);
             int idInstitucional = random.nextInt(6) + 1;
             
-            crearReserva(idReserva, fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque, prioridad, idInstitucional);
+            crearReserva(fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque, prioridad, idInstitucional);
         }
     }
 }

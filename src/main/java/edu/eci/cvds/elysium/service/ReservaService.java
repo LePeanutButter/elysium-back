@@ -18,7 +18,7 @@ public interface ReservaService {
     List<Reserva> consultarReservasPorDuracionBloque(boolean duracionBloque);
     List<Reserva> consultarReservasPorSalonAndEstado(String idSalon, EstadoReserva estado);
     Reserva consultarReserva(String idReserva);
-    void crearReserva(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad, int idInstitucional);
+    void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad, int idInstitucional);
     void actualizarReserva(String idReserva,char tipoCampo,LocalDate value1,double value2,DiaSemana value3,String value4,boolean value5, int value6);
 
 

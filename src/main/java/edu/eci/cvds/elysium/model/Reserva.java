@@ -38,6 +38,7 @@ public class Reserva {
      * @param idSalon        the salon associated with the reservation
      * @param duracionBloque the duration block of the reservation
      * @param prioridad      the priority of the reservation (1 to 5)
+     * @param idUsuario      the user ID associated with the reservation
      */
     public Reserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad, int idUsuario) {
         this.fechaReserva = fechaReserva;
@@ -207,5 +208,23 @@ public class Reserva {
             throw new IllegalArgumentException("La prioridad debe estar entre 1 y 5.");
         }
         this.prioridad = prioridad;
+    }
+
+    /**
+     * Gets the user ID associated with the reservation.
+     *
+     * @return the user ID
+     */
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+
+    /**
+     * Sets the user ID associated with the reservation.
+     * @param idUsuario the user ID
+     */
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

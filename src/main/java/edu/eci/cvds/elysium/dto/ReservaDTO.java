@@ -7,7 +7,6 @@ import edu.eci.cvds.elysium.model.DiaSemana;
 
 public class ReservaDTO {
     
-    private String idReserva;
     private LocalDate fechaReserva;
     private double hora;
     private char tipoCampo;
@@ -39,10 +38,10 @@ public class ReservaDTO {
      * @param idSalon
      * @param duracionBloque
      * @param prioridad
+     * @param idUsuario
      */
     
-    public ReservaDTO(String idReserva, LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
-        this.idReserva = idReserva;
+    public ReservaDTO(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
@@ -50,21 +49,10 @@ public class ReservaDTO {
         this.idSalon = idSalon;
         this.duracionBloque = duracionBloque;
         setPrioridad(prioridad);
-    }
-
-    public ReservaDTO(String idReserva,char tipoCampo, LocalDate fechaReserva,double hora, DiaSemana diaSemana, String idSalon, boolean duracionBloque, int prioridad) {
-        this.idReserva = idReserva;
-        this.tipoCampo = tipoCampo;
-        this.fechaReserva = fechaReserva;
-        this.hora = hora;
-        this.diaSemana = diaSemana;
-        this.idSalon = idSalon;
-        this.duracionBloque = duracionBloque;
-        setPrioridad(prioridad);
+        this.idUsuario = idUsuario;
     }
 
     //Getters
-    public String getIdReserva() {return idReserva;}
     public LocalDate getFechaReserva() {return fechaReserva;}
     public double getHora() {return hora;}
     public char getTipoCampo() {return tipoCampo;}
