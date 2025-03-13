@@ -2,13 +2,15 @@ package edu.eci.cvds.elysium.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.eci.cvds.elysium.model.*;
+import edu.eci.cvds.elysium.model.DiaSemanaModel;
+import edu.eci.cvds.elysium.model.EstadoReserva;
+import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.repository.ReservaRepository;
 
 @Service
@@ -18,45 +20,44 @@ public class ReservaServiceImpl implements ReservaService {
     private ReservaRepository reservaRepository;
 
     @Override
-    public List<ReservaModel> consultarReservas() {
+    public List<Reserva> consultarReservas() {
         return reservaRepository.findAll();
     }
 
     @Override
-    public List<ReservaModel> consultarReservasPorSalon(String idSalon) {
+    public List<Reserva> consultarReservasPorSalon(String idSalon) {
         return reservaRepository.findByIdSalon(idSalon);
     }
 
     @Override
-    public List<ReservaModel> consultarReservasPorFecha(LocalDate fecha) {
+    public List<Reserva> consultarReservasPorFecha(LocalDate fecha) {
         return reservaRepository.findByFechaReserva(fecha);
     }
 
     @Override
-    public List<ReservaModel> consultarReservasPorHora(double hora) {
+    public List<Reserva> consultarReservasPorHora(double hora) {
         return reservaRepository.findByHora(hora);
     }
 
     @Override
-    public List<ReservaModel> consultarReservasPorDiaSemana(DiaSemanaModel diaSemana) {
+    public List<Reserva> consultarReservasPorDiaSemana(DiaSemanaModel diaSemana) {
         return reservaRepository.findByDiaSemana(diaSemana);
     }
 
     @Override
-    public List<ReservaModel> consultarReservasPorEstado(EstadoReservaModel estado) {
+    public List<Reserva> consultarReservasPorEstado(EstadoReserva estado) {
         return reservaRepository.findByEstado(estado);
     }
 
     @Override
-    public List<ReservaModel> consultarReservasPorDuracionBloque(boolean duracionBloque) {
+    public List<Reserva> consultarReservasPorDuracionBloque(boolean duracionBloque) {
         return reservaRepository.findByDuracionBloque(duracionBloque);
     }
 
-
     @Override
-    public List<ReservaModel> consultarReservasPorSalonAndEstado(String idSalon, EstadoReservaModel estado) {
+    public List<Reserva> consultarReservasPorSalonAndEstado(String idSalon, EstadoReserva estado) {
         // Primero se obtienen todas las reservas del salón especificado
-        List<ReservaModel> reservasPorSalon = reservaRepository.findByIdSalon(idSalon);
+        List<Reserva> reservasPorSalon = reservaRepository.findByIdSalon(idSalon);
         // Luego se filtran por el estado deseado
         return reservasPorSalon.stream()
                 .filter(reserva -> reserva.getEstado().equals(estado))
@@ -64,25 +65,47 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public ReservaModel consultarReserva(String idReserva) {
+    public Reserva consultarReserva(String idReserva) {
         return reservaRepository.findByIdReserva(idReserva);
     }
 
+    /**
+     * Creates a new reservation.
+     *
+     * @param idReserva      the reservation ID
+     * @param fechaReserva   the date of the reservation
+     * @param diaSemana      the day of the week of the reservation
+     * @param proposito      the purpose of the reservation
+     * @param idSalon        the salon associated with the reservation
+     * @param estado         the state of the reservation
+     * @param duracionBloque the duration block of the reservation
+     * @return the new reservation
+     */
     @Override
-    public void crearReserva(String idReserva, LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana,String proposito, String idSalon,boolean duracionBloque, int prioridad) {
-        ReservaModel reserva = new ReservaModel(idReserva, fechaReserva,hora, diaSemana, proposito, idSalon, duracionBloque,prioridad);
-        reserva.crearReserva(idReserva, fechaReserva,hora, diaSemana, proposito, idSalon, duracionBloque, prioridad);
-        EstadoReservaModel estado = EstadoReservaModel.ACTIVA;
-        reserva.setEstado(estado);
-
+    public void crearReserva(String idReserva, LocalDate fechaReserva, double hora, DiaSemanaModel diaSemana,
+            String proposito, String idSalon, boolean duracionBloque, int prioridad) {
+        Reserva reserva = new Reserva(idReserva, fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
+                prioridad);
+        reserva.setEstado(EstadoReserva.ACTIVA);
         reservaRepository.save(reserva);
     }
 
+    /**
+     * Updates the reservation with the new data.
+     * 
+     * @param idInstitucional the reservation ID
+     * @param tipoCampo       the field type to update
+     * @param value1          the new value
+     * @param value2          the new value
+     * @param value3          the new value
+     * @param value4          the new value
+     */
+
     @Override
-    public void actualizarReserva(String idReserva, char tipoCampo, LocalDate value1,double value2, DiaSemanaModel value3, String value4, boolean value5, int value6) {
-        ReservaModel reserva = reservaRepository.findByIdReserva(idReserva);
+    public void actualizarReserva(String idReserva, char tipoCampo, LocalDate value1, double value2,
+            DiaSemanaModel value3, String value4, boolean value5, int value6) {
+        Reserva reserva = reservaRepository.findByIdReserva(idReserva);
         if (reserva != null) {
-            reserva.actualizar(idReserva, tipoCampo, value1, value2, value3, value4,value5,value6);
             switch (tipoCampo) {
                 case 'f':
                     reserva.setFechaReserva(value1);
@@ -105,40 +128,52 @@ public class ReservaServiceImpl implements ReservaService {
                 default:
                     break;
             }
-            EstadoReservaModel estado = EstadoReservaModel.ACTIVA;
+            EstadoReserva estado = EstadoReserva.ACTIVA;
             reserva.setEstado(estado);
             reservaRepository.save(reserva);
         }
     }
 
+    /**
+     * Deletes the reservation. It's a logical delete or soft delete.
+     * 
+     * @param idReserva the reservation ID
+     */
     @Override
     public void deleteReserva(String idReserva) {
-        ReservaModel reserva = reservaRepository.findByIdReserva(idReserva);
+        Reserva reserva = reservaRepository.findByIdReserva(idReserva);
         if (reserva != null) {
-            reserva.deleteReserva(idReserva);
-            EstadoReservaModel estado = EstadoReservaModel.ELIMINADA;
+            EstadoReserva estado = EstadoReserva.ELIMINADA;
             reserva.setEstado(estado);
             reservaRepository.save(reserva);
         }
     }
 
+    /**
+     * Cancels the reservation.
+     * 
+     * @param idReserva the reservation ID
+     */
     @Override
     public void cancelReserva(String idReserva) {
-        ReservaModel reserva = reservaRepository.findByIdReserva(idReserva);
+        Reserva reserva = reservaRepository.findByIdReserva(idReserva);
         if (reserva != null) {
-            reserva.cancelReserva(idReserva);
-            EstadoReservaModel estado = EstadoReservaModel.CANCELADA;
+            EstadoReserva estado = EstadoReserva.CANCELADA;
             reserva.setEstado(estado);
             reservaRepository.save(reserva);
         }
     }
 
+    /**
+     * Accepts the reservation.
+     * 
+     * @param idReserva the reservation ID
+     */
     @Override
     public void rechazarReserva(String idReserva) {
-        ReservaModel reserva = reservaRepository.findByIdReserva(idReserva);
+        Reserva reserva = reservaRepository.findByIdReserva(idReserva);
         if (reserva != null) {
-            reserva.rechazarReserva(idReserva);
-            EstadoReservaModel estado = EstadoReservaModel.RECHAZADA;
+            EstadoReserva estado = EstadoReserva.RECHAZADA;
             reserva.setEstado(estado);
             reservaRepository.save(reserva);
         }
@@ -157,7 +192,7 @@ public class ReservaServiceImpl implements ReservaService {
             boolean duracionBloque = random.nextBoolean();
             int prioridad = random.nextInt(5) + 1;
             int hora = random.nextInt(24);
-            crearReserva(idReserva, fechaReserva, hora,diaSemana, proposito, idSalon, duracionBloque, prioridad);
+            crearReserva(idReserva, fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque, prioridad);
         }
     }
 }

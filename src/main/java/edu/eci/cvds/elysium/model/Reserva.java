@@ -1,92 +1,219 @@
 package edu.eci.cvds.elysium.model;
 
-import java.time.LocalTime;
-<<<<<<< HEAD
+import java.time.LocalDate;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+/**
+ * Represents a reservation model for the "reservas" collection.
+ */
+@Document(collection = "reservas")
 public class Reserva {
-    private LocalTime fechaInicio;
-    private String proposito;
-    private String mnemonico;
-    private int usuarioId;
 
-    public Reserva(LocalTime fechaInicio, String proposito, String mnemonico, int usuarioId) {
-        this.fechaInicio = fechaInicio;
-        this.proposito = proposito;
-        this.mnemonico = mnemonico;
-        this.usuarioId = usuarioId;
-=======
-import edu.eci.cvds.elysium.model.usuario.Usuario;
-
-public class Reserva implements Comparable<Reserva> {
-    private LocalTime fechaInicio;
+    @Id
+    private String idReserva;
+    private LocalDate fechaReserva;
+    private double hora;
+    private DiaSemanaModel diaSemana;
     private String proposito;
-    private String mnemonico;
-    private Usuario usuario;
+    private String idSalon;
+    private EstadoReserva estado;
+    private boolean duracionBloque;
     private int prioridad;
 
-    public Reserva(LocalTime fechaInicio, String proposito, String mnemonico, Usuario usuario, int prioridad) {
-        this.fechaInicio = fechaInicio;
-        this.proposito = proposito;
-        this.mnemonico = mnemonico;
-        this.usuario = usuario;
-        setPrioridad(prioridad);
->>>>>>> e63ef6c391d7ee4c24dfeafedc418ca574933724
+    /**
+     * Default constructor for a ReservaModel instance.
+     */
+    public Reserva() {
     }
 
-    // Getters y setters
-    public LocalTime getFechaInicio() {
-        return fechaInicio;
+    /**
+     * Constructor to create a new ReservaModel instance.
+     *
+     * @param idReserva      the reservation ID
+     * @param fechaReserva   the date of the reservation
+     * @param diaSemana      the day of the week of the reservation
+     * @param proposito      the purpose of the reservation
+     * @param idSalon        the salon associated with the reservation
+     * @param duracionBloque the duration block of the reservation
+     * @param prioridad      the priority of the reservation (1 to 5)
+     */
+    public Reserva(String idReserva,LocalDate fechaReserva,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad) {
+        this.idReserva = idReserva;
+        this.fechaReserva = fechaReserva;
+        this.hora = hora;
+        this.diaSemana = diaSemana;
+        this.proposito = proposito;
+        this.idSalon = idSalon;
+        this.estado = EstadoReserva.ACTIVA;
+        this.duracionBloque = duracionBloque;
+        setPrioridad(prioridad); // Validación dentro del setter
     }
-    public void setFechaInicio(LocalTime fechaInicio) {
-        this.fechaInicio = fechaInicio;
+
+    /**
+     * Gets the reservation ID.
+     *
+     * @return the reservation ID
+     */
+    public String getIdReserva() {
+        return idReserva;
     }
+
+    /**
+     * Sets the reservation ID.
+     *
+     * @param idReserva the reservation ID
+     */
+    public void setIdReserva(String idReserva) {
+        this.idReserva = idReserva;
+    }
+
+    /**
+     * Gets the date of the reservation.
+     *
+     * @return the date of the reservation
+     */
+    public LocalDate getFechaReserva() {
+        return fechaReserva;
+    }
+
+    /**
+     * Sets the date of the reservation.
+     *
+     * @param fechaReserva the date of the reservation
+     */
+    public void setFechaReserva(LocalDate fechaReserva) {
+        this.fechaReserva = fechaReserva;
+    }
+
+    /**
+     * Gets the hour of the reservation.
+     *
+     * @return the hour of the reservation
+     */
+    public double getHora() {
+        return hora;
+    }
+
+    /**
+     * Sets the hour of the reservation.
+     *
+     * @param hora the hour of the reservation
+     */
+    public void setHora(double hora) {
+        this.hora = hora;
+    }
+
+    /**
+     * Gets the day of the week of the reservation.
+     *
+     * @return the day of the week of the reservation
+     */
+    public DiaSemanaModel getDiaSemana() {
+        return diaSemana;
+    }
+
+    /**
+     * Sets the day of the week of the reservation.
+     *
+     * @param diaSemana the day of the week of the reservation
+     */
+    public void setDiaSemana(DiaSemanaModel diaSemana) {
+        this.diaSemana = diaSemana;
+    }
+
+    /**
+     * Gets the purpose of the reservation.
+     *
+     * @return the purpose of the reservation
+     */
     public String getProposito() {
         return proposito;
     }
+
+    /**
+     * Sets the purpose of the reservation.
+     *
+     * @param proposito the purpose of the reservation
+     */
     public void setProposito(String proposito) {
         this.proposito = proposito;
     }
-    public String getMnemonico() {
-        return mnemonico;
-    }
-    public void setMnemonico(String mnemonico) {
-        this.mnemonico = mnemonico;
-    }
-<<<<<<< HEAD
-    public int getUsuario() {
-        return usuarioId;
-    }
-    public void setUsuarioId(int usuarioId) {
-        this.usuarioId = usuarioId;
-=======
-    public Usuario getUsuario() {
-        return usuario;
-    }
-    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
-    public int getPrioridad() { return prioridad; }
 
+    /**
+     * Gets the salon ID associated with the reservation.
+     *
+     * @return the salon ID
+     */
+    public String getIdSalon() {
+        return idSalon;
+    }
+
+    /**
+     * Sets the salon ID associated with the reservation.
+     *
+     * @param idSalon the salon ID
+     */
+    public void setIdSalon(String idSalon) {
+        this.idSalon = idSalon;
+    }
+
+    /**
+     * Gets the state of the reservation.
+     *
+     * @return the state of the reservation
+     */
+    public EstadoReserva getEstado() {
+        return estado;
+    }
+
+    /**
+     * Sets the state of the reservation.
+     *
+     * @param estado the state of the reservation
+     */
+    public void setEstado(EstadoReserva estado) {
+        this.estado = estado;
+    }
+
+    /**
+     * Checks if the reservation duration is a block.
+     *
+     * @return true if the reservation duration is a block, false otherwise
+     */
+    public boolean isDuracionBloque() {
+        return duracionBloque;
+    }
+
+    /**
+     * Sets the reservation duration block.
+     *
+     * @param duracionBloque the reservation duration block
+     */
+    public void setDuracionBloque(boolean duracionBloque) {
+        this.duracionBloque = duracionBloque;
+    }
+
+    /**
+     * Gets the priority of the reservation.
+     *
+     * @return the priority of the reservation
+     */
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+
+    /**
+     * Sets the priority of the reservation.
+     *
+     * @param prioridad the priority of the reservation (1 to 5)
+     */
     public void setPrioridad(int prioridad) {
         if (prioridad < 1 || prioridad > 5) {
             throw new IllegalArgumentException("La prioridad debe estar entre 1 y 5.");
         }
         this.prioridad = prioridad;
-    }
-
-    // Método para comparación en estructuras de datos como PriorityQueue
-    @Override
-    public int compareTo(Reserva otraReserva) {
-        return Integer.compare(otraReserva.prioridad, this.prioridad);
-    }
-
-    @Override
-    public String toString() {
-        return "Reserva{" +
-                "fechaInicio=" + fechaInicio +
-                ", proposito='" + proposito + '\'' +
-                ", mnemonico='" + mnemonico + '\'' +
-                ", usuario=" + usuario +
-                ", prioridad=" + prioridad +
-                '}';
->>>>>>> e63ef6c391d7ee4c24dfeafedc418ca574933724
     }
 }
