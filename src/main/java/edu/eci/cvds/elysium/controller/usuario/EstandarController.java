@@ -30,9 +30,7 @@ public class EstandarController extends UsuarioController {
     @PostMapping("/reserva")
     public ResponseEntity<String> crearReserva(@RequestBody
     ReservaDTO reservaDTO){
-        estandarService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), reservaDTO.getIdUsuario());
+        estandarService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), reservaDTO.getIdUsuario());
         return ResponseEntity.ok("Reserva creada");
-    }
-    
-    
+    }    
 }

@@ -21,7 +21,7 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
     private ReservaService reservaService;
 
     @Override
-    public void crearReserva(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
+    public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
         // Se utiliza el método definido en el repository para Mongo
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
 
