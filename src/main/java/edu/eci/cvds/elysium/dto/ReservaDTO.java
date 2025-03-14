@@ -6,7 +6,7 @@ import edu.eci.cvds.elysium.model.DiaSemana;
 
 
 public class ReservaDTO {
-    
+    private String idReserva;    
     private LocalDate fechaReserva;
     private double hora;
     private char tipoCampo;
@@ -41,7 +41,8 @@ public class ReservaDTO {
      * @param idUsuario
      */
     
-    public ReservaDTO(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
+     // Constructor for creating a reservation
+     public ReservaDTO(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
@@ -52,6 +53,23 @@ public class ReservaDTO {
         this.idUsuario = idUsuario;
     }
 
+
+     // Constructor for updating a reservation
+    public ReservaDTO(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
+        this.idReserva = idReserva;
+        this.fechaReserva = fechaReserva;
+        this.hora = hora;
+        this.diaSemana = diaSemana;
+        this.proposito = proposito;
+        this.idSalon = idSalon;
+        this.duracionBloque = duracionBloque;
+        setPrioridad(prioridad);
+        this.idUsuario = idUsuario;
+    }
+
+    public String getIdReserva() {
+        return idReserva;
+    }
     //Getters
     public LocalDate getFechaReserva() {return fechaReserva;}
     public double getHora() {return hora;}

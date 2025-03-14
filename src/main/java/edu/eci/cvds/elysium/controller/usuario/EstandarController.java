@@ -15,7 +15,7 @@ import edu.eci.cvds.elysium.service.usuario.EstandarService;
 
 @RestController
 @RequestMapping("/api/estandar")
-public class EstandarController extends UsuarioController {
+public class EstandarController {
 
     @Autowired
     private EstandarService estandarService;

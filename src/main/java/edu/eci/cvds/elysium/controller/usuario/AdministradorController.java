@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/administrador")
-public class AdministradorController extends UsuarioController {
+public class AdministradorController {
 
     @Autowired
     private AdministradorService administradorService;

@@ -22,8 +22,6 @@ public interface ReservaService {
     void actualizarReserva(String idReserva,char tipoCampo,LocalDate value1,double value2,DiaSemana value3,String value4,boolean value5, int value6);
 
 
-
-
     // it needs to be refactor as one put in controller
     
     void deleteReserva(String idReserva);
