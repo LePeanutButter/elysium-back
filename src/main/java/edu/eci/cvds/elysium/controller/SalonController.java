@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.eci.cvds.elysium.dto.salon.ActualizarSalonDTO;
+import edu.eci.cvds.elysium.dto.salon.SalonDTO;
 import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.service.SalonService;
 
@@ -103,6 +103,13 @@ public class SalonController {
         Salon salon = salonService.findByMnemonico(mnemonico);
         return salon != null ? ResponseEntity.ok(salon) : ResponseEntity.notFound().build();
     }
+    
+    // Consultar el estado 'disponible' del salón
+    @GetMapping("/{mnemonico}/disponible")
+    public ResponseEntity<Boolean> getDisponible(@PathVariable String mnemonico) {
+        boolean disponible = salonService.getDisponible(mnemonico);
+        return ResponseEntity.ok(disponible);
+    }
 
     // Agregar un nuevo salón
     @PostMapping("")
@@ -120,6 +127,20 @@ public class SalonController {
         return ResponseEntity.ok().build();
     }
 
+
+
+    @PutMapping("/{mnemonico}")
+    public ResponseEntity<Void> actualizarSalon(@RequestBody SalonDTO salonDto){
+        salonService.actualizarSalon(
+            salonDto.getMnemonico(),
+            salonDto.getNombre(),
+            salonDto.getUbicacion(),
+            salonDto.getCapacidad(),
+            salonDto.getDescription()
+            );
+    }
+
+
     // Deshabilitar un salón (marcarlo como inactivo)
     @PutMapping("/{mnemonico}/deshabilitar")
     public ResponseEntity<Void> deshabilitarSalon(@PathVariable String mnemonico) {
@@ -134,12 +155,6 @@ public class SalonController {
         return ResponseEntity.noContent().build();
     }
 
-    // Consultar el estado 'disponible' del salón
-    @GetMapping("/{mnemonico}/disponible")
-    public ResponseEntity<Boolean> getDisponible(@PathVariable String mnemonico) {
-        boolean disponible = salonService.getDisponible(mnemonico);
-        return ResponseEntity.ok(disponible);
-    }
 
     // Marcar el salón como disponible
     @PutMapping("/{mnemonico}/disponible")

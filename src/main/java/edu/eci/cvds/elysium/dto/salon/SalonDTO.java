@@ -1,6 +1,6 @@
 package edu.eci.cvds.elysium.dto.salon;
 
-public class ActualizarSalonDTO {
+public class SalonDTO {
     // Campo obligatorio para identificar el salón.
     private String mnemonico;
     // Los siguientes campos son opcionales; se actualizan si no son null.
@@ -8,8 +8,10 @@ public class ActualizarSalonDTO {
     private String ubicacion;
     private Integer capacidad;
     private String description;
+    private Boolean activo;
+    private Boolean disponible;
 
-    public ActualizarSalonDTO() {}
+    public SalonDTO() {}
 
     // Getters y setters
     public String getMnemonico() {
@@ -50,5 +52,21 @@ public class ActualizarSalonDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo){
+        this.activo = activo;
+    }
+
+    public Boolean getDisponible (){
+        return disponible;
+    }
+
+    public void setDisponible(boolean disponible){
+        this.disponible = disponible;
     }
 }
