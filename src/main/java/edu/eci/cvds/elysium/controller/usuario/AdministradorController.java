@@ -39,7 +39,7 @@ public class AdministradorController {
             @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/usuario")
     public Usuario consultarUsuario(@PathVariable int id) {
         return administradorService.consultarUsuario(id);
     }
@@ -65,7 +65,7 @@ public class AdministradorController {
      *                (true) o no administrador (false).
      */
 
-    @GetMapping("")
+    @GetMapping("/usuarios")
     @Operation(summary = "Consultar usuarios", description = "Endpoint unificado para consultar usuarios, pudiendo filtrar por estado activo e indicador de rol de administrador.")
 
     @ApiResponses(value = {
@@ -160,3 +160,7 @@ public class AdministradorController {
         return ResponseEntity.noContent().build();
     }
 }
+
+
+
+// TODO - Add salon endpoints

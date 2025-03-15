@@ -105,30 +105,6 @@ public class SalonServiceImpl implements SalonService {
     }
 
     /**
-     * Deshabilita un salón (lo marca como inactivo).
-     */
-    @Override
-    public void deshabilitarSalon(String mnemonico) {
-        Salon salon = salonRepository.findByMnemonico(mnemonico);
-        if (salon != null) {
-            salon.setActivo(false);
-            salonRepository.save(salon);
-        }
-    }
-
-    /**
-     * Habilita un salón (lo marca como activo).
-     */
-    @Override
-    public void habilitarSalon(String mnemonico) {
-        Salon salon = salonRepository.findByMnemonico(mnemonico);
-        if (salon != null) {
-            salon.setActivo(true);
-            salonRepository.save(salon);
-        }
-    }
-
-    /**
      * Retorna el estado 'activo' del salón identificado por su mnemonico.
      */
     @Override
@@ -164,6 +140,15 @@ public class SalonServiceImpl implements SalonService {
             }
             salonRepository.save(salon);
         }
+    }
+
+    /**
+     * Retorna el valor del atributo 'disponible' para el salón.
+     */
+    @Override
+    public boolean getDisponible(String mnemonico) {
+        Salon salon = salonRepository.findByMnemonico(mnemonico);
+        return salon != null && salon.isDisponible();
     }
 
     @Override
