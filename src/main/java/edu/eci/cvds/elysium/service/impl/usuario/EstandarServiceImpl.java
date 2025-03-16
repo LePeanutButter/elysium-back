@@ -1,16 +1,16 @@
 package edu.eci.cvds.elysium.service.impl.usuario;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import edu.eci.cvds.elysium.model.DiaSemanaModel;
-import edu.eci.cvds.elysium.model.ReservaModel;
+import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.usuario.Estandar;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.repository.UsuarioRepository;
+import edu.eci.cvds.elysium.service.ReservaService;
 import edu.eci.cvds.elysium.service.usuario.EstandarService;
 
 @Service
@@ -18,15 +18,20 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-    private Estandar estandar;
+    // temporal solution for circular dependency  
+    @Lazy
+    @Autowired
+    private ReservaService reservaService;
 
     @Override
-    public ReservaModel crearReserva(String idReserva, LocalDate fecha,double hora, DiaSemanaModel diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad) {
-        Usuario usuario = usuarioRepository.findByIdInstitucional(estandar.getIdInstitucional());
-        if (usuario != null && usuario instanceof Estandar) {
-            Estandar estandar = (Estandar) usuario;
-            return estandar.crearReserva(idReserva,fecha,hora, diaSemana, proposito, idSalon, duracionBloque, prioridad);
-        }
-        return null;
+    public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
+        // Se utiliza el método definido en el repository para Mongo
+        Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
+
+
+        if (usuario != null && usuario instanceof Estandar) {           
+            reservaService.crearReserva(fechaReserva,hora, diaSemana, proposito, idSalon, duracionBloque, prioridad, idInstitucional);            
+        }  
     }
 }
+// 

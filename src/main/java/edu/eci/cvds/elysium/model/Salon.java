@@ -22,8 +22,9 @@ public class Salon {
     private List<ObjectId> recursos;
     private boolean disponible;
     private boolean activo;
+    private String description;
 
-    public Salon(String nombre, String mnemonico, String ubicacion, int capacidad) {
+    public Salon(String nombre, String mnemonico, String ubicacion, int capacidad, String description) {
         this.nombre = nombre;
         this.mnemonico = mnemonico;
         this.ubicacion = ubicacion;
@@ -33,6 +34,7 @@ public class Salon {
         this.disponible = true;
         // The first time that it is created, it is active
         this.activo = true;
+        this.description = description;
 
     }
 
@@ -78,5 +80,11 @@ public class Salon {
     }
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

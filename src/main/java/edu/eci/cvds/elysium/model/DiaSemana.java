@@ -7,7 +7,7 @@ import java.util.TreeMap;
  * Enum representing the days of the week with associated schedules.
  * Each day has a predefined schedule stored in a TreeMap.
  */
-public enum DiaSemanaModel {
+public enum DiaSemana {
     /**
      * Monday with predefined schedule.
      */
@@ -48,7 +48,7 @@ public enum DiaSemanaModel {
      *
      * @param horarios TreeMap containing the schedule information for the day.
      */
-    DiaSemanaModel(TreeMap<String, List<Double>> horarios) {
+    DiaSemana(TreeMap<String, List<Double>> horarios) {
         this.horarios = horarios;
     }
 

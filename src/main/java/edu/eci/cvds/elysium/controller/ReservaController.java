@@ -1,25 +1,25 @@
 package edu.eci.cvds.elysium.controller;
 
-import edu.eci.cvds.elysium.model.DiaSemanaModel;
-import edu.eci.cvds.elysium.model.EstadoReservaModel;
-import edu.eci.cvds.elysium.model.ReservaModel;
-import edu.eci.cvds.elysium.service.ReservaService;
-import edu.eci.cvds.elysium.dto.*;
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.eci.cvds.elysium.dto.ReservaDTO;
+import edu.eci.cvds.elysium.model.DiaSemana;
+import edu.eci.cvds.elysium.model.EstadoReserva;
+import edu.eci.cvds.elysium.model.Reserva;
+import edu.eci.cvds.elysium.service.ReservaService;
 
 
 @RestController
@@ -30,14 +30,14 @@ public class ReservaController {
     private ReservaService reservaService;
 
     @GetMapping("")
-    public ResponseEntity<List<ReservaModel>> getReservas(
+    public ResponseEntity<List<Reserva>> getReservas(
             @RequestParam(required = false) String idSalon,
             @RequestParam(required = false) LocalDate fecha,
-            @RequestParam(required = false) double hora,
-            @RequestParam(required = false) DiaSemanaModel diaSemana,
-            @RequestParam(required = false) EstadoReservaModel estado,
+            @RequestParam(required = false) Double hora,
+            @RequestParam(required = false) DiaSemana diaSemana,
+            @RequestParam(required = false) EstadoReserva estado,
             @RequestParam(required = false) Boolean duracionBloque) {
-        List<ReservaModel> reservas;
+        List<Reserva> reservas;
         
         // Si se reciben ambos filtros: idSalon y estado
         if (idSalon != null && estado != null) {
@@ -46,7 +46,7 @@ public class ReservaController {
             reservas = reservaService.consultarReservasPorSalon(idSalon);
         } else if (fecha != null) {
             reservas = reservaService.consultarReservasPorFecha(fecha);
-        } else if (hora != 0) {
+        } else if (hora != null) {
             reservas = reservaService.consultarReservasPorHora(hora);
         } else if (diaSemana != null) {
             reservas = reservaService.consultarReservasPorDiaSemana(diaSemana);
@@ -61,21 +61,21 @@ public class ReservaController {
     }
 
     @GetMapping("/consultarReserva")
-    public ReservaModel consultarReserva(@RequestParam String idReserva) {
+    public Reserva consultarReserva(@RequestParam String idReserva) {
         return reservaService.consultarReserva(idReserva);
     }
 
     @PostMapping("/crearReserva")
     public ResponseEntity<String> crearReserva(@RequestBody ReservaDTO reservaDTO ) {
-        reservaService.crearReserva(reservaDTO.getIdReserva(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(),reservaDTO.getPrioridad());
+        reservaService.crearReserva(reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), reservaDTO.getIdUsuario());
         return ResponseEntity.ok("Reserva creada");
     }
-
-    @PutMapping("/actualizarReserva")
-    public ResponseEntity<String> actualizarReserva(@RequestBody ReservaDTO reservaDTO) {
-        reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque(),reservaDTO.getPrioridad());
-        return ResponseEntity.ok("Reserva actualizada");
-    }
+    // TODO - To refactor puts for one patch method
+    // @PutMapping("/actualizarReserva")
+    // public ResponseEntity<String> actualizarReserva(@RequestBody ReservaDTO reservaDTO) {
+    //     reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad());
+    //     return ResponseEntity.ok("Reserva actualizada");
+    // }
 
     @DeleteMapping("{idReserva}/deleteReserva")
     public ResponseEntity<String> deleteReserva(@PathVariable String idReserva) {
@@ -96,9 +96,5 @@ public class ReservaController {
     }
 
 
-    @PostMapping("/generarReservas")
-    public ResponseEntity<String> generarReservas() {
-        reservaService.generarReservasAleatorias();
-        return ResponseEntity.ok("Reservas aleatorias generadas correctamente.");
-    }
+    
 }

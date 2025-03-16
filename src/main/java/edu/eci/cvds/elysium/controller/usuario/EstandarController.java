@@ -1,29 +1,37 @@
 package edu.eci.cvds.elysium.controller.usuario;
 
-import java.time.LocalTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.eci.cvds.elysium.model.ReservaModel;
+import edu.eci.cvds.elysium.dto.ReservaDTO;
+import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.service.usuario.EstandarService;
 
 @RestController
 @RequestMapping("/api/estandar")
-public class EstandarController extends UsuarioController {
+public class EstandarController {
 
     @Autowired
     private EstandarService estandarService;
 
-    // @PostMapping("/crearReserva")
-    // public ReservaModel crearReserva(@RequestParam int id,
-    //                             @RequestParam String fechaInicio,  // formato "HH:mm"
-    //                             @RequestParam String proposito,
-    //                             @RequestParam String mnemonico) {
-    //     LocalTime time = LocalTime.parse(fechaInicio);
-    //     return estandarService.crearReserva(id, time, proposito, mnemonico);
-    // }
+
+    @GetMapping("/{id}")
+    public Usuario consultarUsuario(@PathVariable int id) {
+        return estandarService.consultarUsuario(id);
+    }
+
+    //Falta considerar en donde va el mnemonico
+    @PostMapping("{id}/reserva")
+    public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
+    ReservaDTO reservaDTO){
+        estandarService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
+        return ResponseEntity.ok("Reserva creada");
+        //TODO: Check if idUsuario is necessary in reservaDTO
+    }    
 }

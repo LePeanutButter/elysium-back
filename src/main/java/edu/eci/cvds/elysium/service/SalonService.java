@@ -3,7 +3,7 @@ package edu.eci.cvds.elysium.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.eci.cvds.elysium.dto.salon.ActualizarSalonDTO;
+import edu.eci.cvds.elysium.dto.salon.SalonDTO;
 import edu.eci.cvds.elysium.model.Salon;
 
 public interface SalonService {
@@ -37,14 +37,9 @@ public interface SalonService {
     List<Salon> findByCapacidadLessThanEqual(int capacidad);
 
     List<Salon> findByNombreAndUbicacionContainingIgnoreCase(String nombre, String ubicacion);
-
-    void agregarSalon(String nombre, String mnemonico, String ubicacion, int capacidad);
-    void deshabilitarSalon(String mnemonico);
-    void habilitarSalon(String mnemonico);
-    boolean getActivo(String mnemonico);  
-    void actualizarSalon(String mnemonico, ActualizarSalonDTO dto);
     boolean getDisponible(String mnemonico);  
-    boolean setDisponible(String mnemonico);
-    boolean setNoDisponible(String mnemonico);    
+    boolean getActivo(String mnemonico);  
+    void agregarSalon(String nombre, String mnemonico, String ubicacion, int capacidad, String description);
+    void actualizarSalon(String mnemonico, SalonDTO dto);    
     void asignarRecurso(String nombre,int cantidad,ArrayList<String> especificacion);
-}
+}   

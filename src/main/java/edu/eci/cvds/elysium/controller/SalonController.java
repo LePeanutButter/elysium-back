@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.eci.cvds.elysium.dto.salon.ActualizarSalonDTO;
+import edu.eci.cvds.elysium.dto.salon.SalonDTO;
 import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.service.SalonService;
 
@@ -103,6 +102,13 @@ public class SalonController {
         Salon salon = salonService.findByMnemonico(mnemonico);
         return salon != null ? ResponseEntity.ok(salon) : ResponseEntity.notFound().build();
     }
+    
+    // Consultar el estado 'disponible' del salón
+    @GetMapping("/{mnemonico}/disponible")
+    public ResponseEntity<Boolean> getDisponible(@PathVariable String mnemonico) {
+        boolean disponible = salonService.getDisponible(mnemonico);
+        return ResponseEntity.ok(disponible);
+    }
 
     // Agregar un nuevo salón
     @PostMapping("")
@@ -113,52 +119,17 @@ public class SalonController {
                 salonRequest.getNombre(),
                 salonRequest.getMnemonico(),
                 salonRequest.getUbicacion(),
-                salonRequest.getCapacidad());
+                salonRequest.getCapacidad(),
+                salonRequest.getDescription()
+                );      
 
         return ResponseEntity.ok().build();
     }
 
-    // Deshabilitar un salón (marcarlo como inactivo)
-    @PutMapping("/{mnemonico}/deshabilitar")
-    public ResponseEntity<Void> deshabilitarSalon(@PathVariable String mnemonico) {
-        salonService.deshabilitarSalon(mnemonico);
-        return ResponseEntity.noContent().build();
-    }
-
-    // Habilitar un salón (marcarlo como activo)
-    @PutMapping("/{mnemonico}/habilitar")
-    public ResponseEntity<Void> habilitarSalon(@PathVariable String mnemonico) {
-        salonService.habilitarSalon(mnemonico);
-        return ResponseEntity.noContent().build();
-    }
-
-    // Consultar el estado 'disponible' del salón
-    @GetMapping("/{mnemonico}/disponible")
-    public ResponseEntity<Boolean> getDisponible(@PathVariable String mnemonico) {
-        boolean disponible = salonService.getDisponible(mnemonico);
-        return ResponseEntity.ok(disponible);
-    }
-
-    // Marcar el salón como disponible
-    @PutMapping("/{mnemonico}/disponible")
-    public ResponseEntity<Void> setDisponible(@PathVariable String mnemonico) {
-        boolean actualizado = salonService.setDisponible(mnemonico);
-        return actualizado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
-    }
-
-    // Marcar el salón como no disponible
-    @PutMapping("/{mnemonico}/noDisponible")
-    public ResponseEntity<Void> setNoDisponible(@PathVariable String mnemonico) {
-        boolean actualizado = salonService.setNoDisponible(mnemonico);
-        return actualizado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
-    }
-
-
     @PatchMapping("/{mnemonico}")
-    public ResponseEntity<Void> actualizarSalon(@PathVariable String mnemonico, @RequestBody ActualizarSalonDTO dto) {
-        // El servicio actualizará solo los campos no nulos.
-        salonService.actualizarSalon(mnemonico, dto);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> actualizarSalon(@PathVariable String mnemonico , @RequestBody SalonDTO salonDto){
+        salonService.actualizarSalon(mnemonico, salonDto);
+        return ResponseEntity.ok().build();
     }
 
 }

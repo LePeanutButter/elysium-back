@@ -8,23 +8,41 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.eci.cvds.elysium.dto.usuario.ActualizarUsuarioDTO;
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.service.usuario.AdministradorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/administrador")
-public class AdministradorController extends UsuarioController {
+public class AdministradorController {
 
     @Autowired
     private AdministradorService administradorService;
+
+    /**
+     * Endpoint para consultar un usuario por su identificador.
+     * 
+     * @param id Identificador del usuario a consultar (proveniente de la URL).
+     * @return Usuario con el identificador dado.
+     */
+    @Operation(summary = "Consultar usuario", description = "Endpoint para consultar un usuario por su identificador.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @GetMapping("/{id}/usuario")
+    public Usuario consultarUsuario(@PathVariable int id) {
+        return administradorService.consultarUsuario(id);
+    }
 
     /**
      * Endpoint unificado para consultar usuarios.
@@ -33,17 +51,31 @@ public class AdministradorController extends UsuarioController {
      * - isAdmin: true/false para filtrar por rol de administrador.
      * 
      * Ejemplos:
-     * GET /api/users -> retorna todos los usuarios.
-     * GET /api/users?activo=true -> usuarios activos.
-     * GET /api/users?activo=false -> usuarios inactivos.
-     * GET /api/users?isAdmin=true -> usuarios que son administradores.
-     * GET /api/users?activo=true&isAdmin=false -> usuarios activos que no son
+     * GET /api/administrador -> Retorna todos los usuarios.
+     * GET /api/administrador?activo=true -> Retorna usuarios activos.
+     * GET /api/administrador?activo=false -> Retorna usuarios inactivos.
+     * GET /api/administrador?isAdmin=true -> Retorna usuarios que son
      * administradores.
+     * GET /api/administrador?activo=true&isAdmin=false -> Retorna usuarios activos
+     * que no son administradores.
+     * 
+     * @param activo  Valor opcional para filtrar usuarios por estado activo (true)
+     *                o inactivo (false).
+     * @param isAdmin Valor opcional para filtrar usuarios por rol de administrador
+     *                (true) o no administrador (false).
      */
-    @GetMapping("")
+
+    @GetMapping("/usuarios")
+    @Operation(summary = "Consultar usuarios", description = "Endpoint unificado para consultar usuarios, pudiendo filtrar por estado activo e indicador de rol de administrador.")
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de usuarios retornada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
+    })
     public List<Usuario> consultarUsuarios(
-            @RequestParam(required = false) Boolean activo,
-            @RequestParam(required = false) Boolean isAdmin) {
+            @Parameter(description = "Valor opcional para filtrar usuarios por estado activo (true) o inactivo (false)", example = "true") @RequestParam(required = false) Boolean activo,
+
+            @Parameter(description = "Valor opcional para filtrar usuarios por rol administrador (true) o no administrador (false)", example = "false") @RequestParam(required = false) Boolean isAdmin) {
         // Si no se pasan filtros, retorna todos
         if (activo == null && isAdmin == null) {
             return administradorService.consultarUsuarios();
@@ -73,53 +105,62 @@ public class AdministradorController extends UsuarioController {
         }
     }
 
-    @PostMapping("/agregarUsuario")
-    public void agregarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    /**
+     * Endpoint para agregar un nuevo usuario.
+     *
+     * Recibe un objeto de tipo UsuarioDTO en el cuerpo de la solicitud, que
+     * contiene todos los datos
+     * necesarios para la creación de un usuario, incluyendo identificador, nombre,
+     * apellido, correo y
+     * bandera que indica si es administrador.
+     *
+     * @param usuarioDTO Objeto de transferencia de datos que encapsula la
+     *                   información del usuario.
+     * @return ResponseEntity con código 201 si se crea correctamente, o 400 en caso
+     *         de datos inválidos.
+     */
+
+    @PostMapping("/usuario")
+    @Operation(summary = "Agregar usuario", description = "Endpoint para agregar un nuevo usuario. El identificador es generado automáticamente.")
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuario agregado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+
+    public ResponseEntity<Void> agregarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         administradorService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
                 usuarioDTO.getApellido(), usuarioDTO.getCorreo(), usuarioDTO.getIsAdmin());
+        return ResponseEntity.status(201).build();
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> actualizarInformacionUsuario(@PathVariable int id, 
-            @RequestBody ActualizarUsuarioDTO actualizarUsuarioDTO) {
-        // Opcional: Validar que el id en la URL y el dto coincidan.
-        // if(!actualizarUsuarioDTO.getIdInstitucional().equals(id)){
-        //     return ResponseEntity.badRequest().build();
-        // }
-        administradorService.actualizarInformacionUsuario(actualizarUsuarioDTO);
+    /*
+     * Endpoint para actualizar la información de un usuario.
+     * 
+     * Recibe un objeto de tipo ActualizarUsuarioDTO en el cuerpo de la solicitud,
+     * que contienen los datos para hacer la actualización parcial. Los que no se
+     * quieren actualizar se dejan en nulos.
+     * 
+     * @param id Identificador del usuario a actualizar (proveniente de la URL).
+     * 
+     * @param actualizarUsuarioDTO Objeto que contiene la información a actualizar.
+     * 
+     * @return {@code ResponseEntity} con código 204 (No Content) si se actualiza
+     * correctamente, o 400 en caso de error.
+     */
+    @PatchMapping("/usuario/{id}")
+    @Operation(summary = "Actualizar información de usuario", description = "Endpoint para actualizar parcialmente la información de un usuario. Los campos no provistos no se modifican.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Usuario actualizado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    public ResponseEntity<Void> actualizarInformacionUsuario(@PathVariable int id,
+            @RequestBody UsuarioDTO actualizarUsuarioDTO) {        
+        administradorService.actualizarInformacionUsuario(id, actualizarUsuarioDTO);
         return ResponseEntity.noContent().build();
     }
-
-    @PutMapping("{id}/deshabilitarUsuario")
-    public ResponseEntity<String> deshabilitarUsuario(@PathVariable int id) {
-        administradorService.deshabilitarUsuario(id);
-        return ResponseEntity.ok("Usuario deshabilitado exitosamente");
-    }
-
-    @PutMapping("{id}/habilitarUsuario")
-    public ResponseEntity<String> habilitarUsuario(@PathVariable int id) {
-        administradorService.habilitarUsuario(id);
-        return ResponseEntity.ok("Usuario habilitado exitosamente");
-    }
-
-    @PutMapping("{id}/hacerAdmin")
-    public ResponseEntity<String> hacerAdmin(@PathVariable int id) {
-        administradorService.hacerAdmin(id);
-        return ResponseEntity.ok("Usuario ahora es administrador");
-    }
-
-    @PutMapping("{id}/quitarAdmin")
-    public ResponseEntity<String> quitarAdmin(@PathVariable int id) {
-        administradorService.quitarAdmin(id);
-        return ResponseEntity.ok("Usuario ya no es administrador");
-    }
-
-    // // ----------
-    // @PostMapping("/añadirSalon")Do you learn? What the **** 
-    // public void añadirSalon(@RequestParam int adminId,
-    // @RequestParam String nombre,
-    // @RequestParam String ubicacion,
-    // @RequestParam int capacidad) {
-    // administradorService.añadirSalon(adminId, nombre, ubicacion, capacidad);
-    // }
 }
+
+
+
+// TODO - Add salon endpoints
