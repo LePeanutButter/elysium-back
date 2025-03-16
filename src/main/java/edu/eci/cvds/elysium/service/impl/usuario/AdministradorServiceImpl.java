@@ -59,9 +59,9 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
     }
 
     @Override
-    public void actualizarInformacionUsuario(UsuarioDTO dto) {
+    public void actualizarInformacionUsuario(int id ,UsuarioDTO dto) {
         // Buscamos el usuario por su ID institucional.
-        Usuario usuario = usuarioRepository.findByIdInstitucional(dto.getId());
+        Usuario usuario = usuarioRepository.findByIdInstitucional(id);
         if (usuario != null) {
             // Actualizamos únicamente si el campo no es nulo.
             if (dto.getNombre() != null) {

@@ -114,8 +114,7 @@ public class SalonServiceImpl implements SalonService {
     }
 
     @Override
-    public void actualizarSalon(SalonDTO dto) {
-        String mnemonico = dto.getMnemonico();
+    public void actualizarSalon(String mnemonico, SalonDTO dto) {
         // Buscamos el salón por su mnemonico.
         Salon salon = salonRepository.findByMnemonico(mnemonico);
         if (salon != null) {

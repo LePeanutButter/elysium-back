@@ -156,7 +156,7 @@ public class AdministradorController {
     })
     public ResponseEntity<Void> actualizarInformacionUsuario(@PathVariable int id,
             @RequestBody UsuarioDTO actualizarUsuarioDTO) {        
-        administradorService.actualizarInformacionUsuario(actualizarUsuarioDTO);
+        administradorService.actualizarInformacionUsuario(id, actualizarUsuarioDTO);
         return ResponseEntity.noContent().build();
     }
 }

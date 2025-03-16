@@ -127,8 +127,8 @@ public class SalonController {
     }
 
     @PatchMapping("/{mnemonico}")
-    public ResponseEntity<Void> actualizarSalon(@RequestBody SalonDTO salonDto){
-        salonService.actualizarSalon(salonDto);
+    public ResponseEntity<Void> actualizarSalon(@PathVariable String mnemonico , @RequestBody SalonDTO salonDto){
+        salonService.actualizarSalon(mnemonico, salonDto);
         return ResponseEntity.ok().build();
     }
 

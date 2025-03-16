@@ -40,6 +40,6 @@ public interface SalonService {
     boolean getDisponible(String mnemonico);  
     boolean getActivo(String mnemonico);  
     void agregarSalon(String nombre, String mnemonico, String ubicacion, int capacidad, String description);
-    void actualizarSalon(SalonDTO dto);    
+    void actualizarSalon(String mnemonico, SalonDTO dto);    
     void asignarRecurso(String nombre,int cantidad,ArrayList<String> especificacion);
 }   

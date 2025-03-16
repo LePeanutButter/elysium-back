@@ -39,5 +39,5 @@ public interface AdministradorService extends UsuarioService {
     List<Usuario> consultarUsuariosActiveNoAdmins();
     List<Usuario> consultarUsuariosInactiveNoAdmins();
     void agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin);
-    void actualizarInformacionUsuario(UsuarioDTO dto);    
+    void actualizarInformacionUsuario(int id, UsuarioDTO dto);    
 }

@@ -40,6 +40,8 @@ public class UsuarioDTO {
         this.idInstitucional = idInstitucional;
     }
 
+    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
