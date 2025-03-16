@@ -9,7 +9,6 @@ public class ReservaDTO {
     private String idReserva;    
     private LocalDate fechaReserva;
     private double hora;
-    private char tipoCampo;
     // Se representa el día de la semana como String (por ejemplo, "LUNES")
     private DiaSemana diaSemana;
     private String proposito;
@@ -73,7 +72,6 @@ public class ReservaDTO {
     //Getters
     public LocalDate getFechaReserva() {return fechaReserva;}
     public double getHora() {return hora;}
-    public char getTipoCampo() {return tipoCampo;}
     public DiaSemana getDiaSemana() {return diaSemana;}
     public String getProposito() {return proposito;}
     public String getIdSalon() {return idSalon;}

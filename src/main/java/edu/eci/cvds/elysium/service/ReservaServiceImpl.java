@@ -11,13 +11,22 @@ import org.springframework.stereotype.Service;
 import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.EstadoReserva;
 import edu.eci.cvds.elysium.model.Reserva;
+import edu.eci.cvds.elysium.model.Salon;
+import edu.eci.cvds.elysium.model.usuario.Estandar;
 import edu.eci.cvds.elysium.repository.ReservaRepository;
+import edu.eci.cvds.elysium.service.usuario.EstandarService;
 
 @Service
 public class ReservaServiceImpl implements ReservaService {
 
     @Autowired
     private ReservaRepository reservaRepository;
+
+    @Autowired
+    private EstandarService estandarService;
+
+    @Autowired
+    private SalonService salonService;
 
     @Override
     public List<Reserva> consultarReservas() {
@@ -84,11 +93,20 @@ public class ReservaServiceImpl implements ReservaService {
     @Override
     public void crearReserva(LocalDate fechaReserva, double hora, DiaSemana diaSemana,
             String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {
-        Reserva reserva = new Reserva( fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
-                prioridad, idInstitucional);
 
-        reserva.setEstado(EstadoReserva.ACTIVA);
-        reservaRepository.save(reserva);
+        Estandar estandar = (Estandar) estandarService.consultarUsuario(idInstitucional);
+        Salon salon = salonService.findByMnemonico(idSalon);
+
+        if (estandar != null && salon != null) {
+            Reserva reserva = new Reserva(fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
+                    prioridad, idInstitucional);
+            reserva.setEstado(EstadoReserva.ACTIVA);
+            reservaRepository.save(reserva);
+        }
+        else {
+            throw new IllegalArgumentException("No se encontró el usuario o el salón.");
+        }
+        
     }
 
     /**

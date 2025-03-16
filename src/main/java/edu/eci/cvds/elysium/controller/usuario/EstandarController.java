@@ -27,10 +27,11 @@ public class EstandarController {
     }
 
     //Falta considerar en donde va el mnemonico
-    @PostMapping("/reserva")
-    public ResponseEntity<String> crearReserva(@RequestBody
+    @PostMapping("{id}/reserva")
+    public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
     ReservaDTO reservaDTO){
-        estandarService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), reservaDTO.getIdUsuario());
+        estandarService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
         return ResponseEntity.ok("Reserva creada");
+        //TODO: Check if idUsuario is necessary in reservaDTO
     }    
 }

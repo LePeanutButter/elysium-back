@@ -3,6 +3,7 @@ package edu.eci.cvds.elysium.service.impl.usuario;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import edu.eci.cvds.elysium.model.DiaSemana;
@@ -17,7 +18,9 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
+    // temporal solution for circular dependency  
+    @Lazy
+    @Autowired
     private ReservaService reservaService;
 
     @Override

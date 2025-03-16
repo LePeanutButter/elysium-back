@@ -33,7 +33,7 @@ public class ReservaController {
     public ResponseEntity<List<Reserva>> getReservas(
             @RequestParam(required = false) String idSalon,
             @RequestParam(required = false) LocalDate fecha,
-            @RequestParam(required = false) double hora,
+            @RequestParam(required = false) Double hora,
             @RequestParam(required = false) DiaSemana diaSemana,
             @RequestParam(required = false) EstadoReserva estado,
             @RequestParam(required = false) Boolean duracionBloque) {
@@ -46,7 +46,7 @@ public class ReservaController {
             reservas = reservaService.consultarReservasPorSalon(idSalon);
         } else if (fecha != null) {
             reservas = reservaService.consultarReservasPorFecha(fecha);
-        } else if (hora != 0) {
+        } else if (hora != null) {
             reservas = reservaService.consultarReservasPorHora(hora);
         } else if (diaSemana != null) {
             reservas = reservaService.consultarReservasPorDiaSemana(diaSemana);
@@ -70,12 +70,12 @@ public class ReservaController {
         reservaService.crearReserva(reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), reservaDTO.getIdUsuario());
         return ResponseEntity.ok("Reserva creada");
     }
-
-    @PutMapping("/actualizarReserva")
-    public ResponseEntity<String> actualizarReserva(@RequestBody ReservaDTO reservaDTO) {
-        reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad());
-        return ResponseEntity.ok("Reserva actualizada");
-    }
+    // TODO - To refactor puts for one patch method
+    // @PutMapping("/actualizarReserva")
+    // public ResponseEntity<String> actualizarReserva(@RequestBody ReservaDTO reservaDTO) {
+    //     reservaService.actualizarReserva(reservaDTO.getIdReserva(), reservaDTO.getTipoCampo(), reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getIdSalon(), reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad());
+    //     return ResponseEntity.ok("Reserva actualizada");
+    // }
 
     @DeleteMapping("{idReserva}/deleteReserva")
     public ResponseEntity<String> deleteReserva(@PathVariable String idReserva) {
