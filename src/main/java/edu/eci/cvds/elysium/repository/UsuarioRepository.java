@@ -14,6 +14,7 @@ public interface UsuarioRepository extends MongoRepository<Usuario, Integer> {
     // Este método es opcional si usas el ID de tipo Integer en la anotación @Id
     Usuario findByIdInstitucional(int idInstitucional);
 
+    @SuppressWarnings("null")
     List<Usuario>findAll();
 
     // Retorna todos los usuarios activos

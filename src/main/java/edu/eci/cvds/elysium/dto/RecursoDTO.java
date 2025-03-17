@@ -1,25 +1,20 @@
 package edu.eci.cvds.elysium.dto;
 
 import java.util.List;
-import org.bson.types.ObjectId;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 /**
  * RecursoDTO is a Data Transfer Object that represents a resource with a name, quantity, and specifications.
  */
 public class RecursoDTO {
     
-    @JsonSerialize(using = ToStringSerializer.class)
-    private ObjectId objectID;
-    private char tipoCampo;
+    private String id;
     private String nombre;
     private int cantidad;
     private List<String> especificaciones;
 
+    /**
+     * Default constructor method
+     */
     public RecursoDTO() {
     }
 
@@ -31,34 +26,50 @@ public class RecursoDTO {
      * 
      */
     public RecursoDTO(String nombre, int cantidad, List<String> especificaciones) {
-        this.objectID = new ObjectId();
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.especificaciones = especificaciones;
     }
     
-    public RecursoDTO(ObjectId objectID,char tipoCampo, String nombre, int cantidad, List<String> especificaciones) {
-        this.objectID = objectID;
-        this.tipoCampo = tipoCampo;
+    /**
+     * Default constructor method
+     * @param id id of the resource
+     * @param nombre name of the resource
+     * @param cantidad amount of the resource
+     * @param especificaciones specifications of the resource
+     * 
+     */
+    public RecursoDTO(String id, String nombre, int cantidad, List<String> especificaciones) {
+        this.id = id;
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.especificaciones = especificaciones;
     }
 
-    // Getters
-    @JsonIgnore
-    @JsonProperty("objectID")
-    public ObjectId getId() {return objectID;}
+    // GETTERS
 
+    /**
+     * Get the id of the resource
+     * @return id of the resource
+     */
+    public String getId() {return id;}
 
-    @JsonProperty("objectID")
-    public void setId(ObjectId id) {
-        this.objectID = id;
-    }
-
-    public char getTipoCampo() {return tipoCampo;}
+    /**
+     * Get the name of the resource
+     * @return name of the resource
+     */
     public String getNombre(){return nombre;}
+
+    /**
+     * Get the amount of the resource
+     * @return amount of the resource
+     */
     public int getCantidad(){return cantidad;}
+
+    /**
+     * Get the specifications of the resource
+     * @return specifications of the resource
+     */
     public List<String> getEspecificaciones(){return especificaciones;}
     
 }

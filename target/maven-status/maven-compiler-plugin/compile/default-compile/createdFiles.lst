@@ -8,10 +8,10 @@ edu\eci\cvds\elysium\service\ReservaService.class
 edu\eci\cvds\elysium\service\SalonService.class
 edu\eci\cvds\elysium\model\Salon.class
 edu\eci\cvds\elysium\service\usuario\EstandarService.class
+edu\eci\cvds\elysium\model\Recurso.class
 edu\eci\cvds\elysium\dto\salon\SalonDTO.class
 edu\eci\cvds\elysium\repository\ReservaRepository.class
 edu\eci\cvds\elysium\service\usuario\UsuarioService.class
-edu\eci\cvds\elysium\model\RecursoModel.class
 edu\eci\cvds\elysium\repository\RecursoRepository.class
 edu\eci\cvds\elysium\service\impl\SalonServiceImpl.class
 edu\eci\cvds\elysium\model\Reserva.class
@@ -19,7 +19,6 @@ edu\eci\cvds\elysium\controller\SalonController.class
 edu\eci\cvds\elysium\controller\usuario\AdministradorController.class
 edu\eci\cvds\elysium\controller\usuario\EstandarController.class
 edu\eci\cvds\elysium\controller\ReservaController.class
-edu\eci\cvds\elysium\dto\usuario\ActualizarUsuarioDTO.class
 edu\eci\cvds\elysium\service\impl\usuario\AdministradorServiceImpl.class
 edu\eci\cvds\elysium\repository\SalonRepository.class
 edu\eci\cvds\elysium\dto\ReservaDTO.class

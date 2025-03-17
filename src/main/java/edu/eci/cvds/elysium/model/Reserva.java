@@ -63,6 +63,16 @@ public class Reserva {
     }
 
     /**
+     * Sets the reservation ID.
+     *
+     * @param idReserva the reservation ID
+     */
+    public void setIdReserva(String idReserva) {
+        this.idReserva = idReserva;
+    }
+
+    
+    /**
      * Gets the date of the reservation.
      *
      * @return the date of the reservation
