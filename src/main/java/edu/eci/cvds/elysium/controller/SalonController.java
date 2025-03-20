@@ -19,6 +19,7 @@ import edu.eci.cvds.elysium.service.SalonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/salones")
@@ -150,16 +151,16 @@ public class SalonController {
             @ApiResponse(responseCode = "200", description = "Salón agregado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<Void> agregarSalon(@RequestBody Salon salonRequest) {
+    public ResponseEntity<Void> agregarSalon(@Valid @RequestBody SalonDTO salonRequest) {
         // Se espera que el JSON incluya: nombre, mnemonico, ubicacion, capacidad.
         // Se asume que el salón se crea por defecto como activo y disponible.
         salonService.agregarSalon(
-                salonRequest.getNombre(),
-                salonRequest.getMnemonico(),
-                salonRequest.getDescripcion(),
-                salonRequest.getUbicacion(),
-                salonRequest.getCapacidad(),
-                salonRequest.getRecursos()
+                salonRequest.getName(),
+                salonRequest.getMnemonic(),
+                salonRequest.getDescription(),
+                salonRequest.getLocation(),
+                salonRequest.getCapacity(),
+                salonRequest.getResources()
                 
                 );      
 

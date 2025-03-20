@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.eci.cvds.elysium.ElysiumExceptions;
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
 import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.model.Salon;
@@ -139,15 +140,45 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
     @Override
     public void agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,
             boolean isAdmin) {
-        if (isAdmin) {
-            Administrador nuevoUsuario = new Administrador(idInstitucional, nombre, apellido, correoInstitucional,
-                    true);
-            usuarioRepository.save(nuevoUsuario);
-        } else {
-            Estandar nuevoUsuario = new Estandar(idInstitucional, nombre, apellido, correoInstitucional, true);
-            usuarioRepository.save(nuevoUsuario);
+        try {
+
+            // Validar ID institucional
+            if (idInstitucional == 0 || String.valueOf(idInstitucional).length() != 10) {
+                throw new ElysiumExceptions(ElysiumExceptions.ID_NO_VALIDO);
+            }
+
+            // Validar formato del correo
+            String emailRegex = "^[a-zA-Z]+\\.[a-zA-Z]+@escuelaing\\.edu\\.co$";
+            if (!correoInstitucional.matches(emailRegex)) {
+                throw new ElysiumExceptions(ElysiumExceptions.CORREO_NO_VALIDO);
+            }
+
+            // Verificar si el usuario ya existe por ID
+            if (usuarioRepository.existsByIdInstitucional(idInstitucional)) {
+                throw new ElysiumExceptions(ElysiumExceptions.YA_EXISTE_USUARIO);
+            }
+
+            // Verificar si el correo ya está registrado
+            if (usuarioRepository.existsByCorreoInstitucional(correoInstitucional)) {
+                throw new ElysiumExceptions(ElysiumExceptions.YA_EXISTE_CORREO);
+            }
+
+            // Crear y guardar usuario
+            if (isAdmin) {
+                Administrador nuevoUsuario = new Administrador(idInstitucional, nombre, apellido, correoInstitucional, true);
+                usuarioRepository.save(nuevoUsuario);
+            } else {
+                Estandar nuevoUsuario = new Estandar(idInstitucional, nombre, apellido, correoInstitucional, true);
+                usuarioRepository.save(nuevoUsuario);
+            }
+            
+        } catch (ElysiumExceptions e) {
+            // Aquí decides cómo manejar la excepción
+            System.err.println("Error al agregar usuario: " + e.getMessage());
+            // Puedes registrarlo en logs en lugar de imprimirlo si usas un Logger
         }
     }
+
 
     /**
      * Add a salon.

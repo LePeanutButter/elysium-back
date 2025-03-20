@@ -6,6 +6,7 @@ import edu.eci.cvds.elysium.service.RecursoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class RecursoController {
             @ApiResponse(responseCode = "200", description = "Recurso agregado correctamente"),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado")
     })
-    public ResponseEntity<String> agregarRecurso(@RequestBody RecursoDTO recursoDTO){
+    public ResponseEntity<String> agregarRecurso(@Valid @RequestBody RecursoDTO recursoDTO){
         recursoService.agregarRecurso(recursoDTO.getNombre(), recursoDTO.getCantidad(), recursoDTO.getEspecificaciones());
         return ResponseEntity.ok().build();
     }

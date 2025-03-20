@@ -2,6 +2,8 @@ package edu.eci.cvds.elysium.dto;
 
 import java.util.List;
 
+import jakarta.validation.constraints.Negative;
+
 /**
  * RecursoDTO is a Data Transfer Object that represents a resource with a name, quantity, and specifications.
  */
@@ -9,6 +11,7 @@ public class RecursoDTO {
     
     private String id;
     private String nombre;
+    @Negative(message = "La cantidad no puede ser negativa")
     private int cantidad;
     private List<String> especificaciones;
 

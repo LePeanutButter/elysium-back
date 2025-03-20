@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.eci.cvds.elysium.ElysiumExceptions;
 import edu.eci.cvds.elysium.dto.RecursoDTO;
 import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.repository.RecursoRepository;
@@ -74,10 +75,28 @@ public class RecursoServiceImpl implements RecursoService {
      */
     @Override
     public void agregarRecurso(String nombre, int cantidad, List<String> especificaciones) {
-        Recurso recurso = new Recurso(nombre, cantidad, especificaciones);
-        recursoRepository.save(recurso);
+        try{
+            if(cantidad < 0){
+                throw new ElysiumExceptions(ElysiumExceptions.CAPACIDAD_NO_VALIDA);
+            }
+
+            Recurso recurso = new Recurso(nombre, cantidad, especificaciones);
+            recursoRepository.save(recurso);
+            
+        }
+        catch (ElysiumExceptions e) {
+            // Aquí decides cómo manejar la excepción
+            System.err.println("Error al agregar usuario: " + e.getMessage());
+            // Puedes registrarlo en logs en lugar de imprimirlo si usas un Logger
+        }
+        
     }
 
+    /**
+     * Updates a resource.
+     * @param id the id of the resource
+     * @param recursoDTO the resource to update
+     */
     @Override
     public void actualizarRecurso(String id,RecursoDTO recursoDTO) {
         Recurso recurso = recursoRepository.findByid(id);
@@ -91,6 +110,10 @@ public class RecursoServiceImpl implements RecursoService {
         }
     }
 
+    /**
+     * Disable a resource
+     * @param id the id of the resource
+     */
     @Override
     public void deshabilitarRecurso(String id) {
         Recurso recurso = recursoRepository.findByid(id);

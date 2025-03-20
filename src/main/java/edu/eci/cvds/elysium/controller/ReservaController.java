@@ -24,6 +24,7 @@ import edu.eci.cvds.elysium.service.ReservaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -84,13 +85,13 @@ public class ReservaController {
      * @param idReserva reservation id
      * @return Reserva with the given id.
      */
-    @GetMapping("")
+    @GetMapping("{idReserva}/reserva")
     @Operation(summary = "Consultar reserva", description = "Endpoint para consultar una reserva por su identificador.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Reserva retornada correctamente"),
             @ApiResponse(responseCode = "404", description = "Reserva no encontrada")
     })
-    public Reserva consultarReserva(@RequestParam String idReserva) {
+    public Reserva consultarReserva(@PathVariable String idReserva) {
         return reservaService.consultarReserva(idReserva);
     }
 
@@ -105,7 +106,7 @@ public class ReservaController {
             @ApiResponse(responseCode = "200", description = "Reserva creada correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    public ResponseEntity<String> crearReserva(@RequestBody ReservaDTO reservaDTO ) {
+    public ResponseEntity<String> crearReserva(@Valid @RequestBody ReservaDTO reservaDTO ) {
         reservaService.crearReserva(reservaDTO.getFechaReserva(),reservaDTO.getHora(), reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), reservaDTO.getIdUsuario());
         return ResponseEntity.ok("Reserva creada");
     }

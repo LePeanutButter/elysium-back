@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.eci.cvds.elysium.ElysiumExceptions;
 import edu.eci.cvds.elysium.dto.salon.SalonDTO;
 import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.model.Salon;
@@ -168,8 +169,26 @@ public class SalonServiceImpl implements SalonService {
      */
     @Override
     public void agregarSalon(String nombre, String mnemonico,String descripcion, String ubicacion, int capacidad, List<Recurso> recursos) {
-        Salon nuevoSalon = new Salon(nombre, mnemonico, descripcion,ubicacion, capacidad, recursos);
-        salonRepository.save(nuevoSalon);
+        try{
+            if(salonRepository.existsByMnemonico(mnemonico)){
+                throw new ElysiumExceptions(ElysiumExceptions.YA_EXISTE_SALON);
+            }
+
+            if(capacidad<=0){
+                throw new ElysiumExceptions(ElysiumExceptions.CAPACIDAD_NO_VALIDA);
+            }
+
+            if(recursos.isEmpty()){
+                throw new ElysiumExceptions(ElysiumExceptions.NO_EXISTE_RECURSO);
+            }
+
+            Salon nuevoSalon = new Salon(nombre, mnemonico, descripcion,ubicacion, capacidad, recursos);
+            salonRepository.save(nuevoSalon);   
+        }
+        catch(Exception e){
+            System.err.println("Error al agregar salon: " + e.getMessage());
+        }
+        
     }
     
 

@@ -119,4 +119,7 @@ public interface SalonRepository extends MongoRepository<Salon, String> {
      * @return all the salons that have the given location
      */
     List<Salon> findByNombreAndUbicacionContainingIgnoreCase(String nombre, String ubicacion);
+
+    // Usuarios activos que son administradores y cuyo nombre contiene el texto dado
+    boolean existsByMnemonico(String mnemonico);
 }

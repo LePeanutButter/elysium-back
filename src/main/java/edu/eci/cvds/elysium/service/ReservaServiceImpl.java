@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.eci.cvds.elysium.ElysiumExceptions;
 import edu.eci.cvds.elysium.dto.ReservaDTO;
 import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.EstadoReserva;
@@ -136,24 +137,47 @@ public class ReservaServiceImpl implements ReservaService {
      * @param prioridad the reservation priority
      * @param idInstitucional the reservation user ID
      */
+    @SuppressWarnings("unlikely-arg-type")
     // Se crea una reserva con los datos ingresados
     @Override
     public void crearReserva(LocalDate fechaReserva, double hora, DiaSemana diaSemana,
             String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {
-
-        Estandar estandar = (Estandar) estandarService.consultarUsuario(idInstitucional);
-        Salon salon = salonService.findByMnemonico(idSalon);
-
-        if (estandar != null && salon != null) {
-            Reserva reserva = new Reserva(fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
-                    prioridad, idInstitucional);
-            reserva.setEstado(EstadoReserva.ACTIVA);
-            reservaRepository.save(reserva);
-        }
-        else {
-            throw new IllegalArgumentException("No se encontró el usuario o el salón.");
-        }
         
+                try{
+                    if(hora < 0 ){
+                        throw new ElysiumExceptions(ElysiumExceptions.HORA_NO_VALIDA);
+                    }
+                    if(diaSemana.equals("DOMINGO")){
+                        throw new ElysiumExceptions(ElysiumExceptions.DIA_NO_VALIDO);
+                    }
+                    if(prioridad < 1 || prioridad > 5){
+                        throw new ElysiumExceptions(ElysiumExceptions.PRIORIDAD_NO_VALIDA);
+                    }
+
+                    if(idSalon == null || idSalon.equals("")){
+                        throw new ElysiumExceptions(ElysiumExceptions.NO_EXISTE_SALON);
+                    }
+
+                    if(idInstitucional == 0){
+                        throw new ElysiumExceptions(ElysiumExceptions.NO_EXISTE_USUARIO);
+                    }
+
+                    Estandar estandar = (Estandar) estandarService.consultarUsuario(idInstitucional);
+                    Salon salon = salonService.findByMnemonico(idSalon);
+
+                    if (estandar != null && salon != null) {
+                        Reserva reserva = new Reserva(fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
+                                prioridad, idInstitucional);
+                        reserva.setEstado(EstadoReserva.ACTIVA);
+                        reservaRepository.save(reserva);
+                    }
+                    else {
+                        throw new IllegalArgumentException("No se encontró el usuario o el salón.");
+                    }
+                }
+                catch (ElysiumExceptions e) {
+                    System.err.println("Error al crear reserva: " + e.getMessage());
+                }
     }
 
     

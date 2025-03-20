@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.eci.cvds.elysium.dto.salon.SalonDTO;
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
-import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.service.usuario.AdministradorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/administrador")
@@ -129,7 +130,7 @@ public class AdministradorController {
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
 
-    public ResponseEntity<Void> agregarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<Void> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         administradorService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
                 usuarioDTO.getApellido(), usuarioDTO.getCorreo(), usuarioDTO.getIsAdmin());
         return ResponseEntity.status(201).build();
@@ -173,8 +174,8 @@ public class AdministradorController {
             @ApiResponse(responseCode = "204", description = "Salón agregado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<Void> agregarSalon(@PathVariable int id, @RequestBody Salon salon) {
-        administradorService.agregarSalon(id, salon.getMnemonico(), salon.getNombre(), salon.getDescripcion(), salon.getUbicacion(), salon.getCapacidad(), salon.getRecursos());
+    public ResponseEntity<Void> agregarSalon(@PathVariable int id, @Valid @RequestBody SalonDTO salondto) {
+        administradorService.agregarSalon(id, salondto.getMnemonic(), salondto.getName(), salondto.getDescription(), salondto.getLocation(), salondto.getCapacity(), salondto.getResources());
         return ResponseEntity.noContent().build();
     }
 }

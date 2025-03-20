@@ -1,14 +1,26 @@
 package edu.eci.cvds.elysium.dto.salon;
 
+import java.util.List;
+
+import edu.eci.cvds.elysium.model.Recurso;
+import jakarta.validation.constraints.Negative;
+import jakarta.validation.constraints.NotNull;
+
 public class SalonDTO {
     // Campo obligatorio para identificar el salón.
+    @NotNull(message = "El mnemonico no puede ser nulo")
     private String mnemonico;
     // Los siguientes campos son opcionales; se actualizan si no son null.
     private String nombre;
     private String descripcion;
+    @NotNull(message = "La ubicacion no puede ser nula")
     private String ubicacion;
+    @NotNull(message = "La capacidad no puede ser nula")
+    @Negative(message = "La capacidad no puede ser negativa")
     private Integer capacidad;
     
+    @NotNull(message = "Los recursos no pueden ser nulos")
+    private List<Recurso> recursos;
     private Boolean activo;
     private Boolean disponible;
 
@@ -25,11 +37,12 @@ public class SalonDTO {
      * @param ubicacion the location of the salon
      * @param capacidad the capacity of the salon
      */
-    public SalonDTO(String nombre, String descripcion, String ubicacion, int capacidad){
+    public SalonDTO(String nombre, String descripcion, String ubicacion, int capacidad, List<Recurso> recursos) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.ubicacion = ubicacion;
         this.capacidad = capacidad;
+        this.recursos = recursos;
     }
 
 
@@ -118,5 +131,17 @@ public class SalonDTO {
      * @param disponible the available status of the salon
      */
     public void setAvailable(boolean disponible){this.disponible = disponible;}
+
+    /**
+     * Get the resources of the salon
+     * @return the resources of the salon
+     */
+    public List<Recurso> getResources(){return recursos;}
+
+    /**
+     * Set the resources of the salon
+     * @param recursos the resources of the salon
+     */
+    public void setResources(List<Recurso> recursos){this.recursos = recursos;}
     
 }

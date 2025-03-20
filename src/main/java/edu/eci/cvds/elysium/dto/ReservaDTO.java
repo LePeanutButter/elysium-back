@@ -3,16 +3,21 @@ package edu.eci.cvds.elysium.dto;
 import java.time.LocalDate;
 
 import edu.eci.cvds.elysium.model.DiaSemana;
+import jakarta.validation.constraints.Negative;
+import jakarta.validation.constraints.NotNull;
 
 
 public class ReservaDTO {
     private String idReserva;    
     private LocalDate fechaReserva;
+    @Negative(message = "La hora no puede ser negativa")
     private double hora;
     // Se representa el día de la semana como String (por ejemplo, "LUNES")
     private DiaSemana diaSemana;
+    @NotNull(message = "El propósito no puede ser nulo")
     private String proposito;
 
+    @NotNull(message = "El id del salón no puede ser nulo")
     // Se utiliza el objeto Salón para identificar el salón (1..1)
     private String idSalon;
 
@@ -20,6 +25,7 @@ public class ReservaDTO {
     private boolean duracionBloque;
 
     private int prioridad;
+    @NotNull(message = "El id del usuario no puede ser nulo")
     private int idUsuario;
 
     
