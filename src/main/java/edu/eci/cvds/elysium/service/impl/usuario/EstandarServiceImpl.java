@@ -36,11 +36,11 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
      * @throws ExcepcionServiciosElysium if the user is not an Estandar
      */
     @Override
-    public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
+    public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
         // Se utiliza el método definido en el repository para Mongo
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
         if (usuario != null && usuario instanceof Estandar) {           
-            reservaService.crearReserva(fechaReserva,hora, diaSemana, proposito, idSalon, duracionBloque, prioridad, idInstitucional);            
+            reservaService.crearReserva(fechaReserva,hora, diaSemana, proposito, materia,idSalon, duracionBloque, prioridad, idInstitucional);            
         }  
     }
 

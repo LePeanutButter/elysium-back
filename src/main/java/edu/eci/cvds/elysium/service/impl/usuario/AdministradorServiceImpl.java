@@ -1,18 +1,22 @@
 package edu.eci.cvds.elysium.service.impl.usuario;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import edu.eci.cvds.elysium.ElysiumExceptions;
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
+import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.model.usuario.Administrador;
 import edu.eci.cvds.elysium.model.usuario.Estandar;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.repository.UsuarioRepository;
+import edu.eci.cvds.elysium.service.ReservaService;
 import edu.eci.cvds.elysium.service.usuario.AdministradorService;
 
 @Service
@@ -20,6 +24,10 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Lazy
+    @Autowired
+    private ReservaService reservaService;
 
     /**
      * Consult a list of all users.
@@ -197,8 +205,27 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
         Administrador administrador = (Administrador) usuarioRepository.findByIdInstitucional(id);
         @SuppressWarnings("unused")
         Salon nuevoSalon = new Salon(mnemonico,nombre, descripcion, ubicacion, capacidad, recursos);
-        usuarioRepository.save(administrador);
+        usuarioRepository.save(administrador);        
+    }
 
-        
+    /**
+     * Create a reservation
+     * @param fecha date of the reservation
+     * @param hora hour of the reservation
+     * @param diaSemana day of the week of the reservation
+     * @param proposito purpose of the reservation
+     * @param idSalon id of the salon
+     * @param duracionBloque if the reservation is for a block of time
+     * @param prioridad priority of the reservation
+     * @param idInstitucional institutional id of the user
+     * @throws ExcepcionServiciosElysium if the user is not an Estandar
+     */
+    @Override
+    public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
+        // Se utiliza el método definido en el repository para Mongo
+        Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
+        if (usuario != null && usuario instanceof Estandar) {           
+            reservaService.crearReserva(fechaReserva,hora, diaSemana, proposito, materia,idSalon, duracionBloque, prioridad, idInstitucional);            
+        }  
     }
 }

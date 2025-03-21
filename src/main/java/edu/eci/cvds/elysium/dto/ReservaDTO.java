@@ -17,6 +17,8 @@ public class ReservaDTO {
     @NotNull(message = "El propósito no puede ser nulo")
     private String proposito;
 
+    private String materia;
+
     @NotNull(message = "El id del salón no puede ser nulo")
     // Se utiliza el objeto Salón para identificar el salón (1..1)
     private String idSalon;
@@ -25,7 +27,6 @@ public class ReservaDTO {
     private boolean duracionBloque;
 
     private int prioridad;
-    @NotNull(message = "El id del usuario no puede ser nulo")
     private int idUsuario;
 
     
@@ -51,11 +52,12 @@ public class ReservaDTO {
      * @param idUsuario represents the reservation user ID
      */
     // Constructor for creating a reservation
-    public ReservaDTO(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
+    public ReservaDTO(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
         this.proposito = proposito;
+        this.materia = materia;
         this.idSalon = idSalon;
         this.duracionBloque = duracionBloque;
         setPrioridad(prioridad);
@@ -75,12 +77,13 @@ public class ReservaDTO {
      * @param idUsuario represents the reservation user ID
      */
     // Constructor for updating a reservation
-    public ReservaDTO(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
+    public ReservaDTO(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
         this.idReserva = idReserva;
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
         this.proposito = proposito;
+        this.materia = materia;
         this.idSalon = idSalon;
         this.duracionBloque = duracionBloque;
         setPrioridad(prioridad);
@@ -118,6 +121,12 @@ public class ReservaDTO {
      * @return reservation purpose
      */
     public String getProposito() {return proposito;}
+
+    /**
+     * Get the reservation subject
+     * @return reservation subject
+     */
+    public String getMateria() {return materia;}
 
     /**
      * Get the reservation salon ID

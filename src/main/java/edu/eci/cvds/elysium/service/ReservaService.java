@@ -79,12 +79,13 @@ public interface ReservaService {
      * @param hora the hour of the reservation
      * @param diaSemana the day of the week of the reservation
      * @param proposito the purpose of the reservation
+     * @param materia the subject of the reservation
      * @param idSalon the salon of the reservation
      * @param duracionBloque the duration of the block of the reservation
      * @param prioridad the priority of the reservation
      * @param idInstitucional the institutional id of the reservation
      */
-    void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad, int idInstitucional);
+    void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon,boolean duracionBloque, int prioridad, int idInstitucional);
 
     /**
      * Update a reservation

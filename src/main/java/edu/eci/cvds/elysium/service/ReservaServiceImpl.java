@@ -141,7 +141,7 @@ public class ReservaServiceImpl implements ReservaService {
     // Se crea una reserva con los datos ingresados
     @Override
     public void crearReserva(LocalDate fechaReserva, double hora, DiaSemana diaSemana,
-            String proposito, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {
+            String proposito, String materia,String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {
         
                 try{
                     if(hora < 0 ){
@@ -166,7 +166,7 @@ public class ReservaServiceImpl implements ReservaService {
                     Salon salon = salonService.findByMnemonico(idSalon);
 
                     if (estandar != null && salon != null) {
-                        Reserva reserva = new Reserva(fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque,
+                        Reserva reserva = new Reserva(fechaReserva, hora, diaSemana, proposito,materia, idSalon, duracionBloque,
                                 prioridad, idInstitucional);
                         reserva.setEstado(EstadoReserva.ACTIVA);
                         reservaRepository.save(reserva);
@@ -202,6 +202,9 @@ public class ReservaServiceImpl implements ReservaService {
             }
             if(reservaDTO.getProposito() != null) {
                 reserva.setProposito(reservaDTO.getProposito());
+            }
+            if(reservaDTO.getMateria() != null) {
+                reserva.setMateria(reservaDTO.getMateria());
             }
             if(reservaDTO.getIdSalon() != null) {
                 reserva.setIdSalon(reservaDTO.getIdSalon());
@@ -247,13 +250,14 @@ public class ReservaServiceImpl implements ReservaService {
             LocalDate fechaReserva = LocalDate.now().plusDays(random.nextInt(30));
             DiaSemana diaSemana = DiaSemana.values()[random.nextInt(DiaSemana.values().length)];
             String proposito = "Reserva generada automáticamente";
+            String materia = "Materia " + (random.nextInt(5) + 1);
             String idSalon = String.valueOf(random.nextInt(101) + 50);
             boolean duracionBloque = random.nextBoolean();
             int prioridad = random.nextInt(5) + 1;
             int hora = random.nextInt(24);
             int idInstitucional = random.nextInt(6) + 1;
             
-            crearReserva(fechaReserva, hora, diaSemana, proposito, idSalon, duracionBloque, prioridad, idInstitucional);
+            crearReserva(fechaReserva, hora, diaSemana, proposito, materia,idSalon, duracionBloque, prioridad, idInstitucional);
         }
     }
 }

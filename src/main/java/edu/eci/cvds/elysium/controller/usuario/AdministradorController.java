@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.eci.cvds.elysium.dto.ReservaDTO;
 import edu.eci.cvds.elysium.dto.salon.SalonDTO;
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
@@ -178,4 +179,23 @@ public class AdministradorController {
         administradorService.agregarSalon(id, salondto.getMnemonic(), salondto.getName(), salondto.getDescription(), salondto.getLocation(), salondto.getCapacity(), salondto.getResources());
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Endpoint para crear una reserva.
+     * 
+     * @param id Identificador del usuario que realiza la reserva.
+     * @param reservaDTO Información de la reserva a crear.
+     * @return ResponseEntity con un mensaje de éxito.
+     */
+    @Operation(summary = "Crear reserva", description = "Endpoint para crear una reserva.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reserva creada correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @PostMapping("{id}/reserva")
+    public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
+    ReservaDTO reservaDTO){
+        administradorService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
+        return ResponseEntity.ok("Reserva creada");
+    }   
 }

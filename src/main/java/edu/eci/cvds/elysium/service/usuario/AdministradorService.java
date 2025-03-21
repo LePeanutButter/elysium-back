@@ -1,8 +1,10 @@
 package edu.eci.cvds.elysium.service.usuario;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
+import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 
@@ -87,4 +89,17 @@ public interface AdministradorService extends UsuarioService {
      * @param recursos resources of the salon
      */
     void agregarSalon(int id,String mnemonico, String nombre, String descripcion,String ubicacion, int capacidad, List<Recurso> recursos);
+
+    /**
+     * Create a reservation
+     * @param fecha date of the reservation
+     * @param hora hour of the reservation
+     * @param diaSemana day of the week of the reservation
+     * @param proposito purpose of the reservation
+     * @param idSalon id of the salon
+     * @param duracionBloque if the reservation is for a block of time
+     * @param prioridad priority of the reservation
+     * @param idInstitucional institutional id of the user
+     */
+    void crearReserva(LocalDate fecha,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional);
 }

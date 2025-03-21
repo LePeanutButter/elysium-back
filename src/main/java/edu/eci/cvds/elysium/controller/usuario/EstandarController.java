@@ -55,7 +55,7 @@ public class EstandarController {
     @PostMapping("{id}/reserva")
     public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
     ReservaDTO reservaDTO){
-        estandarService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
+        estandarService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
         return ResponseEntity.ok("Reserva creada");
     }   
     

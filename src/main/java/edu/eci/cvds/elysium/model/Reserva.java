@@ -17,6 +17,7 @@ public class Reserva {
     private double hora;
     private DiaSemana diaSemana;
     private String proposito;
+    private String materia;
     private String idSalon;
     private EstadoReserva estado;
     private boolean duracionBloque;
@@ -40,11 +41,12 @@ public class Reserva {
      * @param prioridad      the priority of the reservation (1 to 5)
      * @param idUsuario      the user ID associated with the reservation
      */
-    public Reserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String idSalon,boolean duracionBloque, int prioridad, int idUsuario) {
+    public Reserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon,boolean duracionBloque, int prioridad, int idUsuario) {
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
         this.proposito = proposito;
+        this.materia = materia;
         this.idSalon = idSalon;
         this.estado = EstadoReserva.ACTIVA;
         this.duracionBloque = duracionBloque;
@@ -144,6 +146,24 @@ public class Reserva {
         this.proposito = proposito;
     }
 
+    /**
+     * Gets the subject of the reservation.
+     *
+     * @return the subject of the reservation
+     */
+    public String getMateria() {
+        return materia;
+    }
+
+    /**
+     * Sets the subject of the reservation.
+     *
+     * @param materia the subject of the reservation
+     */
+    public void setMateria(String materia) {
+        this.materia = materia;
+    }
+    
     /**
      * Gets the salon ID associated with the reservation.
      *
