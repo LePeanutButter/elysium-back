@@ -1,5 +1,5 @@
 HELP.md
-target/
+/target
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -32,4 +32,4 @@ build/
 ## Property file that contains environment specific configuration properties ##
 # application.properties
 ### VS Code ###
-.vscode/
+/.vscode

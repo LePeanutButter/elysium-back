@@ -41,6 +41,7 @@ public enum DiaSemana {
     /**
      * Attribute that stores the TreeMap with the schedule information for each day.
      */
+    @SuppressWarnings("unused")
     private final TreeMap<String, List<Double>> horarios;
 
     /**
@@ -59,11 +60,17 @@ public enum DiaSemana {
      * @return TreeMap with the schedule for the specified weekday.
      */
     private static TreeMap<String, List<Double>> crearHorariosEntreSemana(String dia) {
+        if(dia.equals("SABADO")){
+            return new TreeMap<>();
+        }
+        
         TreeMap<String, List<Double>> map = new TreeMap<>();
         List<Double> horas = List.of(7.0, 8.5, 10.0, 11.5, 13.0, 14.5, 16.0, 17.5, 19.0);
         map.put("horas", horas);
         return new TreeMap<>(map);
     }
+        
+    
 
     /**
      * Creates a TreeMap with the schedule for Saturday.
@@ -72,6 +79,9 @@ public enum DiaSemana {
      * @return TreeMap with the schedule for Saturday.
      */
     private static TreeMap<String, List<Double>> crearHorariosSabado(String dia) {
+        if (dia.equals("LUNES") || dia.equals("MARTES") || dia.equals("MIERCOLES") || dia.equals("JUEVES") || dia.equals("VIERNES")) {
+            return new TreeMap<>();
+        }
         TreeMap<String, List<Double>> map = new TreeMap<>();
         List<Double> horas = List.of(7.0, 8.5, 10.0, 11.5, 13.0);
         map.put("horas", horas);

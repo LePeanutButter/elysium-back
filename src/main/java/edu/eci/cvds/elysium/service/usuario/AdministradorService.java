@@ -1,43 +1,105 @@
 package edu.eci.cvds.elysium.service.usuario;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
+import edu.eci.cvds.elysium.model.DiaSemana;
+import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 
 /**
- * Interfaz que define las operaciones de servicio para administradores.
- * <p>
- * Esta interfaz hereda de UsuarioService y proporciona métodos para la consulta y gestión
- * de usuarios, permitiendo distinguir entre administradores y usuarios no administradores,
- * así como entre usuarios activos e inactivos.
- * </p>
- *
- * Métodos incluidos:
- * <ul>
- *   <li>{@link #consultarUsuarios()} - Retorna una lista de todos los usuarios.</li>
- *   <li>{@link #consultarUsuariosActivos()} - Retorna una lista de usuarios activos.</li>
- *   <li>{@link #consultarUsuariosInactivos()} - Retorna una lista de usuarios inactivos.</li>
- *   <li>{@link #consultarUsuariosAdmins()} - Retorna una lista de usuarios administradores.</li>
- *   <li>{@link #consultarUsuariosActiveAdmins()} - Retorna una lista de administradores activos.</li>
- *   <li>{@link #consultarUsuariosInactiveAdmins()} - Retorna una lista de administradores inactivos.</li>
- *   <li>{@link #consultarUsuariosActiveNoAdmins()} - Retorna una lista de usuarios activos que no son administradores.</li>
- *   <li>{@link #consultarUsuariosInactiveNoAdmins()} - Retorna una lista de usuarios inactivos que no son administradores.</li>
- *   <li>{@link #agregarUsuario(int, String, String, String, boolean)} - Agrega un nuevo usuario con la información proporcionada (identificador institucional, nombre, apellido, correo institucional y flag de administrador).</li>
- *   <li>{@link #actualizarInformacionUsuario(UsuarioDTO)} - Actualiza la información de un usuario a partir de un objeto de transferencia de datos (DTO).</li>
- * </ul>
- *
- * @see UsuarioService
+ * Interface AdministradorService that allows the implementation of the methods of the service of the administrator
  */
 public interface AdministradorService extends UsuarioService {
+
+    /**
+     * Method that allows to consult the users
+     * @return List of users
+     */
     List<Usuario> consultarUsuarios();
+
+    /**
+     * Method that allows to consult the active users
+     * @return List of active users
+     */
     List<Usuario> consultarUsuariosActivos();
+
+    /**
+     * Method that allows to consult the inactive users
+     * @return List of inactive users
+     */
     List<Usuario> consultarUsuariosInactivos();
+
+    /**
+     * Method that allows to consult the users that are administrators
+     * @return List of administrators
+     */
     List<Usuario> consultarUsuariosAdmins();
+
+    /**
+     * Method that allows to consult the active users that are administrators
+     * @return List of active administrators
+     */
     List<Usuario> consultarUsuariosActiveAdmins();
+
+    /**
+     * Method that allows to consult the inactive users that are administrators
+     * @return List of inactive administrators
+     */
     List<Usuario> consultarUsuariosInactiveAdmins();
+
+    /**
+     * Method that allows to consult the users that are not administrators
+     * @return List of users that are not administrators
+     */
     List<Usuario> consultarUsuariosActiveNoAdmins();
+
+    /**
+     * Method that allows to consult the active users that are not administrators
+     * @return List of active users that are not administrators
+     */
     List<Usuario> consultarUsuariosInactiveNoAdmins();
+
+    
+    /**
+     * Method that allows to add a user
+     * @param idInstitucional identifier of the user
+     * @param nombre name of the user
+     * @param apellido last name of the user
+     * @param correoInstitucional institutional email of the user
+     * @param isAdmin boolean that indicates if the user is an administrator
+     */
     void agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin);
+
+    /**
+     * Method that allows to update the information of a user
+     * @param id identifier of the user
+     * @param dto DTO with the information to update
+     */
     void actualizarInformacionUsuario(int id, UsuarioDTO dto);    
+
+    /**
+     * Method that allows to add a new salon
+     * @param mnemonico mnemonic of the salon
+     * @param nombre name of the salon
+     * @param descripcion description of the salon
+     * @param ubicacion location of the salon
+     * @param capacidad capacity of the salon
+     * @param recursos resources of the salon
+     */
+    void agregarSalon(int id,String mnemonico, String nombre, String descripcion,String ubicacion, int capacidad, List<Recurso> recursos);
+
+    /**
+     * Create a reservation
+     * @param fecha date of the reservation
+     * @param hora hour of the reservation
+     * @param diaSemana day of the week of the reservation
+     * @param proposito purpose of the reservation
+     * @param idSalon id of the salon
+     * @param duracionBloque if the reservation is for a block of time
+     * @param prioridad priority of the reservation
+     * @param idInstitucional institutional id of the user
+     */
+    void crearReserva(LocalDate fecha,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional);
 }

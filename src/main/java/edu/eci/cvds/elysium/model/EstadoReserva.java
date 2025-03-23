@@ -5,7 +5,5 @@ package edu.eci.cvds.elysium.model;
  */
 public enum EstadoReserva {
     ACTIVA,
-    CANCELADA,
-    ELIMINADA,
-    RECHAZADA
+    DESHABILITADA
 }

@@ -8,12 +8,12 @@ C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\dto\RecursoDTO.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\dto\ReservaDTO.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\dto\salon\SalonDTO.java
-C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\dto\usuario\ActualizarUsuarioDTO.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\dto\usuario\UsuarioDTO.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\ElysiumApplication.java
+C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\ElysiumExceptions.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\model\DiaSemana.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\model\EstadoReserva.java
-C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\model\RecursoModel.java
+C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\model\Recurso.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\model\Reserva.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\model\Salon.java
 C:\Users\Usuario\desktop\cvds\third1\firstProject\elysium-back\src\main\java\edu\eci\cvds\elysium\model\usuario\Administrador.java

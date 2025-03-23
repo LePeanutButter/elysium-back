@@ -2,11 +2,12 @@ package edu.eci.cvds.elysium.service;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.eci.cvds.elysium.model.RecursoModel;
+import edu.eci.cvds.elysium.ElysiumExceptions;
+import edu.eci.cvds.elysium.dto.RecursoDTO;
+import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.repository.RecursoRepository;
 
 @Service
@@ -15,67 +16,107 @@ public class RecursoServiceImpl implements RecursoService {
     @Autowired
     private RecursoRepository recursoRepository;
 
+
+    /**
+     * Consult a list of resources
+     * @return List of resources
+     */
     @Override
-    public List<RecursoModel> consultarRecursos() {
+    public List<Recurso> consultarRecursos() {
         return recursoRepository.findAll();
     }
 
+
+    /**
+     * Consult a list of resources by name
+     * @param nombre
+     * @return List of resources
+     */
     @Override
-    public List<RecursoModel> consultarNombre(String nombre) {
+    public List<Recurso> consultarNombre(String nombre) {
         return recursoRepository.findByNombre(nombre);
     }
 
+    /**
+     * Consult a list of resources by quantity
+     * @param cantidad
+     * @return List of resources
+     */
     @Override
-    public List<RecursoModel> consultarCantidad(int cantidad) {
+    public List<Recurso> consultarCantidad(int cantidad) {
         return recursoRepository.findByCantidad(cantidad);
     }
 
+    /**
+     * Consult a list of resources by specifications
+     * @param especificaciones
+     * @return List of resources
+     */
     @Override
-    public List<RecursoModel> consultarEspecificaciones(List<String> especificaciones) {
+    public List<Recurso> consultarEspecificaciones(List<String> especificaciones) {
         return recursoRepository.findByEspecificaciones(especificaciones);
     }
 
+    /**
+     * Consult a resource by id
+     * @param id
+     * @return Resource by id
+     */
     @Override
-    public RecursoModel consultarRecurso(ObjectId id) {
-        return recursoRepository.findByObjectID(id);
+    public Recurso consultarRecurso(String id) {
+        return recursoRepository.findByid(id);
     }
 
+    /**
+     * Adds a new resource.
+     * @param nombre the name of the resource
+     * @param cantidad the amount of the resource
+     * @param especificaciones the specifications of the resource
+     */
     @Override
     public void agregarRecurso(String nombre, int cantidad, List<String> especificaciones) {
-        RecursoModel recurso = new RecursoModel(nombre, cantidad, especificaciones);
-        recurso.crearRecurso(nombre, cantidad, especificaciones);
-        boolean activo = true;
-        recurso.setActivo(activo);
-        recursoRepository.save(recurso);
+        try{
+            if(cantidad < 0){
+                throw new ElysiumExceptions(ElysiumExceptions.CAPACIDAD_NO_VALIDA);
+            }
+
+            Recurso recurso = new Recurso(nombre, cantidad, especificaciones);
+            recursoRepository.save(recurso);
+            
+        }
+        catch (ElysiumExceptions e) {
+            // Aquí decides cómo manejar la excepción
+            System.err.println("Error al agregar usuario: " + e.getMessage());
+            // Puedes registrarlo en logs en lugar de imprimirlo si usas un Logger
+        }
+        
     }
 
+    /**
+     * Updates a resource.
+     * @param id the id of the resource
+     * @param recursoDTO the resource to update
+     */
     @Override
-    public void actualizarRecurso(ObjectId id,char tipoCampo,String nuevoNombre, int nuevaCantidad, List<String> nuevasEspecificaciones) {
-        RecursoModel recurso = recursoRepository.findByObjectID(id);
+    public void actualizarRecurso(String id,RecursoDTO recursoDTO) {
+        Recurso recurso = recursoRepository.findByid(id);
         if(recurso != null ){
-            recurso.actualizar(id, tipoCampo, nuevoNombre, nuevaCantidad, nuevasEspecificaciones);
-            switch (tipoCampo){
-                case 'n':
-                    recurso.setNombre(nuevoNombre);
-                    break;
-                case 'c':
-                    recurso.setCantidad(nuevaCantidad);
-                    break;
-                case 'e':
-                    recurso.setEspecificaciones(nuevasEspecificaciones);
-                    break;
-                default:
-                    break;
-            }
+            recurso.setNombre(recursoDTO.getNombre());
+            recurso.setCantidad(recursoDTO.getCantidad());
+            recurso.setEspecificaciones(recursoDTO.getEspecificaciones());
             boolean activo = true;
             recurso.setActivo(activo);
             recursoRepository.save(recurso);
         }
     }
 
+    /**
+     * Disable a resource
+     * @param id the id of the resource
+     */
     @Override
-    public void eliminarRecurso(ObjectId id) {
-        RecursoModel recurso = recursoRepository.findByObjectID(id);
+    public void deshabilitarRecurso(String id) {
+        Recurso recurso = recursoRepository.findByid(id);
         if(recurso != null){
             recursoRepository.delete(recurso);
             boolean activo = false;

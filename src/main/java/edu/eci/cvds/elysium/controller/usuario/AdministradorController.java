@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.eci.cvds.elysium.dto.ReservaDTO;
+import edu.eci.cvds.elysium.dto.salon.SalonDTO;
 import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.service.usuario.AdministradorService;
@@ -20,6 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/administrador")
@@ -65,6 +68,7 @@ public class AdministradorController {
      *                (true) o no administrador (false).
      */
 
+    @SuppressWarnings("null")
     @GetMapping("/usuarios")
     @Operation(summary = "Consultar usuarios", description = "Endpoint unificado para consultar usuarios, pudiendo filtrar por estado activo e indicador de rol de administrador.")
 
@@ -76,7 +80,6 @@ public class AdministradorController {
             @Parameter(description = "Valor opcional para filtrar usuarios por estado activo (true) o inactivo (false)", example = "true") @RequestParam(required = false) Boolean activo,
 
             @Parameter(description = "Valor opcional para filtrar usuarios por rol administrador (true) o no administrador (false)", example = "false") @RequestParam(required = false) Boolean isAdmin) {
-        // Si no se pasan filtros, retorna todos
         if (activo == null && isAdmin == null) {
             return administradorService.consultarUsuarios();
         }
@@ -128,7 +131,7 @@ public class AdministradorController {
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
 
-    public ResponseEntity<Void> agregarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<Void> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         administradorService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
                 usuarioDTO.getApellido(), usuarioDTO.getCorreo(), usuarioDTO.getIsAdmin());
         return ResponseEntity.status(201).build();
@@ -159,8 +162,40 @@ public class AdministradorController {
         administradorService.actualizarInformacionUsuario(id, actualizarUsuarioDTO);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Endpoint para agregar un salón.
+     * @param id administrador id 
+     * @param salon salon to add
+     * @return ResponseEntity  with code 204 if the salon is added correctly, or 400 in case of invalid data.
+     */
+    @PostMapping("/{id}/salon")
+    @Operation(summary = "Agregar salón", description = "Endpoint para agregar un nuevo salón a la base de datos.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Salón agregado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    public ResponseEntity<Void> agregarSalon(@PathVariable int id, @Valid @RequestBody SalonDTO salondto) {
+        administradorService.agregarSalon(id, salondto.getMnemonic(), salondto.getName(), salondto.getDescription(), salondto.getLocation(), salondto.getCapacity(), salondto.getResources());
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Endpoint para crear una reserva.
+     * 
+     * @param id Identificador del usuario que realiza la reserva.
+     * @param reservaDTO Información de la reserva a crear.
+     * @return ResponseEntity con un mensaje de éxito.
+     */
+    @Operation(summary = "Crear reserva", description = "Endpoint para crear una reserva.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reserva creada correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @PostMapping("{id}/reserva")
+    public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
+    ReservaDTO reservaDTO){
+        administradorService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
+        return ResponseEntity.ok("Reserva creada");
+    }   
 }
-
-
-
-// TODO - Add salon endpoints
