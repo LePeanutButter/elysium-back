@@ -176,3 +176,197 @@ A continuación detallamos diferentes tutoriales para el manejo técnico para ca
 4. Utilizar integración con Sonar y JACOCO para análisis estático y calidad del código, esto implica el desarrollo de pruebas unitarias.
 
 ![alt text](image.png)
+
+# Descripcion de Elysium Backend
+
+Elysium Backend esta echo para la gestión de reservas de espacios y equipos de compututacion en la universidad Escuela Colombiana de Ingenieria.
+
+## Tabla de Contenidos
+1. [Introducción](#introducción)
+2. [Tecnologías y Herramientas](#tecnologías-y-herramientas)
+3. [Arquitectura del Sistema](#arquitectura-del-sistema)
+4. [Estructura del Código](#estructura-del-código)
+5. [DTO (Data Transfer Object)](#dto-data-transfer-object)
+6. [Modelos](#modelos)
+7. [Endpoints / API](#endpoints--api)
+8. [Pruebas y Calidad](#pruebas-y-calidad)
+9. [Guía de Configuración y Despliegue](#guía-de-configuración-y-despliegue)
+10. [Notas Adicionales / Contribución](#notas-adicionales--contribución)
+
+## Introducción
+Este proyecto tiene como objetivo permitir la administración de reservas de espacios y equipos de computacion dentro de la universidad. Los usuarios pueden realizar reservas, gestionar recursos y reservas, y consultar disponibilidad de espacios a través de una la API.
+
+### Arquitectura General
+El backend sigue una arquitectura basada en servicios, con capas de controladores, servicios, repositorios y modelos de datos. Se ha diseñado siguiendo el patrón MVC (Modelo-Vista-Controlador) para una mejor separación de responsabilidades.
+
+## Tecnologías y Herramientas
+- **Lenguaje:** Java 17
+- **Framework:** Spring Boot
+- **Base de datos:** PostgreSQL, MongoDB
+- **ORM:** Spring Data JPA, Spring Data MongoDB
+- **Documentación:** Swagger/OpenAPI
+- **Gestión de dependencias:** Maven
+- **Pruebas:** JUnit, Mockito
+
+## Arquitectura del Sistema
+Este backend sigue una arquitectura monolítica con una clara separación de capas:
+1. **Controladores:** Manejan las peticiones HTTP y delegan la lógica a los servicios.
+2. **Servicios:** Contienen la lógica de negocio y la interacción con los repositorios.
+3. **Repositorios:** Interactúan con la base de datos utilizando JPA o MongoDB.
+4. **Modelos:** Representan las entidades del dominio del negocio.
+
+### Patrones de Diseño Implementados
+- **MVC (Modelo-Vista-Controlador)**: Separación de responsabilidades.
+- **Repository Pattern**: Para la abstracción de acceso a datos.
+- **DTO (Data Transfer Object)**: Para optimizar el intercambio de datos en la API.
+
+## Estructura del Código en el main
+```plaintext
+src/main/java/edu/eci/cvds/elysium/
+├── config
+│   ├── CorsConfig.java
+├── controller
+│   ├── usuario
+│   │   ├── AdministradorController.java
+│   │   ├── ApiOperation
+│   │   ├── EstandarController.java
+│   ├── RecursoController.java
+│   ├── ReservaController.java
+│   ├── SalonController.java
+├── dto
+│   ├── salon
+│   │   ├── SalonDTO.java
+│   ├── usuario
+│   │   ├── UsuarioDTO.java
+│   ├── RecursoDTO.java
+│   ├── ReservaDTO.java
+├── model
+│   ├── usuario
+│   │   ├── DiaSemana.java
+│   │   ├── EstadoReserva.java
+│   │   ├── Recurso.java
+│   │   ├── Reserva.java
+│   │   ├── Salon.java
+├── repository
+│   ├── RecursoRepository.java
+│   ├── ReservaRepository.java
+│   ├── SalonRepository.java
+│   ├── UsuarioRepository.java
+├── service
+│   ├── impl
+│   ├── usuario
+│   ├── RecursoService.java
+│   ├── RecursoServiceImpl.java
+│   ├── ReservaService.java
+│   ├── ReservaServiceImpl.java
+│   ├── salonService.java
+│   │   ├── AdministradorService.java
+├── ElysiumApplication.java
+├── ElysiumExceptions.java
+└── resources
+```
+
+## DTO (Data Transfer Object)
+Los DTOs se utilizan para transportar datos entre las distintas capas del sistema sin exponer directamente las entidades del modelo de datos. Esto mejora la seguridad y flexibilidad en la API.
+
+### Ejemplo: `SalonDTO`
+```java
+package edu.eci.cvds.elysium.dto.salon;
+
+import java.util.List;
+import edu.eci.cvds.elysium.model.Recurso;
+import jakarta.validation.constraints.Negative;
+import jakarta.validation.constraints.NotNull;
+
+public class SalonDTO {
+    @NotNull(message = "El mnemonico no puede ser nulo")
+    private String mnemonico;
+    private String nombre;
+    private String descripcion;
+    @NotNull(message = "La ubicacion no puede ser nula")
+    private String ubicacion;
+    @NotNull(message = "La capacidad no puede ser nula")
+    @Negative(message = "La capacidad no puede ser negativa")
+    private Integer capacidad;
+    @NotNull(message = "Los recursos no pueden ser nulos")
+    private List<Recurso> recursos;
+    private Boolean activo;
+    private Boolean disponible;
+}
+```
+
+## Modelos
+Los modelos representan las entidades principales de la base de datos.
+
+### Ejemplo: `Recurso`
+```java
+package edu.eci.cvds.elysium.model;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.List;
+
+@Document(collection = "recursos")
+public class Recurso {
+    @Id
+    private String id;
+    private String nombre;
+    private int cantidad;
+    private List<String> especificaciones;
+    private boolean activo;
+}
+```
+
+## Endpoints / API
+### Usuario
+- `GET /api/administrador/{id}/usuario` - Consulta un usuario por ID.
+- `GET /api/administrador/usuarios` - Consulta usuarios con filtros opcionales.
+- `POST /api/administrador/usuario` - Agrega un usuario.
+- `PATCH /api/administrador/usuario/{id}` - Actualiza información de un usuario.
+
+### Salón
+- `POST /api/administrador/{id}/salon` - Agrega un nuevo salón.
+
+### Reserva
+- `POST /api/administrador/{id}/reserva` - Crea una nueva reserva.
+
+## Pruebas y Calidad
+- **Pruebas unitarias:** JUnit.
+- **Cobertura de código:** Se busca mantener un mínimo del 85%.
+- **Estrategia de pruebas:**
+    - Pruebas de unidad en los servicios.
+    - Pruebas de integración para verificar la correcta interacción con la base de datos.
+
+## Guía de Configuración y Despliegue
+### Configuración del Entorno de Desarrollo
+1. Clonar el repositorio.
+2. Instalar dependencias con Maven:
+   ```sh
+   mvn clean install
+   ```
+3. Configurar las variables de entorno para la conexión a PostgreSQL y MongoDB.
+4. Iniciar la aplicación:
+   ```sh
+   mvn spring-boot:run
+   ```
+
+### Despliegue
+Para desplegar en producción:
+1. Generar el archivo JAR:
+   ```sh
+   mvn package
+   ```
+2. Ejecutar con:
+   ```sh
+   java -jar target/elysium-backend.jar
+   ```
+
+## Notas Adicionales / Contribución
+- Seguir la guía de estilo de código de Java.
+- Utilizar PRs para contribuir al proyecto.
+- Documentar cualquier nuevo endpoint en Swagger.
+- Posibles mejoras: Implementación de autenticación y autorización con JWT.
+
+---
+📌 **Elysium Backend** - Proyecto para la gestión de reservas de espacios y equipos de computacion.
+
