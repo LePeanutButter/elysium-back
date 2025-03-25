@@ -27,7 +27,7 @@ public class ReservaDTO {
     private boolean duracionBloque;
 
     private int prioridad;
-    private int idUsuario;
+    private String idUsuario;
 
     
 
@@ -52,7 +52,7 @@ public class ReservaDTO {
      * @param idUsuario represents the reservation user ID
      */
     // Constructor for creating a reservation
-    public ReservaDTO(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
+    public ReservaDTO(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, String idUsuario) {
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
@@ -77,7 +77,7 @@ public class ReservaDTO {
      * @param idUsuario represents the reservation user ID
      */
     // Constructor for updating a reservation
-    public ReservaDTO(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, int idUsuario) {
+    public ReservaDTO(String idReserva,LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, String idUsuario) {
         this.idReserva = idReserva;
         this.fechaReserva = fechaReserva;
         this.hora = hora;
@@ -161,6 +161,6 @@ public class ReservaDTO {
      * Get the reservation user ID
      * @return reservation user ID
      */
-    public int getIdUsuario() {return idUsuario;}
+    public String getIdUsuario() {return idUsuario;}
 
 }

@@ -9,6 +9,6 @@ public interface UsuarioService {
      * @param idInstitucional the user's institutional id
      * @return the user
      */
-    Usuario consultarUsuario(int idInstitucional);
+    Usuario consultarUsuario(String idInstitucional);
     
 }

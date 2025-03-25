@@ -3,16 +3,16 @@ package edu.eci.cvds.elysium.model.usuario;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Document(collection = "usuarios")
 public abstract class Usuario {
     @Id
-    protected int idInstitucional;
+    protected String idInstitucional;
     protected boolean isAdmin;
     protected String nombre;
     protected String apellido;
     protected String correoInstitucional;
     protected boolean activo;
+    protected String password;
 
     /**
      * Constructor de la clase Usuario
@@ -23,7 +23,7 @@ public abstract class Usuario {
      * @param activo user's active status
      * @param isAdmin user's admin status
      */
-    protected Usuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean activo, boolean isAdmin) {
+    protected Usuario(String idInstitucional, String nombre, String apellido, String correoInstitucional, boolean activo, boolean isAdmin) {
         this.idInstitucional = idInstitucional;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -39,7 +39,7 @@ public abstract class Usuario {
      * Get the user's institutional ID
      * @return user's institutional ID
      */
-    public int getIdInstitucional() {
+    public String getIdInstitucional() {
         return idInstitucional;
     }
 
@@ -47,7 +47,7 @@ public abstract class Usuario {
      * Set the user's institutional ID
      * @param idInstitucional user's institutional ID
      */
-    public void setIdInstitucional(int idInstitucional) {
+    public void setIdInstitucional(String idInstitucional) {
         this.idInstitucional = idInstitucional;
     }
 
@@ -131,5 +131,21 @@ public abstract class Usuario {
      */
     public boolean getIsAdmin(){
         return isAdmin;
+    }   
+    
+    /**
+     * Get the user's password
+     * @return user's password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Set the user's password
+     * @param password user's password
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }    
 }

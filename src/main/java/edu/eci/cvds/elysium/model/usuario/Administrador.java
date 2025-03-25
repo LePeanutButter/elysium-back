@@ -18,7 +18,7 @@ public class Administrador extends Usuario {
      * @param correoInstitucional represents the institutional email
      * @param activo represents the active status
      */
-    public Administrador(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean activo) {
+    public Administrador(String idInstitucional, String nombre, String apellido, String correoInstitucional, boolean activo) {
         super(idInstitucional, nombre, apellido, correoInstitucional, activo, true);
         this.salones = new ArrayList<>();
     }

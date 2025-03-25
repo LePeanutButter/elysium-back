@@ -70,14 +70,14 @@ public interface AdministradorService extends UsuarioService {
      * @param correoInstitucional institutional email of the user
      * @param isAdmin boolean that indicates if the user is an administrator
      */
-    void agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin);
+    void agregarUsuario(String idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin);
 
     /**
      * Method that allows to update the information of a user
      * @param id identifier of the user
      * @param dto DTO with the information to update
      */
-    void actualizarInformacionUsuario(int id, UsuarioDTO dto);    
+    void actualizarInformacionUsuario(String id, UsuarioDTO dto);    
 
     /**
      * Method that allows to add a new salon
@@ -88,7 +88,7 @@ public interface AdministradorService extends UsuarioService {
      * @param capacidad capacity of the salon
      * @param recursos resources of the salon
      */
-    void agregarSalon(int id,String mnemonico, String nombre, String descripcion,String ubicacion, int capacidad, List<Recurso> recursos);
+    void agregarSalon(String id,String mnemonico, String nombre, String descripcion,String ubicacion, int capacidad, List<Recurso> recursos);
 
     /**
      * Create a reservation
@@ -101,5 +101,5 @@ public interface AdministradorService extends UsuarioService {
      * @param prioridad priority of the reservation
      * @param idInstitucional institutional id of the user
      */
-    void crearReserva(LocalDate fecha,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional);
+    void crearReserva(LocalDate fecha,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, String idInstitucional);
 }

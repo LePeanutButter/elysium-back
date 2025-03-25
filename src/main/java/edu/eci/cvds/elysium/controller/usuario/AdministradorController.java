@@ -43,7 +43,7 @@ public class AdministradorController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @GetMapping("/{id}/usuario")
-    public Usuario consultarUsuario(@PathVariable int id) {
+    public Usuario consultarUsuario(@PathVariable String id) {
         return administradorService.consultarUsuario(id);
     }
 
@@ -157,7 +157,7 @@ public class AdministradorController {
             @ApiResponse(responseCode = "204", description = "Usuario actualizado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<Void> actualizarInformacionUsuario(@PathVariable int id,
+    public ResponseEntity<Void> actualizarInformacionUsuario(@PathVariable String id,
             @RequestBody UsuarioDTO actualizarUsuarioDTO) {        
         administradorService.actualizarInformacionUsuario(id, actualizarUsuarioDTO);
         return ResponseEntity.noContent().build();
@@ -175,7 +175,7 @@ public class AdministradorController {
             @ApiResponse(responseCode = "204", description = "Salón agregado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<Void> agregarSalon(@PathVariable int id, @Valid @RequestBody SalonDTO salondto) {
+    public ResponseEntity<Void> agregarSalon(@PathVariable String id, @Valid @RequestBody SalonDTO salondto) {
         administradorService.agregarSalon(id, salondto.getMnemonic(), salondto.getName(), salondto.getDescription(), salondto.getLocation(), salondto.getCapacity(), salondto.getResources());
         return ResponseEntity.noContent().build();
     }
@@ -193,7 +193,7 @@ public class AdministradorController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @PostMapping("{id}/reserva")
-    public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
+    public ResponseEntity<String> crearReserva(@PathVariable String id,@RequestBody
     ReservaDTO reservaDTO){
         administradorService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
         return ResponseEntity.ok("Reserva creada");

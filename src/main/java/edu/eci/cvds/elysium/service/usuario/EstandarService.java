@@ -17,12 +17,12 @@ public interface EstandarService extends UsuarioService {
      * @param prioridad priority of the reservation
      * @param idInstitucional institutional id of the user
      */
-    void crearReserva(LocalDate fecha,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional);
+    void crearReserva(LocalDate fecha,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, String idInstitucional);
 
     /**
      * List the reservations of a user
      * @param idInstitucional institutional id of the user
      */
-    void listarReservas(int idInstitucional);
+    void listarReservas(String idInstitucional);
 
 }

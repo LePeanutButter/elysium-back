@@ -5,12 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioDTO {
     @NotNull(message = "El id no puede ser nulo")
     @Size(min = 10, max = 10, message = "El id debe tener exactamente 10 dígitos")
     @JsonProperty("idInstitucional")
-    private Integer idInstitucional; // para identificar al usuario
+    private String idInstitucional; // para identificar al usuario
 
     //we use boolean wrapper class to allow null values
     private Boolean isAdmin;         // opcional
@@ -26,11 +30,7 @@ public class UsuarioDTO {
     
     private Boolean activo;         // opcional
 
-    /**
-     * Default constructor
-     */
-    public UsuarioDTO() {        
-    }
+    private String password;        // opcional
 
     // GETTERS
 
@@ -38,7 +38,7 @@ public class UsuarioDTO {
      * Get the user's institutional ID
      * @return the user's institutional ID
      */
-    public Integer getId() { return idInstitucional; }
+    public String getId() { return idInstitucional; }
 
     /**
      * Get the user's name
@@ -69,5 +69,17 @@ public class UsuarioDTO {
      * @return the user's active status
      */
     public Boolean getActivo() { return activo; }
+
+    /**
+     * Get the user's password
+     * @return the user's password
+     */
+    public String getPassword() { return password; }
+
+    /**
+     * Set the user's password
+     * @param password the user's password
+     */
+    public void setPassword(String password) { this.password = password; }
 
 }

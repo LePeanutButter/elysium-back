@@ -1,9 +1,11 @@
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\config\CorsConfig.java
+C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\config\JwtRequestFilter.java
+C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\config\SecurityConfig.java
+C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\controller\auth\AuthController.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\controller\RecursoController.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\controller\ReservaController.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\controller\SalonController.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\controller\usuario\AdministradorController.java
-C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\controller\usuario\ApiOperation.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\controller\usuario\EstandarController.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\dto\RecursoDTO.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\dto\ReservaDTO.java
@@ -11,6 +13,7 @@ C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\dto\s
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\dto\usuario\UsuarioDTO.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\ElysiumApplication.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\ElysiumExceptions.java
+C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\model\AuthenticationRequest.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\model\DiaSemana.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\model\EstadoReserva.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\model\Recurso.java
@@ -23,6 +26,7 @@ C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\repos
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\repository\ReservaRepository.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\repository\SalonRepository.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\repository\UsuarioRepository.java
+C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\service\CustomUserDetailsService.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\service\impl\SalonServiceImpl.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\service\impl\usuario\AdministradorServiceImpl.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\service\impl\usuario\EstandarServiceImpl.java
@@ -35,3 +39,4 @@ C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\servi
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\service\usuario\AdministradorService.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\service\usuario\EstandarService.java
 C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\service\usuario\UsuarioService.java
+C:\Users\Usuario\Documents\Elysium-Back\src\main\java\edu\eci\cvds\elysium\util\JwtUtil.java

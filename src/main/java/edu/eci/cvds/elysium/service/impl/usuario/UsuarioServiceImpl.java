@@ -19,7 +19,7 @@ public class UsuarioServiceImpl implements UsuarioService {
      * @return User with the given id.
      */
     @Override
-    public Usuario consultarUsuario(int idInstitucional) {
+    public Usuario consultarUsuario(String idInstitucional) {
         // Si has definido findByIdInstitucional en el repository:
         return usuarioRepository.findByIdInstitucional(idInstitucional);
     }

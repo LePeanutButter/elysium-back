@@ -36,7 +36,7 @@ public class EstandarController {
             @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    public Usuario consultarUsuario(@PathVariable int id) {
+    public Usuario consultarUsuario(@PathVariable String id) {
         return estandarService.consultarUsuario(id);
     }
 
@@ -53,7 +53,7 @@ public class EstandarController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @PostMapping("{id}/reserva")
-    public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
+    public ResponseEntity<String> crearReserva(@PathVariable String id,@RequestBody
     ReservaDTO reservaDTO){
         estandarService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
         return ResponseEntity.ok("Reserva creada");
@@ -71,7 +71,7 @@ public class EstandarController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @GetMapping("{id}/reserva")
-    public ResponseEntity<String> listarReservas(@PathVariable int id){
+    public ResponseEntity<String> listarReservas(@PathVariable String id){
         estandarService.listarReservas(id);
         return ResponseEntity.noContent().build();
     }

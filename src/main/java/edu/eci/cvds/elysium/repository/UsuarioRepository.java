@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 
 @Repository
-public interface UsuarioRepository extends MongoRepository<Usuario, Integer> {
+public interface UsuarioRepository extends MongoRepository<Usuario, String> {
     
     /**
      * Busca un usuario por su ID
@@ -16,8 +16,14 @@ public interface UsuarioRepository extends MongoRepository<Usuario, Integer> {
      * @return el usuario con el ID dado
      */
     // Este método es opcional si usas el ID de tipo Integer en la anotación @Id
-    Usuario findByIdInstitucional(int idInstitucional);
+    Usuario findByIdInstitucional(String idInstitucional);
 
+    /**
+     * Busca un usuario por su correo institucional
+     * @param correoInstitucional el correo institucional del usuario
+     * @return el usuario con el correo institucional dado
+     */
+    Usuario findByCorreoInstitucional(String correoInstitucional);
     /**
      * Look for all users
      * @return all users
@@ -87,7 +93,7 @@ public interface UsuarioRepository extends MongoRepository<Usuario, Integer> {
      * @return active users who are administrators and whose name contains the given text
      */
     // Usuarios activos que son administradores y cuyo nombre contiene el texto dado
-    boolean existsByIdInstitucional(int idInstitucional);
+    boolean existsByIdInstitucional(String idInstitucional);
 
     /**
      * Look at active users who are administrators and whose name contains the given text

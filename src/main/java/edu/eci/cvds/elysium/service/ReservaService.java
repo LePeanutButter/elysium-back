@@ -85,7 +85,7 @@ public interface ReservaService {
      * @param prioridad the priority of the reservation
      * @param idInstitucional the institutional id of the reservation
      */
-    void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon,boolean duracionBloque, int prioridad, int idInstitucional);
+    void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon,boolean duracionBloque, int prioridad, String idInstitucional);
 
     /**
      * Update a reservation

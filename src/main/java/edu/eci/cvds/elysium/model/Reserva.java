@@ -22,7 +22,7 @@ public class Reserva {
     private EstadoReserva estado;
     private boolean duracionBloque;
     private int prioridad;
-    private int idUsuario;
+    private String idUsuario;
 
     /**
      * Default constructor for a ReservaModel instance.
@@ -41,7 +41,7 @@ public class Reserva {
      * @param prioridad      the priority of the reservation (1 to 5)
      * @param idUsuario      the user ID associated with the reservation
      */
-    public Reserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon,boolean duracionBloque, int prioridad, int idUsuario) {
+    public Reserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon,boolean duracionBloque, int prioridad, String idUsuario) {
         this.fechaReserva = fechaReserva;
         this.hora = hora;
         this.diaSemana = diaSemana;
@@ -245,7 +245,7 @@ public class Reserva {
      *
      * @return the user ID
      */
-    public int getIdUsuario() {
+    public String getIdUsuario() {
         return idUsuario;
     }
 
@@ -254,7 +254,7 @@ public class Reserva {
      * Sets the user ID associated with the reservation.
      * @param idUsuario the user ID
      */
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 }

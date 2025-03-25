@@ -109,7 +109,7 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @return The updated user.
      */
     @Override
-    public void actualizarInformacionUsuario(int id ,UsuarioDTO dto) {
+    public void actualizarInformacionUsuario(String id ,UsuarioDTO dto) {
         // Buscamos el usuario por su ID institucional.
         Usuario usuario = usuarioRepository.findByIdInstitucional(id);
         if (usuario != null) {
@@ -146,12 +146,12 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @param isAdmin If the user is an administrator.
      */
     @Override
-    public void agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,
+    public void agregarUsuario(String idInstitucional, String nombre, String apellido, String correoInstitucional,
             boolean isAdmin) {
         try {
 
             // Validar ID institucional
-            if (idInstitucional == 0 || String.valueOf(idInstitucional).length() != 10) {
+            if (idInstitucional == null || String.valueOf(idInstitucional).length() != 10) {
                 throw new ElysiumExceptions(ElysiumExceptions.ID_NO_VALIDO);
             }
 
@@ -199,7 +199,7 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @param recursos The resources of the salon.
      */
     @Override
-    public void agregarSalon(int id,String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
+    public void agregarSalon(String id,String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
             List<Recurso> recursos) {
         
         Administrador administrador = (Administrador) usuarioRepository.findByIdInstitucional(id);
@@ -221,7 +221,7 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @throws ExcepcionServiciosElysium if the user is not an Estandar
      */
     @Override
-    public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
+    public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, String idInstitucional) {    
         // Se utiliza el método definido en el repository para Mongo
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
         if (usuario != null && usuario instanceof Estandar) {           

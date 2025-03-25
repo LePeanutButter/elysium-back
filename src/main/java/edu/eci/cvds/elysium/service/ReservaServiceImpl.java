@@ -141,7 +141,7 @@ public class ReservaServiceImpl implements ReservaService {
     // Se crea una reserva con los datos ingresados
     @Override
     public void crearReserva(LocalDate fechaReserva, double hora, DiaSemana diaSemana,
-            String proposito, String materia,String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {
+            String proposito, String materia,String idSalon, boolean duracionBloque, int prioridad, String idInstitucional) {
         
                 try{
                     if(hora < 0 ){
@@ -158,7 +158,7 @@ public class ReservaServiceImpl implements ReservaService {
                         throw new ElysiumExceptions(ElysiumExceptions.NO_EXISTE_SALON);
                     }
 
-                    if(idInstitucional == 0){
+                    if(idInstitucional == null){
                         throw new ElysiumExceptions(ElysiumExceptions.NO_EXISTE_USUARIO);
                     }
 
@@ -215,7 +215,7 @@ public class ReservaServiceImpl implements ReservaService {
             if(reservaDTO.getPrioridad() != 0) {
                 reserva.setPrioridad(reservaDTO.getPrioridad());
             }
-            if(reservaDTO.getIdUsuario() != 0) {
+            if(reservaDTO.getIdUsuario() != null) {
                 reserva.setIdUsuario(reservaDTO.getIdUsuario());
             }
             EstadoReserva estado = EstadoReserva.ACTIVA;
@@ -255,7 +255,7 @@ public class ReservaServiceImpl implements ReservaService {
             boolean duracionBloque = random.nextBoolean();
             int prioridad = random.nextInt(5) + 1;
             int hora = random.nextInt(24);
-            int idInstitucional = random.nextInt(6) + 1;
+            String idInstitucional = "user" + (random.nextInt(901) + 100);
             
             crearReserva(fechaReserva, hora, diaSemana, proposito, materia,idSalon, duracionBloque, prioridad, idInstitucional);
         }
