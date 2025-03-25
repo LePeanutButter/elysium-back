@@ -1,12 +1,14 @@
 package edu.eci.cvds.elysium.service.impl.usuario;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import edu.eci.cvds.elysium.model.DiaSemana;
+import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.model.usuario.Estandar;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.repository.UsuarioRepository;
@@ -49,12 +51,13 @@ public class EstandarServiceImpl extends UsuarioServiceImpl implements EstandarS
      * @param idInstitucional institutional id of the user
      */
     @Override
-    public void listarReservas(int idInstitucional) {
+    public List<Reserva> listarReservas(int idInstitucional) {
         // Se utiliza el método definido en el repository para Mongo
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
         if (usuario != null && usuario instanceof Estandar) {
-            reservaService.consultarReservas();
+            return reservaService.consultarReservasPorUsuario(idInstitucional);
         }
+        return null;
     }
 
 }

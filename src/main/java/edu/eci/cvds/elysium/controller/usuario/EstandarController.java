@@ -1,5 +1,7 @@
 package edu.eci.cvds.elysium.controller.usuario;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.eci.cvds.elysium.dto.ReservaDTO;
+import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.service.usuario.EstandarService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,8 +74,7 @@ public class EstandarController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @GetMapping("{id}/reserva")
-    public ResponseEntity<String> listarReservas(@PathVariable int id){
-        estandarService.listarReservas(id);
-        return ResponseEntity.noContent().build();
+    public List<Reserva> listarReservas(@PathVariable int id){
+        return estandarService.listarReservas(id);        
     }
 }

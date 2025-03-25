@@ -40,6 +40,15 @@ public class ReservaServiceImpl implements ReservaService {
 
 
     /**
+     * Consult the reservations by the user id
+     * @param idUsuario the user id
+     * @return the reservations by the user id
+     */
+    public List<Reserva> consultarReservasPorUsuario(Integer idUsuario){
+        return reservaRepository.findByIdUsuario(idUsuario);
+    };
+
+    /**
      * Returns all reservations for a specific salon.
      * @param idSalon the salon ID
      * @return the reservations for the specified salon
