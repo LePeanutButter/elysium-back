@@ -17,6 +17,12 @@ public interface ReservaService {
     List<Reserva> consultarReservas();
 
     /**
+     * Consult the reservations by the user id
+     * @param idUsuario the user id
+     * @return the reservations by the user id
+     */
+    List<Reserva> consultarReservasPorUsuario(Integer idUsuario);
+    /**
      * Consult the reservations by the salon
      * @param idSalon the salon
      * @return the reservations by the salon

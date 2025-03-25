@@ -1,8 +1,10 @@
 package edu.eci.cvds.elysium.service.usuario;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import edu.eci.cvds.elysium.model.DiaSemana;
+import edu.eci.cvds.elysium.model.Reserva;
 
 public interface EstandarService extends UsuarioService {
     
@@ -23,6 +25,6 @@ public interface EstandarService extends UsuarioService {
      * List the reservations of a user
      * @param idInstitucional institutional id of the user
      */
-    void listarReservas(int idInstitucional);
+    List<Reserva> listarReservas(int idInstitucional);
 
 }

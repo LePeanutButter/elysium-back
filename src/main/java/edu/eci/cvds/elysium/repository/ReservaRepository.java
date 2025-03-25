@@ -69,4 +69,13 @@ public interface ReservaRepository extends MongoRepository<Reserva, String> {
      * @return all the reservations with the given reservation state
      */
     List<Reserva> findByEstado(EstadoReserva estado);
+
+
+    /**
+     * Find all the reservations by the user ID
+     * @param idUsuario the ID of the user
+     * @return all the reservations with the given user ID
+     */
+
+    List<Reserva> findByIdUsuario(Integer idUsuario);
 }
