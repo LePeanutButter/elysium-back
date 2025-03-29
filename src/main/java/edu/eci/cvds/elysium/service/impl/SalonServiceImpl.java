@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.eci.cvds.elysium.ElysiumExceptions;
-import edu.eci.cvds.elysium.dto.salon.SalonDTO;
+import edu.eci.cvds.elysium.dto.SalonDTO;
 import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.repository.SalonRepository;

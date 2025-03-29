@@ -1,11 +1,11 @@
-package edu.eci.cvds.elysium.model.usuario;
+package edu.eci.cvds.elysium.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document(collection = "usuarios")
-public abstract class Usuario {
+public class Usuario {
     @Id
     protected int idInstitucional;
     protected boolean isAdmin;
@@ -23,12 +23,12 @@ public abstract class Usuario {
      * @param activo user's active status
      * @param isAdmin user's admin status
      */
-    protected Usuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean activo, boolean isAdmin) {
+    public Usuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin) {
         this.idInstitucional = idInstitucional;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correoInstitucional = correoInstitucional;
-        this.activo = activo;
+        setActivo(true);
         this.isAdmin = isAdmin;
     }
     

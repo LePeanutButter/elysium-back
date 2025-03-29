@@ -1,4 +1,4 @@
-package edu.eci.cvds.elysium.controller.usuario;
+package edu.eci.cvds.elysium.controller;
 
 import java.util.List;
 
@@ -8,28 +8,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.eci.cvds.elysium.dto.ReservaDTO;
-import edu.eci.cvds.elysium.dto.salon.SalonDTO;
-import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
-import edu.eci.cvds.elysium.model.usuario.Usuario;
-import edu.eci.cvds.elysium.service.usuario.AdministradorService;
+import edu.eci.cvds.elysium.dto.SalonDTO;
+import edu.eci.cvds.elysium.dto.UsuarioDTO;
+import edu.eci.cvds.elysium.model.Reserva;
+import edu.eci.cvds.elysium.model.Usuario;
+import edu.eci.cvds.elysium.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/administrador")
-public class AdministradorController {
+@RequestMapping("/api/usuario")
+public class UsuarioController {
 
     @Autowired
-    private AdministradorService administradorService;
+    private UsuarioService usuarioService;
 
     /**
      * Endpoint para consultar un usuario por su identificador.
@@ -44,13 +45,24 @@ public class AdministradorController {
     })
     @GetMapping("/{id}/usuario")
     public Usuario consultarUsuario(@PathVariable int id) {
-        return administradorService.consultarUsuario(id);
+        return usuarioService.consultarUsuario(id);
     }
 
-
+    /**
+     * Endpoint para consultar un usuario por su correo institucional.
+     * 
+     * @param correo Correo institucional del usuario a consultar (proveniente de la
+     *               URL).
+     * @return Usuario con el correo dado.
+     */
+    @Operation(summary = "Consultar usuario por correo", description = "Endpoint para consultar un usuario por su correo institucional.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
     @GetMapping("/usuarioPorCorreo")
     public Usuario consultarUsuarioPorCorreo(@RequestParam String correo) {
-        return administradorService.consultarUsuarioPorCorreo(correo);
+        return usuarioService.consultarUsuarioPorCorreo(correo);
     }
 
     /**
@@ -87,30 +99,30 @@ public class AdministradorController {
 
             @Parameter(description = "Valor opcional para filtrar usuarios por rol administrador (true) o no administrador (false)", example = "false") @RequestParam(required = false) Boolean isAdmin) {
         if (activo == null && isAdmin == null) {
-            return administradorService.consultarUsuarios();
+            return usuarioService.consultarUsuarios();
         }
         // Si se filtra solo por estado activo/inactivo
         if (activo != null && isAdmin == null) {
             return activo
-                    ? administradorService.consultarUsuariosActivos()
-                    : administradorService.consultarUsuariosInactivos();
+                    ? usuarioService.consultarUsuariosActivos()
+                    : usuarioService.consultarUsuariosInactivos();
         }
         // Si se filtra solo por rol
         if (activo == null && isAdmin != null) {
             return isAdmin
-                    ? administradorService.consultarUsuariosAdmins()
-                    : administradorService.consultarUsuariosActiveNoAdmins(); // O se pueden combinar activos e
+                    ? usuarioService.consultarUsuariosAdmins()
+                    : usuarioService.consultarUsuariosActiveNoAdmins(); // O se pueden combinar activos e
                                                                               // inactivos
         }
         // Si se filtran ambos
         if (activo && isAdmin) {
-            return administradorService.consultarUsuariosActiveAdmins();
+            return usuarioService.consultarUsuariosActiveAdmins();
         } else if (activo && !isAdmin) {
-            return administradorService.consultarUsuariosActiveNoAdmins();
+            return usuarioService.consultarUsuariosActiveNoAdmins();
         } else if (!activo && isAdmin) {
-            return administradorService.consultarUsuariosInactiveAdmins();
+            return usuarioService.consultarUsuariosInactiveAdmins();
         } else { // !activo && !isAdmin
-            return administradorService.consultarUsuariosInactiveNoAdmins();
+            return usuarioService.consultarUsuariosInactiveNoAdmins();
         }
     }
 
@@ -138,7 +150,7 @@ public class AdministradorController {
     })
 
     public ResponseEntity<Void> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
-        administradorService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
+        usuarioService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
                 usuarioDTO.getApellido(), usuarioDTO.getCorreo(), usuarioDTO.getIsAdmin());
         return ResponseEntity.status(201).build();
     }
@@ -165,7 +177,7 @@ public class AdministradorController {
     })
     public ResponseEntity<Void> actualizarInformacionUsuario(@PathVariable int id,
             @RequestBody UsuarioDTO actualizarUsuarioDTO) {        
-        administradorService.actualizarInformacionUsuario(id, actualizarUsuarioDTO);
+        usuarioService.actualizarInformacionUsuario(id, actualizarUsuarioDTO);
         return ResponseEntity.noContent().build();
     }
 
@@ -182,7 +194,7 @@ public class AdministradorController {
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     public ResponseEntity<Void> agregarSalon(@PathVariable int id, @Valid @RequestBody SalonDTO salondto) {
-        administradorService.agregarSalon(id, salondto.getMnemonic(), salondto.getName(), salondto.getDescription(), salondto.getLocation(), salondto.getCapacity(), salondto.getResources());
+        usuarioService.agregarSalon(id, salondto.getMnemonic(), salondto.getName(), salondto.getDescription(), salondto.getLocation(), salondto.getCapacity(), salondto.getResources());
         return ResponseEntity.noContent().build();
     }
 
@@ -201,7 +213,23 @@ public class AdministradorController {
     @PostMapping("{id}/reserva")
     public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
     ReservaDTO reservaDTO){
-        administradorService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
+        usuarioService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
         return ResponseEntity.ok("Reserva creada");
-    }   
+    }
+
+    /**
+     * Endpoint para listar las reservas de un usuario.
+     * 
+     * @param id Identificador del usuario a consultar.
+     * @return ResponseEntity con un mensaje de éxito.
+     */
+    @Operation(summary = "Listar reservas", description = "Endpoint para listar las reservas de un usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reservas listadas"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @GetMapping("{id}/reserva")
+    public List<Reserva> listarReservas(@PathVariable int id){
+        return usuarioService.listarReservas(id);        
+    }
 }

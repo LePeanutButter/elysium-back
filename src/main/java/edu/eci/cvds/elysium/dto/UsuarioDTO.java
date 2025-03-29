@@ -1,4 +1,4 @@
-package edu.eci.cvds.elysium.dto.usuario;
+package edu.eci.cvds.elysium.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

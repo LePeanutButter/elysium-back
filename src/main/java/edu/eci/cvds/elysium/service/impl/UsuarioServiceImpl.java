@@ -1,4 +1,4 @@
-package edu.eci.cvds.elysium.service.impl.usuario;
+package edu.eci.cvds.elysium.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,19 +8,18 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import edu.eci.cvds.elysium.ElysiumExceptions;
-import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
+import edu.eci.cvds.elysium.dto.UsuarioDTO;
 import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.Recurso;
+import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.model.Salon;
-import edu.eci.cvds.elysium.model.usuario.Administrador;
-import edu.eci.cvds.elysium.model.usuario.Estandar;
-import edu.eci.cvds.elysium.model.usuario.Usuario;
+import edu.eci.cvds.elysium.model.Usuario;
 import edu.eci.cvds.elysium.repository.UsuarioRepository;
 import edu.eci.cvds.elysium.service.ReservaService;
-import edu.eci.cvds.elysium.service.usuario.AdministradorService;
+import edu.eci.cvds.elysium.service.UsuarioService;
 
 @Service
-public class AdministradorServiceImpl extends UsuarioServiceImpl implements AdministradorService {
+public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -28,6 +27,17 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
     @Lazy
     @Autowired
     private ReservaService reservaService;
+
+    /**
+     * Consult a user by its institutional id.
+     * @param idInstitucional Institutional id of the user to consult.
+     * @return User with the given id.
+     */
+    @Override
+    public Usuario consultarUsuario(int idInstitucional) {
+        // Si has definido findByIdInstitucional en el repository:
+        return usuarioRepository.findByIdInstitucional(idInstitucional);
+    }
 
     /**
      * Consult a list of all users.
@@ -178,10 +188,10 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
 
             // Crear y guardar usuario
             if (isAdmin) {
-                Administrador nuevoUsuario = new Administrador(idInstitucional, nombre, apellido, correoInstitucional, true);
+                Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, true);
                 usuarioRepository.save(nuevoUsuario);
             } else {
-                Estandar nuevoUsuario = new Estandar(idInstitucional, nombre, apellido, correoInstitucional, true);
+                Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, false);
                 usuarioRepository.save(nuevoUsuario);
             }
             
@@ -203,14 +213,16 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @param capacidad The capacity of the salon.
      * @param recursos The resources of the salon.
      */
+    @SuppressWarnings("unused")
     @Override
     public void agregarSalon(int id,String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
             List<Recurso> recursos) {
         
-        Administrador administrador = (Administrador) usuarioRepository.findByIdInstitucional(id);
-        @SuppressWarnings("unused")
-        Salon nuevoSalon = new Salon(mnemonico,nombre, descripcion, ubicacion, capacidad, recursos);
-        usuarioRepository.save(administrador);        
+        Usuario administrador = usuarioRepository.findByIdInstitucional(id);
+        if (administrador!=null){
+            Salon nuevoSalon = new Salon(mnemonico,nombre, descripcion, ubicacion, capacidad, recursos);
+            usuarioRepository.save(administrador);  
+        }
     }
 
     /**
@@ -229,8 +241,22 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
     public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
         // Se utiliza el método definido en el repository para Mongo
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
-        if (usuario != null && usuario instanceof Estandar) {           
+        if (usuario != null) {           
             reservaService.crearReserva(fechaReserva,hora, diaSemana, proposito, materia,idSalon, duracionBloque, prioridad, idInstitucional);            
         }  
+    }
+
+    /**
+     * List the reservations of a user
+     * @param idInstitucional institutional id of the user
+     */
+    @Override
+    public List<Reserva> listarReservas(int idInstitucional) {
+        // Se utiliza el método definido en el repository para Mongo
+        Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
+        if (usuario != null) {
+            return reservaService.consultarReservasPorUsuario(idInstitucional);
+        }
+        return new java.util.ArrayList<>();
     }
 }

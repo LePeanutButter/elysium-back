@@ -2,7 +2,7 @@ package edu.eci.cvds.elysium.service;
 
 import java.util.List;
 
-import edu.eci.cvds.elysium.dto.salon.SalonDTO;
+import edu.eci.cvds.elysium.dto.SalonDTO;
 import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.model.Salon;
 

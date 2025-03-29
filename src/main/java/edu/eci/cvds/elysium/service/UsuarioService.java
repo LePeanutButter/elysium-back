@@ -1,26 +1,37 @@
-package edu.eci.cvds.elysium.service.usuario;
+package edu.eci.cvds.elysium.service;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
+import edu.eci.cvds.elysium.dto.UsuarioDTO;
 import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.Recurso;
-import edu.eci.cvds.elysium.model.usuario.Usuario;
+import edu.eci.cvds.elysium.model.Reserva;
+import edu.eci.cvds.elysium.model.Usuario;
 
-/**
- * Interface AdministradorService that allows the implementation of the methods of the service of the administrator
- */
-public interface AdministradorService extends UsuarioService {
+public interface UsuarioService {
 
-    
+    /**
+     * Consult a user by its institutional id
+     * @param idInstitucional the user's institutional id
+     * @return the user
+     */
+    Usuario consultarUsuario(int idInstitucional);
+
     /**
      * Method that allows to consult the users
      * @return List of users
      */
     List<Usuario> consultarUsuarios();
 
+    /**
+     * Method that allows to consult a user by its email
+     * @param correo the user's email
+     * @return the user
+     */
     public Usuario consultarUsuarioPorCorreo(String correo);
+
+
     /**
      * Method that allows to consult the active users
      * @return List of active users
@@ -104,4 +115,11 @@ public interface AdministradorService extends UsuarioService {
      * @param idInstitucional institutional id of the user
      */
     void crearReserva(LocalDate fecha,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional);
+    
+
+    /**
+     * List the reservations of a user
+     * @param idInstitucional institutional id of the user
+     */
+    List<Reserva> listarReservas(int idInstitucional);
 }

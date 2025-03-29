@@ -14,9 +14,8 @@ import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.EstadoReserva;
 import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.model.Salon;
-import edu.eci.cvds.elysium.model.usuario.Estandar;
+import edu.eci.cvds.elysium.model.Usuario;
 import edu.eci.cvds.elysium.repository.ReservaRepository;
-import edu.eci.cvds.elysium.service.usuario.EstandarService;
 
 @Service
 public class ReservaServiceImpl implements ReservaService {
@@ -25,7 +24,7 @@ public class ReservaServiceImpl implements ReservaService {
     private ReservaRepository reservaRepository;
 
     @Autowired
-    private EstandarService estandarService;
+    private UsuarioService usuarioService;
 
     @Autowired
     private SalonService salonService;
@@ -46,7 +45,7 @@ public class ReservaServiceImpl implements ReservaService {
      */
     public List<Reserva> consultarReservasPorUsuario(Integer idUsuario){
         return reservaRepository.findByIdUsuario(idUsuario);
-    };
+    }
 
     /**
      * Returns all reservations for a specific salon.
@@ -171,10 +170,10 @@ public class ReservaServiceImpl implements ReservaService {
                         throw new ElysiumExceptions(ElysiumExceptions.NO_EXISTE_USUARIO);
                     }
 
-                    Estandar estandar = (Estandar) estandarService.consultarUsuario(idInstitucional);
+                    Usuario usuario = usuarioService.consultarUsuario(idInstitucional);
                     Salon salon = salonService.findByMnemonico(idSalon);
 
-                    if (estandar != null && salon != null) {
+                    if (usuario != null && salon != null) {
                         Reserva reserva = new Reserva(fechaReserva, hora, diaSemana, proposito,materia, idSalon, duracionBloque,
                                 prioridad, idInstitucional);
                         reserva.setEstado(EstadoReserva.ACTIVA);
@@ -268,5 +267,15 @@ public class ReservaServiceImpl implements ReservaService {
             
             crearReserva(fechaReserva, hora, diaSemana, proposito, materia,idSalon, duracionBloque, prioridad, idInstitucional);
         }
+    }
+
+    /**
+     * Returns the reservations by user id.
+     * @param idUsuario the user ID
+     * @return the reservations for the specified user
+     */
+    @Override
+    public List<Reserva> consultarReservasPorUsuario(int idUsuario) {
+        return reservaRepository.findByIdUsuario(idUsuario);
     }
 }
