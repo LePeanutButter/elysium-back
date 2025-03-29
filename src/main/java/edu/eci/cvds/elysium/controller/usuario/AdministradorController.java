@@ -47,6 +47,12 @@ public class AdministradorController {
         return administradorService.consultarUsuario(id);
     }
 
+
+    @GetMapping("/usuarioPorCorreo")
+    public Usuario consultarUsuarioPorCorreo(@RequestParam String correo) {
+        return administradorService.consultarUsuarioPorCorreo(correo);
+    }
+
     /**
      * Endpoint unificado para consultar usuarios.
      * Se pueden usar los parámetros opcionales:

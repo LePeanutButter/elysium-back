@@ -18,6 +18,9 @@ public interface UsuarioRepository extends MongoRepository<Usuario, Integer> {
     // Este método es opcional si usas el ID de tipo Integer en la anotación @Id
     Usuario findByIdInstitucional(int idInstitucional);
 
+    Usuario findByCorreoInstitucional(String correo);
+
+    
     /**
      * Look for all users
      * @return all users

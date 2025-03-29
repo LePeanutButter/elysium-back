@@ -47,6 +47,11 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
         return usuarioRepository.findByActivoTrue();
     }
 
+    @Override
+    public Usuario consultarUsuarioPorCorreo(String correo) {
+        return usuarioRepository.findByCorreoInstitucional(correo);
+    }
+    
     /**
      * Consult the inactive users.
      * @return List of inactive users.

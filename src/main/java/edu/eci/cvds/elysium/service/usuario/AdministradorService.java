@@ -13,12 +13,14 @@ import edu.eci.cvds.elysium.model.usuario.Usuario;
  */
 public interface AdministradorService extends UsuarioService {
 
+    
     /**
      * Method that allows to consult the users
      * @return List of users
      */
     List<Usuario> consultarUsuarios();
 
+    public Usuario consultarUsuarioPorCorreo(String correo);
     /**
      * Method that allows to consult the active users
      * @return List of active users
