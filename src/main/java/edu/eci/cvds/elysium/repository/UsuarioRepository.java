@@ -24,6 +24,7 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
      * @return el usuario con el correo institucional dado
      */
     Usuario findByCorreoInstitucional(String correoInstitucional);
+
     /**
      * Look for all users
      * @return all users

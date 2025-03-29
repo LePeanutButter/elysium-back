@@ -10,5 +10,11 @@ public interface UsuarioService {
      * @return the user
      */
     Usuario consultarUsuario(String idInstitucional);
-    
+
+    /**
+     * Consult a user by its institutional email
+     * @param correoInstitucional the user's institutional email
+     * @return the user
+     */
+    Usuario consultarPorCorreoInstitucional(String correoInstitucional);
 }

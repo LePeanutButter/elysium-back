@@ -1,17 +1,25 @@
 package edu.eci.cvds.elysium.model.usuario;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "usuarios")
 public abstract class Usuario {
     @Id
+    @NotBlank(message = "El ID institucional no puede estar vacío")
     protected String idInstitucional;
     protected boolean isAdmin;
     protected String nombre;
     protected String apellido;
+
+    @NotBlank(message = "El correo institucional no puede estar vacío")
+    @Indexed(unique = true)
     protected String correoInstitucional;
     protected boolean activo;
+
+    @NotBlank(message = "La contraseña no puede estar vacía")
     protected String password;
 
     /**

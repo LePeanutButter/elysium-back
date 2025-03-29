@@ -120,7 +120,7 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
             if (dto.getApellido() != null) {
                 usuario.setApellido(dto.getApellido());
             }
-            if (dto.getCorreo() != null) {
+            if (dto.getCorreo() != null && !usuarioRepository.existsByCorreoInstitucional(usuario.getCorreoInstitucional())) {
                 usuario.setCorreoInstitucional(dto.getCorreo());
             }
             // Suponiendo que para cambiar el rol se requiere lógica adicional.
@@ -210,7 +210,7 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
 
     /**
      * Create a reservation
-     * @param fecha date of the reservation
+     * @param fechaReserva date of the reservation
      * @param hora hour of the reservation
      * @param diaSemana day of the week of the reservation
      * @param proposito purpose of the reservation
@@ -218,7 +218,6 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @param duracionBloque if the reservation is for a block of time
      * @param prioridad priority of the reservation
      * @param idInstitucional institutional id of the user
-     * @throws ExcepcionServiciosElysium if the user is not an Estandar
      */
     @Override
     public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, String idInstitucional) {    

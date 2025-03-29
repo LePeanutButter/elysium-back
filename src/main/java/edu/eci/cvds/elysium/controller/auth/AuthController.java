@@ -1,17 +1,16 @@
 package edu.eci.cvds.elysium.controller.auth;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
 import edu.eci.cvds.elysium.model.AuthenticationRequest;
 import edu.eci.cvds.elysium.model.usuario.Administrador;
-import edu.eci.cvds.elysium.model.usuario.Usuario;
 import edu.eci.cvds.elysium.repository.UsuarioRepository;
 import edu.eci.cvds.elysium.service.CustomUserDetailsService;
 import edu.eci.cvds.elysium.util.JwtUtil;
@@ -20,45 +19,53 @@ import edu.eci.cvds.elysium.util.JwtUtil;
 @RequestMapping("/api")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final CustomUserDetailsService userDetailsService;
+    private final UsuarioRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-
-    @Autowired
-    private UsuarioRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public AuthController(AuthenticationManager authenticationManager,
+                          CustomUserDetailsService userDetailsService,
+                          UsuarioRepository userRepository,
+                          PasswordEncoder passwordEncoder,
+                          JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody Administrador user) {
+    public ResponseEntity<String> registerUser(@RequestBody Administrador user) {
         // Si no se envía password, usamos el idInstitucional como raw password
-        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
-            user.setPassword(user.getIdInstitucional());
+        if (userRepository.existsByIdInstitucional(user.getIdInstitucional())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El usuario ya existe");
         }
         // Encriptar la contraseña
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         // Guardar el usuario en la base de datos
         userRepository.save(user);
-        return "User registered successfully";
+        return ResponseEntity.ok("Usuario registrado exitosamente");
     }
     
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
-        );
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails);
-
-        return jwt;
+    public ResponseEntity<?> loginUser(@RequestBody AuthenticationRequest authenticationRequest) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequest.getCorreoInstitucional(),
+                            authenticationRequest.getPassword()
+                    )
+            );
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getCorreoInstitucional());
+            final String jwt = jwtUtil.generateToken(userDetails);
+            return ResponseEntity.ok(jwt);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+        }
     }
 
     @GetMapping("/hello")

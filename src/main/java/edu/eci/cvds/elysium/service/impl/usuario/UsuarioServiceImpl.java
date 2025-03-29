@@ -24,4 +24,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByIdInstitucional(idInstitucional);
     }
 
+    /**
+     * Consult a user by its institutional email.
+     * @param correoInstitucional Institutional email of the user to consult.
+     * @return User with the given email.
+     */
+    @Override
+    public Usuario consultarPorCorreoInstitucional(String correoInstitucional) {
+        return usuarioRepository.findByCorreoInstitucional(correoInstitucional);
+    }
+
 }

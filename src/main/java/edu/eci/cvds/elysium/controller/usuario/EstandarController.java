@@ -41,6 +41,23 @@ public class EstandarController {
     }
 
     /**
+     * Endpoint para consultar un usuario por su correo.
+     *
+     * @param correo Identificador del usuario a consultar (proveniente de la URL).
+     * @return Usuario con el identificador dado.
+     */
+    @GetMapping("/correo/{correo}")
+    @Operation(summary = "Consultar usuario", description = "Endpoint para consultar un usuario por su correo.")
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public Usuario consultarUsuarioPorCorreo(@PathVariable String correo) {
+        return estandarService.consultarPorCorreoInstitucional(correo);
+    }
+
+    /**
      * Endpoint para crear una reserva.
      * 
      * @param id Identificador del usuario que realiza la reserva.

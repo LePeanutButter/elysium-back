@@ -48,6 +48,24 @@ public class AdministradorController {
     }
 
     /**
+     * Endpoint para consultar un usuario por su correo.
+     *
+     * @param correo Identificador del usuario a consultar (proveniente de la URL).
+     * @return Usuario con el identificador dado.
+     */
+    @GetMapping("/correo/{correo}")
+    @Operation(summary = "Consultar usuario", description = "Endpoint para consultar un usuario por su correo.")
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public Usuario consultarUsuarioPorCorreo(@PathVariable String correo) {
+        return administradorService.consultarPorCorreoInstitucional(correo);
+    }
+
+
+    /**
      * Endpoint unificado para consultar usuarios.
      * Se pueden usar los parámetros opcionales:
      * - activo: true/false para filtrar por estado activo.
@@ -166,7 +184,7 @@ public class AdministradorController {
     /**
      * Endpoint para agregar un salón.
      * @param id administrador id 
-     * @param salon salon to add
+     * @param salondto salon to add
      * @return ResponseEntity  with code 204 if the salon is added correctly, or 400 in case of invalid data.
      */
     @PostMapping("/{id}/salon")
