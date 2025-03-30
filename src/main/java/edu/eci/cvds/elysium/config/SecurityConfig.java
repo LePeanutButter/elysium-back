@@ -53,6 +53,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/usuarios/**").permitAll()
                                 .requestMatchers(HttpMethod.PATCH, "/api/usuarios/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/usuarios/salones/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/usuarios/*/reservas").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
