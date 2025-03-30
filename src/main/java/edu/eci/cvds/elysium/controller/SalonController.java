@@ -8,15 +8,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.eci.cvds.elysium.dto.salon.ActualizarSalonDTO;
+import edu.eci.cvds.elysium.dto.SalonDTO;
 import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.service.SalonService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/salones")
@@ -57,7 +60,13 @@ public class SalonController {
      * @return ResponseEntity containing a list of Salones that match the provided
      *         filters.
      */
+    @SuppressWarnings("null")
     @GetMapping("")
+    @Operation (summary = "Consultar salones", description = "Endpoint para consultar salones.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Salones retornados correctamente"),
+            @ApiResponse(responseCode = "404", description = "Salones no encontrados")
+    })
     public ResponseEntity<List<Salon>> getSalones(
             @RequestParam(required = false) Boolean activo,
             @RequestParam(required = false) Boolean disponible,
@@ -97,68 +106,82 @@ public class SalonController {
         return ResponseEntity.ok(salones);
     }
 
-    // Consulta un salón específico por su mnemonico
+    
+    /**
+     * Retrieves a Salon based on its mnemonico.
+     * @param mnemonico The mnemonico of the Salon to retrieve.
+     * @return ResponseEntity containing the Salon with the provided mnemonico.
+     */
     @GetMapping("/{mnemonico}")
+    @Operation(summary = "Consultar salón", description = "Endpoint para consultar un salón por su mnemónico.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Salón retornado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Salón no encontrado")
+    })
     public ResponseEntity<Salon> getSalonByMnemonico(@PathVariable String mnemonico) {
         Salon salon = salonService.findByMnemonico(mnemonico);
         return salon != null ? ResponseEntity.ok(salon) : ResponseEntity.notFound().build();
     }
-
-    // Agregar un nuevo salón
-    @PostMapping("")
-    public ResponseEntity<Void> agregarSalon(@RequestBody Salon salonRequest) {
-        // Se espera que el JSON incluya: nombre, mnemonico, ubicacion, capacidad.
-        // Se asume que el salón se crea por defecto como activo y disponible.
-        salonService.agregarSalon(
-                salonRequest.getNombre(),
-                salonRequest.getMnemonico(),
-                salonRequest.getUbicacion(),
-                salonRequest.getCapacidad());
-
-        return ResponseEntity.ok().build();
-    }
-
-    // Deshabilitar un salón (marcarlo como inactivo)
-    @PutMapping("/{mnemonico}/deshabilitar")
-    public ResponseEntity<Void> deshabilitarSalon(@PathVariable String mnemonico) {
-        salonService.deshabilitarSalon(mnemonico);
-        return ResponseEntity.noContent().build();
-    }
-
-    // Habilitar un salón (marcarlo como activo)
-    @PutMapping("/{mnemonico}/habilitar")
-    public ResponseEntity<Void> habilitarSalon(@PathVariable String mnemonico) {
-        salonService.habilitarSalon(mnemonico);
-        return ResponseEntity.noContent().build();
-    }
-
-    // Consultar el estado 'disponible' del salón
+    
+    
+    /**
+     * Retrieves the availability status of a Salon based on its mnemonico.
+     * @param mnemonico The mnemonico of the Salon to check.
+     * @return ResponseEntity containing a Boolean indicating whether the Salon is available.
+     */
     @GetMapping("/{mnemonico}/disponible")
+    @Operation(summary = "Consultar disponibilidad", description = "Endpoint para consultar la disponibilidad de un salón por su mnemónico.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Disponibilidad retornada correctamente"),
+            @ApiResponse(responseCode = "404", description = "Salón no encontrado")
+    })
     public ResponseEntity<Boolean> getDisponible(@PathVariable String mnemonico) {
         boolean disponible = salonService.getDisponible(mnemonico);
         return ResponseEntity.ok(disponible);
     }
 
-    // Marcar el salón como disponible
-    @PutMapping("/{mnemonico}/disponible")
-    public ResponseEntity<Void> setDisponible(@PathVariable String mnemonico) {
-        boolean actualizado = salonService.setDisponible(mnemonico);
-        return actualizado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    /**
+     * Adds a new Salon to the system.
+     * @param salonRequest The Salon to add.
+     * @return ResponseEntity indicating the success of the operation.
+     */
+    @PostMapping("")
+    @Operation(summary = "Agregar salón", description = "Endpoint para agregar un salón.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Salón agregado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    public ResponseEntity<Void> agregarSalon(@Valid @RequestBody SalonDTO salonRequest) {
+        // Se espera que el JSON incluya: nombre, mnemonico, ubicacion, capacidad.
+        // Se asume que el salón se crea por defecto como activo y disponible.
+        salonService.agregarSalon(
+                salonRequest.getName(),
+                salonRequest.getMnemonic(),
+                salonRequest.getDescription(),
+                salonRequest.getLocation(),
+                salonRequest.getCapacity(),
+                salonRequest.getResources()
+                
+                );      
+
+        return ResponseEntity.ok().build();
     }
 
-    // Marcar el salón como no disponible
-    @PutMapping("/{mnemonico}/noDisponible")
-    public ResponseEntity<Void> setNoDisponible(@PathVariable String mnemonico) {
-        boolean actualizado = salonService.setNoDisponible(mnemonico);
-        return actualizado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
-    }
-
-
+    /**
+     * Updates the information of a Salon based on its mnemonico.
+     * @param mnemonico The mnemonico of the Salon to update.
+     * @param salonDto The updated information of the Salon.
+     * @return ResponseEntity indicating the success of the operation.
+     */
     @PatchMapping("/{mnemonico}")
-    public ResponseEntity<Void> actualizarSalon(@PathVariable String mnemonico, @RequestBody ActualizarSalonDTO dto) {
-        // El servicio actualizará solo los campos no nulos.
-        salonService.actualizarSalon(mnemonico, dto);
-        return ResponseEntity.noContent().build();
+    @Operation(summary = "Actualizar salón", description = "Endpoint para actualizar un salón por su mnemónico.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Salón actualizado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Salón no encontrado")
+    })
+    public ResponseEntity<Void> actualizarSalon(@PathVariable String mnemonico , @RequestBody SalonDTO salonDto){
+        salonService.actualizarSalon(mnemonico, salonDto);
+        return ResponseEntity.ok().build();
     }
 
 }
