@@ -30,7 +30,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
     @Autowired
@@ -47,7 +47,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @GetMapping("/{id}/usuario")
+    @GetMapping("/{id}")
     public Usuario consultarUsuario(@PathVariable int id) {
         return usuarioService.consultarUsuario(id);
     }
@@ -92,7 +92,7 @@ public class UsuarioController {
      */
 
     @SuppressWarnings("null")
-    @GetMapping("/usuarios")
+    @GetMapping
     @Operation(summary = "Consultar usuarios", description = "Endpoint unificado para consultar usuarios, pudiendo filtrar por estado activo e indicador de rol de administrador.")
 
     @ApiResponses(value = {
@@ -146,7 +146,7 @@ public class UsuarioController {
      *         de datos inválidos.
      */
 
-    @PostMapping("/usuario")
+    @PostMapping
     @Operation(summary = "Agregar usuario", description = "Endpoint para agregar un nuevo usuario. El identificador es generado automáticamente.")
 
     @ApiResponses(value = {
@@ -177,7 +177,7 @@ public class UsuarioController {
      * @return {@code ResponseEntity} con código 204 (No Content) si se actualiza
      * correctamente, o 400 en caso de error.
      */
-    @PatchMapping("/usuario/{id}")
+    @PatchMapping("/{id}")
     @Operation(summary = "Actualizar información de usuario", description = "Endpoint para actualizar parcialmente la información de un usuario. Los campos no provistos no se modifican.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Usuario actualizado correctamente"),
@@ -195,7 +195,7 @@ public class UsuarioController {
      * @param salon salon to add
      * @return ResponseEntity  with code 204 if the salon is added correctly, or 400 in case of invalid data.
      */
-    @PostMapping("/{id}/salon")
+    @PostMapping("salones/{id}")
     @Operation(summary = "Agregar salón", description = "Endpoint para agregar un nuevo salón a la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Salón agregado correctamente"),
@@ -218,7 +218,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Reserva creada correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @PostMapping("{id}/reserva")
+    @PostMapping("{id}/reservas")
     public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
     ReservaDTO reservaDTO){
         usuarioService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
@@ -236,7 +236,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Reservas listadas"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @GetMapping("{id}/reserva")
+    @GetMapping("{id}/reservas")
     public List<Reserva> listarReservas(@PathVariable int id){
         return usuarioService.listarReservas(id);        
     }
