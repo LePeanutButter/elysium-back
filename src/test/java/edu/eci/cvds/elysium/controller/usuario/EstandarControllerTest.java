@@ -1,93 +1,51 @@
 // package edu.eci.cvds.elysium.controller.usuario;
 
-// import static org.mockito.Mockito.*;
-// import static org.junit.jupiter.api.Assertions.*;
+// import java.time.LocalTime;
 
-// import java.util.Arrays;
-// import java.util.List;
-
+// import static org.junit.jupiter.api.Assertions.assertEquals;
 // import org.junit.jupiter.api.BeforeEach;
 // import org.junit.jupiter.api.Test;
 // import org.mockito.InjectMocks;
 // import org.mockito.Mock;
+// import static org.mockito.Mockito.verify;
+// import static org.mockito.Mockito.when;
 // import org.mockito.MockitoAnnotations;
-// import org.springframework.http.ResponseEntity;
 
-// import edu.eci.cvds.elysium.dto.usuario.ActualizarUsuarioDTO;
-// import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
-// import edu.eci.cvds.elysium.model.usuario.Usuario;
-// import edu.eci.cvds.elysium.service.usuario.AdministradorService;
+// import edu.eci.cvds.elysium.model.Reserva;
+// import edu.eci.cvds.elysium.service.usuario.EstandarService;
 
-// class AdministradorControllerTest {
+// public class EstandarControllerTest {
 
 //     @Mock
-//     private AdministradorService administradorService;
+//     private EstandarService estandarService;
 
 //     @InjectMocks
-//     private AdministradorController administradorController;
+//     private EstandarController estandarController;
 
 //     @BeforeEach
 //     void setUp() {
 //         MockitoAnnotations.openMocks(this);
 //     }
 
-//     // Test mínimo para el endpoint GET sin filtros
 //     @Test
-//     void testConsultarUsuariosSinFiltros() {
-//         List<Usuario> usuarios = Arrays.<Usuario>asList(new Usuario(), new Usuario());
-
-//         when(administradorService.consultarUsuarios()).thenReturn(usuarios);
-
-//         List<Usuario> resultado = administradorController.consultarUsuarios(null, null);
-//         assertEquals(2, resultado.size());
-//         verify(administradorService).consultarUsuarios();
-//     }
-
-//     // Test mínimo para el endpoint POST agregarUsuario
-//     @Test
-//     void testAgregarUsuario() {
-//         UsuarioDTO usuarioDTO = new UsuarioDTO(1, "Juan", "Perez", "juan@example.com", true);
-//         administradorController.agregarUsuario(usuarioDTO);
-//         verify(administradorService).agregarUsuario(1, "Juan", "Perez", "juan@example.com", true);
-//     }
-
-//     // Test mínimo para el endpoint PATCH actualizarInformacionUsuario
-//     @Test
-//     void testActualizarInformacionUsuario() {
-//         ActualizarUsuarioDTO actualizarUsuarioDTO = new ActualizarUsuarioDTO();
-//         administradorController.actualizarInformacionUsuario(1, actualizarUsuarioDTO);
-//         verify(administradorService).actualizarInformacionUsuario(actualizarUsuarioDTO);
-//     }
-
-//     // Test mínimo para el endpoint PUT deshabilitarUsuario
-//     @Test
-//     void testDeshabilitarUsuario() {
-//         ResponseEntity<String> response = administradorController.deshabilitarUsuario(1);
-//         assertEquals("Usuario deshabilitado exitosamente", response.getBody());
-//         verify(administradorService).deshabilitarUsuario(1);
-//     }
-
-//     // Test mínimo para el endpoint PUT habilitarUsuario
-//     @Test
-//     void testHabilitarUsuario() {
-//         ResponseEntity<String> response = administradorController.habilitarUsuario(1);
-//         assertEquals("Usuario habilitado exitosamente", response.getBody());
-//         verify(administradorService).habilitarUsuario(1);
-//     }
-
-//     // Test mínimo para el endpoint PUT hacerAdmin
-//     @Test
-//     void testHacerAdmin() {
-//         ResponseEntity<String> response = administradorController.hacerAdmin(1);
-//         assertEquals("Usuario ahora es administrador", response.getBody());
-//         verify(administradorService).hacerAdmin(1);
-//     }
-
-//     // Test mínimo para el endpoint PUT quitarAdmin
-//     @Test
-//     void testQuitarAdmin() {
-//         ResponseEntity<String> response = administradorController.quitarAdmin(1);
-//         assertEquals("Usuario ya no es administrador", response.getBody());
-//         verify(administradorService).quitarAdmin(1);
+//     void testCrearReserva() {
+//         int id = 1;
+//         String fechaInicio = "09:30";
+//         String proposito = "Reunión de equipo";
+//         String mnemonico = "MN123";
+//         LocalTime timeEsperado = LocalTime.parse(fechaInicio);
+        
+//         // Se crea un dummy Reserva. Se asume que la clase Reserva posee un constructor que recibe:
+//         // (LocalTime, String, String, Usuario). Si se requiere otro constructor, ajústalo.
+//         Reserva reservaDummy = new Reserva(timeEsperado, proposito, mnemonico, null);
+        
+//         when(estandarService.crearReserva(id, timeEsperado, proposito, mnemonico)).thenReturn(reservaDummy);
+        
+//         // Se invoca el método del controlador
+//         Reserva resultado = estandarController.crearReserva(id, fechaInicio, proposito, mnemonico);
+        
+//         // Se verifica que el resultado sea el esperado y que se haya llamado al servicio con los parámetros correctos.
+//         assertEquals(reservaDummy, resultado);
+//         verify(estandarService).crearReserva(id, timeEsperado, proposito, mnemonico);
 //     }
 // }
