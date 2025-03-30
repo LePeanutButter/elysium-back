@@ -3,6 +3,7 @@ package edu.eci.cvds.elysium.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.eci.cvds.elysium.ElysiumExceptions;
 import edu.eci.cvds.elysium.dto.ReservaDTO;
 import edu.eci.cvds.elysium.dto.SalonDTO;
 import edu.eci.cvds.elysium.dto.UsuarioDTO;
@@ -49,22 +51,23 @@ public class UsuarioController {
     }
 
     /**
-     * Endpoint para consultar un usuario por su correo institucional.
-     * 
-     * @param correo Correo institucional del usuario a consultar (proveniente de la
-     *               URL).
-     * @return Usuario con el correo dado.
+     * Endpoint para consultar un usuario por su correo.
+     *
+     * @param correo Identificador del usuario a consultar (proveniente de la URL).
+     * @return Usuario con el identificador dado.
      */
-    @Operation(summary = "Consultar usuario por correo", description = "Endpoint para consultar un usuario por su correo institucional.")
+    @GetMapping("/correo/{correo}")
+    @Operation(summary = "Consultar usuario", description = "Endpoint para consultar un usuario por su correo.")
+
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @GetMapping("/usuarioPorCorreo")
-    public Usuario consultarUsuarioPorCorreo(@RequestParam String correo) {
+    public Usuario consultarUsuarioPorCorreo(@PathVariable String correo) {
         return usuarioService.consultarUsuarioPorCorreo(correo);
     }
 
+    
     /**
      * Endpoint unificado para consultar usuarios.
      * Se pueden usar los parámetros opcionales:
@@ -149,12 +152,15 @@ public class UsuarioController {
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
 
-    public ResponseEntity<Void> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
-        usuarioService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
+    public ResponseEntity<Object> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+        try{
+            Usuario usuarioCreado = usuarioService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
                 usuarioDTO.getApellido(), usuarioDTO.getCorreo(), usuarioDTO.getIsAdmin());
-        return ResponseEntity.status(201).build();
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCreado);
+        } catch (ElysiumExceptions ex){
+            throw ex;
+        }
     }
-
     /*
      * Endpoint para actualizar la información de un usuario.
      * 

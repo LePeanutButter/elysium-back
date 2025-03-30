@@ -1,4 +1,4 @@
-package edu.eci.cvds.elysium.service;
+package edu.eci.cvds.elysium.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +16,9 @@ import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.model.Usuario;
 import edu.eci.cvds.elysium.repository.ReservaRepository;
+import edu.eci.cvds.elysium.service.ReservaService;
+import edu.eci.cvds.elysium.service.SalonService;
+import edu.eci.cvds.elysium.service.UsuarioService;
 
 @Service
 public class ReservaServiceImpl implements ReservaService {

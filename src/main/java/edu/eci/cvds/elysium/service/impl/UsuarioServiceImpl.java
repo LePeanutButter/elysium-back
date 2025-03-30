@@ -14,6 +14,7 @@ import edu.eci.cvds.elysium.model.Recurso;
 import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.model.Usuario;
+import edu.eci.cvds.elysium.repository.SalonRepository;
 import edu.eci.cvds.elysium.repository.UsuarioRepository;
 import edu.eci.cvds.elysium.service.ReservaService;
 import edu.eci.cvds.elysium.service.UsuarioService;
@@ -27,6 +28,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Lazy
     @Autowired
     private ReservaService reservaService;
+
+    @Autowired
+    private SalonRepository salonRepository;
 
     /**
      * Consult a user by its institutional id.
@@ -161,9 +165,9 @@ public class UsuarioServiceImpl implements UsuarioService {
      * @param isAdmin If the user is an administrator.
      */
     @Override
-    public void agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,
-            boolean isAdmin) {
-        try {
+    public Usuario agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,
+            boolean isAdmin) throws ElysiumExceptions {
+        
 
             // Validar ID institucional
             if (idInstitucional == 0 || String.valueOf(idInstitucional).length() != 10) {
@@ -172,7 +176,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
             // Validar formato del correo
             String emailRegex = "^[a-zA-Z]+\\.[a-zA-Z]+@escuelaing\\.edu\\.co$";
-            if (!correoInstitucional.matches(emailRegex)) {
+            if (correoInstitucional==null || !correoInstitucional.matches(emailRegex)) {
                 throw new ElysiumExceptions(ElysiumExceptions.CORREO_NO_VALIDO);
             }
 
@@ -188,18 +192,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
             // Crear y guardar usuario
             if (isAdmin) {
-                Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, true);
+                Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, true,true);
                 usuarioRepository.save(nuevoUsuario);
             } else {
-                Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, false);
+                Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, true,true);
                 usuarioRepository.save(nuevoUsuario);
             }
-            
-        } catch (ElysiumExceptions e) {
-            // Aquí decides cómo manejar la excepción
-            System.err.println("Error al agregar usuario: " + e.getMessage());
-            // Puedes registrarlo en logs en lugar de imprimirlo si usas un Logger
-        }
+
+        return usuarioRepository.findByIdInstitucional(idInstitucional);
     }
 
 
@@ -215,14 +215,27 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @SuppressWarnings("unused")
     @Override
-    public void agregarSalon(int id,String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
+    public void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
             List<Recurso> recursos) {
         
-        Usuario administrador = usuarioRepository.findByIdInstitucional(id);
-        if (administrador!=null){
-            Salon nuevoSalon = new Salon(mnemonico,nombre, descripcion, ubicacion, capacidad, recursos);
-            usuarioRepository.save(administrador);  
+        Usuario usuario = usuarioRepository.findByIdInstitucional(id);
+        
+        // Verificar si el usuario existe y es un Administrador
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario con ID " + id + " no existe");
         }
+        
+        if (!(usuario.getIsAdmin())) {
+            throw new IllegalArgumentException("El usuario con ID " + id + " no es un administrador");
+        }
+        Salon nuevoSalon = new Salon(mnemonico, nombre, descripcion, ubicacion, capacidad, recursos);
+        
+        
+
+        // Save the salon in the database through the repository
+        salonRepository.save(nuevoSalon);
+        
+        
     }
 
     /**

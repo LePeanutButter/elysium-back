@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+
 
 public class UsuarioDTO {
     @NotNull(message = "El id no puede ser nulo")
-    @Size(min = 10, max = 10, message = "El id debe tener exactamente 10 dígitos")
     @JsonProperty("idInstitucional")
     private Integer idInstitucional; // para identificar al usuario
 

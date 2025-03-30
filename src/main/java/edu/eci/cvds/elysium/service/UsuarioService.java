@@ -3,6 +3,7 @@ package edu.eci.cvds.elysium.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import edu.eci.cvds.elysium.ElysiumExceptions;
 import edu.eci.cvds.elysium.dto.UsuarioDTO;
 import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.Recurso;
@@ -83,7 +84,7 @@ public interface UsuarioService {
      * @param correoInstitucional institutional email of the user
      * @param isAdmin boolean that indicates if the user is an administrator
      */
-    void agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin);
+    Usuario agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin) throws ElysiumExceptions;
 
     /**
      * Method that allows to update the information of a user
