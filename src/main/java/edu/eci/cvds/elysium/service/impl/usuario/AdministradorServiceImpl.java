@@ -15,6 +15,7 @@ import edu.eci.cvds.elysium.model.Salon;
 import edu.eci.cvds.elysium.model.usuario.Administrador;
 import edu.eci.cvds.elysium.model.usuario.Estandar;
 import edu.eci.cvds.elysium.model.usuario.Usuario;
+import edu.eci.cvds.elysium.repository.SalonRepository;
 import edu.eci.cvds.elysium.repository.UsuarioRepository;
 import edu.eci.cvds.elysium.service.ReservaService;
 import edu.eci.cvds.elysium.service.usuario.AdministradorService;
@@ -28,6 +29,9 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
     @Lazy
     @Autowired
     private ReservaService reservaService;
+
+    @Autowired
+    private SalonRepository salonRepository;
 
     /**
      * Consult a list of all users.
@@ -199,13 +203,29 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @param recursos The resources of the salon.
      */
     @Override
-    public void agregarSalon(int id,String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
+    public void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
             List<Recurso> recursos) {
         
-        Administrador administrador = (Administrador) usuarioRepository.findByIdInstitucional(id);
-        @SuppressWarnings("unused")
-        Salon nuevoSalon = new Salon(mnemonico,nombre, descripcion, ubicacion, capacidad, recursos);
-        usuarioRepository.save(administrador);        
+        Usuario usuario = usuarioRepository.findByIdInstitucional(id);
+        
+        // Verificar si el usuario existe y es un Administrador
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario con ID " + id + " no existe");
+        }
+        
+        if (!(usuario instanceof Administrador)) {
+            throw new IllegalArgumentException("El usuario con ID " + id + " no es un administrador");
+        }
+        
+        Administrador administrador = (Administrador) usuario;
+        Salon nuevoSalon = new Salon(mnemonico, nombre, descripcion, ubicacion, capacidad, recursos);
+        
+        
+
+        // Save the salon in the database through the repository
+        salonRepository.save(nuevoSalon);
+        
+        
     }
 
     /**
