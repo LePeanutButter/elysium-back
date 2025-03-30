@@ -28,7 +28,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 
-
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
@@ -195,14 +194,21 @@ public class UsuarioController {
      * @param salon salon to add
      * @return ResponseEntity  with code 204 if the salon is added correctly, or 400 in case of invalid data.
      */
-    @PostMapping("salones/{id}")
+    @PostMapping("/salones/{id}")
     @Operation(summary = "Agregar salón", description = "Endpoint para agregar un nuevo salón a la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Salón agregado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     public ResponseEntity<Void> agregarSalon(@PathVariable int id, @Valid @RequestBody SalonDTO salondto) {
-        usuarioService.agregarSalon(id, salondto.getMnemonic(), salondto.getName(), salondto.getDescription(), salondto.getLocation(), salondto.getCapacity(), salondto.getResources());
+        usuarioService.agregarSalon(
+            id,
+            salondto.getMnemonic(),
+            salondto.getName(),
+            salondto.getDescription(),
+            salondto.getLocation(),
+            salondto.getCapacity(), 
+            salondto.getResources());
         return ResponseEntity.noContent().build();
     }
 

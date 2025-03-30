@@ -215,7 +215,7 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @SuppressWarnings("unused")
     @Override
-    public void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
+    public void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion, Integer capacidad,
             List<Recurso> recursos) {
         
         Usuario usuario = usuarioRepository.findByIdInstitucional(id);
@@ -228,14 +228,16 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (!(usuario.getIsAdmin())) {
             throw new IllegalArgumentException("El usuario con ID " + id + " no es un administrador");
         }
-        Salon nuevoSalon = new Salon(mnemonico, nombre, descripcion, ubicacion, capacidad, recursos);
         
+        // AÑADIR ESTA VERIFICACIÓN
+        if (capacidad == null) {
+            throw new IllegalArgumentException("La capacidad no puede ser nula");
+        }
         
-
+        Salon nuevoSalon = new Salon(nombre,mnemonico, descripcion, ubicacion, capacidad, recursos);
+        
         // Save the salon in the database through the repository
         salonRepository.save(nuevoSalon);
-        
-        
     }
 
     /**

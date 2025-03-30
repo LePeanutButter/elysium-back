@@ -48,8 +48,11 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/api/register", "/api/login", "/error").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/usuario/usuario").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/usuario/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                                // TODO - Se hizo esto mientras se finiquita autenticación y autorización
+                                .requestMatchers(HttpMethod.GET, "/api/usuarios/**").permitAll()
+                                .requestMatchers(HttpMethod.PATCH, "/api/usuarios/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/usuarios/salones/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

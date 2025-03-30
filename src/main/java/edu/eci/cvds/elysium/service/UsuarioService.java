@@ -102,7 +102,7 @@ public interface UsuarioService {
      * @param capacidad capacity of the salon
      * @param recursos resources of the salon
      */
-    void agregarSalon(int id,String mnemonico, String nombre, String descripcion,String ubicacion, int capacidad, List<Recurso> recursos);
+    void agregarSalon(int id,String mnemonico, String nombre, String descripcion,String ubicacion, Integer capacidad, List<Recurso> recursos);
 
     /**
      * Create a reservation
