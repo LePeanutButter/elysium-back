@@ -90,37 +90,43 @@ public interface UsuarioService {
      * Method that allows to update the information of a user
      * @param id identifier of the user
      * @param dto DTO with the information to update
+     * @throws ElysiumExceptions if the user doesn't exist or validation fails
      */
-    void actualizarInformacionUsuario(int id, UsuarioDTO dto);    
+    void actualizarInformacionUsuario(int id, UsuarioDTO dto) throws ElysiumExceptions;    
 
     /**
      * Method that allows to add a new salon
+     * @param id ID of the admin user
      * @param mnemonico mnemonic of the salon
      * @param nombre name of the salon
      * @param descripcion description of the salon
      * @param ubicacion location of the salon
      * @param capacidad capacity of the salon
      * @param recursos resources of the salon
+     * @throws ElysiumExceptions if validation fails
      */
-    void agregarSalon(int id,String mnemonico, String nombre, String descripcion,String ubicacion, Integer capacidad, List<Recurso> recursos);
+    void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion, Integer capacidad, List<Recurso> recursos) throws ElysiumExceptions;
 
     /**
      * Create a reservation
-     * @param fecha date of the reservation
+     * @param fechaReserva date of the reservation
      * @param hora hour of the reservation
      * @param diaSemana day of the week of the reservation
      * @param proposito purpose of the reservation
+     * @param materia subject of the reservation
      * @param idSalon id of the salon
      * @param duracionBloque if the reservation is for a block of time
      * @param prioridad priority of the reservation
      * @param idInstitucional institutional id of the user
+     * @throws ElysiumExceptions if validation fails
      */
-    void crearReserva(LocalDate fecha,double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional);
+    void crearReserva(LocalDate fechaReserva, double hora, DiaSemana diaSemana, String proposito, String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) throws ElysiumExceptions;
     
-
     /**
      * List the reservations of a user
      * @param idInstitucional institutional id of the user
+     * @return List of reservations
+     * @throws ElysiumExceptions if validation fails
      */
-    List<Reserva> listarReservas(int idInstitucional);
+    List<Reserva> listarReservas(int idInstitucional) throws ElysiumExceptions;
 }
