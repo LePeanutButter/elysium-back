@@ -118,7 +118,7 @@ public class UsuarioController {
      */
 
     @SuppressWarnings("null")
-    @GetMapping
+    @GetMapping("")
     @Operation(summary = "Consultar usuarios", description = "Endpoint unificado para consultar usuarios, pudiendo filtrar por estado activo e indicador de rol de administrador.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de usuarios retornada correctamente"),
