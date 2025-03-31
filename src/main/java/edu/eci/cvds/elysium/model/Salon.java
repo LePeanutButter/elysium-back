@@ -19,8 +19,8 @@ public class Salon {
     private String ubicacion;
     private int capacidad;
     private List<Recurso> recursos;
-    private boolean disponible;
     private boolean activo;
+    private boolean disponible;
     
 
     /**

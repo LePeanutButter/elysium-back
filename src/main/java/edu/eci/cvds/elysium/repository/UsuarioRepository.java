@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import edu.eci.cvds.elysium.model.usuario.Usuario;
+import edu.eci.cvds.elysium.model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends MongoRepository<Usuario, Integer> {
@@ -18,6 +18,14 @@ public interface UsuarioRepository extends MongoRepository<Usuario, Integer> {
     // Este método es opcional si usas el ID de tipo Integer en la anotación @Id
     Usuario findByIdInstitucional(int idInstitucional);
 
+    /**
+     * Busca un usuario por su correo institucional
+     * @param correo el correo institucional del usuario
+     * @return el usuario con el correo dado
+     */
+    Usuario findByCorreoInstitucional(String correo);
+
+    
     /**
      * Look for all users
      * @return all users

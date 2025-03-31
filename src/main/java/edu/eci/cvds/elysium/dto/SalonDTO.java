@@ -1,9 +1,11 @@
-package edu.eci.cvds.elysium.dto.salon;
+package edu.eci.cvds.elysium.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import edu.eci.cvds.elysium.model.Recurso;
-import jakarta.validation.constraints.Negative;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.NotNull;
 
 public class SalonDTO {
@@ -16,7 +18,7 @@ public class SalonDTO {
     @NotNull(message = "La ubicacion no puede ser nula")
     private String ubicacion;
     @NotNull(message = "La capacidad no puede ser nula")
-    @Negative(message = "La capacidad no puede ser negativa")
+    @Positive(message = "La capacidad debe ser un número positivo") // CAMBIO AQUÍ
     private Integer capacidad;
     
     @NotNull(message = "Los recursos no pueden ser nulos")
@@ -28,25 +30,10 @@ public class SalonDTO {
      * Default constructor
      */
     public SalonDTO() {}
+    
 
-    /**
-     * Constructor with parameters
-     * @param mnemonico the mnemonic of the salon
-     * @param nombre the name of the salon
-     * @param descripcion the description of the salon
-     * @param ubicacion the location of the salon
-     * @param capacidad the capacity of the salon
-     */
-    public SalonDTO(String nombre, String descripcion, String ubicacion, int capacidad, List<Recurso> recursos) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.ubicacion = ubicacion;
-        this.capacidad = capacidad;
-        this.recursos = recursos;
-    }
-
-
-    // GETTERS AND SETTERS
+    // Setters explicitos porque los getters no tienen el mismo nombre que los atributos, entonces jackson no los encuentra.
+     // GETTERS AND SETTERS
 
     /**
      * Get the mnemonic of the salon
@@ -94,7 +81,7 @@ public class SalonDTO {
      * Set the capacity of the salon
      * @param capacidad the capacity of the salon
      */
-    public void setCapacity(int capacidad){this.capacidad = capacidad;}
+    public void setCapacity(Integer capacidad){this.capacidad = capacidad;}
 
     /**
      * Get the description of the salon
@@ -143,5 +130,5 @@ public class SalonDTO {
      * @param recursos the resources of the salon
      */
     public void setResources(List<Recurso> recursos){this.recursos = recursos;}
-    
+
 }

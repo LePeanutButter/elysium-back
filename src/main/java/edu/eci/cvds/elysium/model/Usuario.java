@@ -1,18 +1,28 @@
-package edu.eci.cvds.elysium.model.usuario;
+package edu.eci.cvds.elysium.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import jakarta.validation.constraints.NotBlank;
 
 
 @Document(collection = "usuarios")
-public abstract class Usuario {
+public class Usuario {
     @Id
+    @NotBlank(message = "El ID institucional no puede estar vacío")
     protected int idInstitucional;
     protected boolean isAdmin;
     protected String nombre;
     protected String apellido;
+    
+    @NotBlank(message = "El correo institucional no puede estar vacío")
+    @Indexed(unique = true)
     protected String correoInstitucional;
     protected boolean activo;
+
+    @NotBlank(message = "La contraseña no puede estar vacía")
+    protected String password;
 
     /**
      * Constructor de la clase Usuario
@@ -23,7 +33,7 @@ public abstract class Usuario {
      * @param activo user's active status
      * @param isAdmin user's admin status
      */
-    protected Usuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean activo, boolean isAdmin) {
+    public Usuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,boolean activo, boolean isAdmin) {
         this.idInstitucional = idInstitucional;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -132,4 +142,20 @@ public abstract class Usuario {
     public boolean getIsAdmin(){
         return isAdmin;
     }    
+
+    /**
+     * Get the user's password
+     * @return user's password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Set the user's password
+     * @param password user's password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

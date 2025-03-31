@@ -7,7 +7,7 @@ package edu.eci.cvds.elysium;
  * 
  * @version 2025
  */
-public class ElysiumExceptions extends Exception {
+public class ElysiumExceptions extends RuntimeException {
 
     public static final String NO_EXISTE_USUARIO = "El usuario no existe";
     public static final String YA_EXISTE_USUARIO = "El usuario ya existe";

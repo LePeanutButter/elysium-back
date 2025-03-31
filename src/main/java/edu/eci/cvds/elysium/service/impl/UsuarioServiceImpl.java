@@ -1,4 +1,4 @@
-package edu.eci.cvds.elysium.service.impl.usuario;
+package edu.eci.cvds.elysium.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,20 +8,19 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import edu.eci.cvds.elysium.ElysiumExceptions;
-import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
+import edu.eci.cvds.elysium.dto.UsuarioDTO;
 import edu.eci.cvds.elysium.model.DiaSemana;
 import edu.eci.cvds.elysium.model.Recurso;
+import edu.eci.cvds.elysium.model.Reserva;
 import edu.eci.cvds.elysium.model.Salon;
-import edu.eci.cvds.elysium.model.usuario.Administrador;
-import edu.eci.cvds.elysium.model.usuario.Estandar;
-import edu.eci.cvds.elysium.model.usuario.Usuario;
+import edu.eci.cvds.elysium.model.Usuario;
 import edu.eci.cvds.elysium.repository.SalonRepository;
 import edu.eci.cvds.elysium.repository.UsuarioRepository;
 import edu.eci.cvds.elysium.service.ReservaService;
-import edu.eci.cvds.elysium.service.usuario.AdministradorService;
+import edu.eci.cvds.elysium.service.UsuarioService;
 
 @Service
-public class AdministradorServiceImpl extends UsuarioServiceImpl implements AdministradorService {
+public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -32,6 +31,17 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
 
     @Autowired
     private SalonRepository salonRepository;
+
+    /**
+     * Consult a user by its institutional id.
+     * @param idInstitucional Institutional id of the user to consult.
+     * @return User with the given id.
+     */
+    @Override
+    public Usuario consultarUsuario(int idInstitucional) {
+        // Si has definido findByIdInstitucional en el repository:
+        return usuarioRepository.findByIdInstitucional(idInstitucional);
+    }
 
     /**
      * Consult a list of all users.
@@ -51,6 +61,11 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
         return usuarioRepository.findByActivoTrue();
     }
 
+    @Override
+    public Usuario consultarUsuarioPorCorreo(String correo) {
+        return usuarioRepository.findByCorreoInstitucional(correo);
+    }
+    
     /**
      * Consult the inactive users.
      * @return List of inactive users.
@@ -150,9 +165,9 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @param isAdmin If the user is an administrator.
      */
     @Override
-    public void agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,
-            boolean isAdmin) {
-        try {
+    public Usuario agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,
+            boolean isAdmin) throws ElysiumExceptions {
+        
 
             // Validar ID institucional
             if (idInstitucional == 0 || String.valueOf(idInstitucional).length() != 10) {
@@ -161,7 +176,7 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
 
             // Validar formato del correo
             String emailRegex = "^[a-zA-Z]+\\.[a-zA-Z]+@escuelaing\\.edu\\.co$";
-            if (!correoInstitucional.matches(emailRegex)) {
+            if (correoInstitucional==null || !correoInstitucional.matches(emailRegex)) {
                 throw new ElysiumExceptions(ElysiumExceptions.CORREO_NO_VALIDO);
             }
 
@@ -177,18 +192,14 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
 
             // Crear y guardar usuario
             if (isAdmin) {
-                Administrador nuevoUsuario = new Administrador(idInstitucional, nombre, apellido, correoInstitucional, true);
+                Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, true,true);
                 usuarioRepository.save(nuevoUsuario);
             } else {
-                Estandar nuevoUsuario = new Estandar(idInstitucional, nombre, apellido, correoInstitucional, true);
+                Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, true,true);
                 usuarioRepository.save(nuevoUsuario);
             }
-            
-        } catch (ElysiumExceptions e) {
-            // Aquí decides cómo manejar la excepción
-            System.err.println("Error al agregar usuario: " + e.getMessage());
-            // Puedes registrarlo en logs en lugar de imprimirlo si usas un Logger
-        }
+
+        return usuarioRepository.findByIdInstitucional(idInstitucional);
     }
 
 
@@ -202,8 +213,9 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
      * @param capacidad The capacity of the salon.
      * @param recursos The resources of the salon.
      */
+    @SuppressWarnings("unused")
     @Override
-    public void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion, int capacidad,
+    public void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion, Integer capacidad,
             List<Recurso> recursos) {
         
         Usuario usuario = usuarioRepository.findByIdInstitucional(id);
@@ -213,19 +225,19 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
             throw new IllegalArgumentException("El usuario con ID " + id + " no existe");
         }
         
-        if (!(usuario instanceof Administrador)) {
+        if (!(usuario.getIsAdmin())) {
             throw new IllegalArgumentException("El usuario con ID " + id + " no es un administrador");
         }
         
-        Administrador administrador = (Administrador) usuario;
-        Salon nuevoSalon = new Salon(mnemonico, nombre, descripcion, ubicacion, capacidad, recursos);
+        // AÑADIR ESTA VERIFICACIÓN
+        if (capacidad == null) {
+            throw new IllegalArgumentException("La capacidad no puede ser nula");
+        }
         
+        Salon nuevoSalon = new Salon(nombre,mnemonico, descripcion, ubicacion, capacidad, recursos);
         
-
         // Save the salon in the database through the repository
         salonRepository.save(nuevoSalon);
-        
-        
     }
 
     /**
@@ -244,8 +256,22 @@ public class AdministradorServiceImpl extends UsuarioServiceImpl implements Admi
     public void crearReserva(LocalDate fechaReserva,double hora, DiaSemana diaSemana, String proposito,String materia, String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) {    
         // Se utiliza el método definido en el repository para Mongo
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
-        if (usuario != null && usuario instanceof Estandar) {           
+        if (usuario != null) {           
             reservaService.crearReserva(fechaReserva,hora, diaSemana, proposito, materia,idSalon, duracionBloque, prioridad, idInstitucional);            
         }  
+    }
+
+    /**
+     * List the reservations of a user
+     * @param idInstitucional institutional id of the user
+     */
+    @Override
+    public List<Reserva> listarReservas(int idInstitucional) {
+        // Se utiliza el método definido en el repository para Mongo
+        Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
+        if (usuario != null) {
+            return reservaService.consultarReservasPorUsuario(idInstitucional);
+        }
+        return new java.util.ArrayList<>();
     }
 }

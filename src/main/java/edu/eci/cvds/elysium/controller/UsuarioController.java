@@ -1,8 +1,9 @@
-package edu.eci.cvds.elysium.controller.usuario;
+package edu.eci.cvds.elysium.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,23 +14,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.eci.cvds.elysium.ElysiumExceptions;
 import edu.eci.cvds.elysium.dto.ReservaDTO;
-import edu.eci.cvds.elysium.dto.salon.SalonDTO;
-import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
-import edu.eci.cvds.elysium.model.usuario.Usuario;
-import edu.eci.cvds.elysium.service.usuario.AdministradorService;
+import edu.eci.cvds.elysium.dto.SalonDTO;
+import edu.eci.cvds.elysium.dto.UsuarioDTO;
+import edu.eci.cvds.elysium.model.Reserva;
+import edu.eci.cvds.elysium.model.Usuario;
+import edu.eci.cvds.elysium.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
+
 @RestController
-@RequestMapping("/api/administrador")
-public class AdministradorController {
+@RequestMapping("/api/usuarios")
+public class UsuarioController {
 
     @Autowired
-    private AdministradorService administradorService;
+    private UsuarioService usuarioService;
 
     /**
      * Endpoint para consultar un usuario por su identificador.
@@ -42,11 +46,29 @@ public class AdministradorController {
             @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @GetMapping("/{id}/usuario")
+    @GetMapping("/{id}")
     public Usuario consultarUsuario(@PathVariable int id) {
-        return administradorService.consultarUsuario(id);
+        return usuarioService.consultarUsuario(id);
     }
 
+    /**
+     * Endpoint para consultar un usuario por su correo.
+     *
+     * @param correo Identificador del usuario a consultar (proveniente de la URL).
+     * @return Usuario con el identificador dado.
+     */
+    @GetMapping("/correo/{correo}")
+    @Operation(summary = "Consultar usuario", description = "Endpoint para consultar un usuario por su correo.")
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public Usuario consultarUsuarioPorCorreo(@PathVariable String correo) {
+        return usuarioService.consultarUsuarioPorCorreo(correo);
+    }
+
+    
     /**
      * Endpoint unificado para consultar usuarios.
      * Se pueden usar los parámetros opcionales:
@@ -69,7 +91,7 @@ public class AdministradorController {
      */
 
     @SuppressWarnings("null")
-    @GetMapping("/usuarios")
+    @GetMapping
     @Operation(summary = "Consultar usuarios", description = "Endpoint unificado para consultar usuarios, pudiendo filtrar por estado activo e indicador de rol de administrador.")
 
     @ApiResponses(value = {
@@ -81,30 +103,30 @@ public class AdministradorController {
 
             @Parameter(description = "Valor opcional para filtrar usuarios por rol administrador (true) o no administrador (false)", example = "false") @RequestParam(required = false) Boolean isAdmin) {
         if (activo == null && isAdmin == null) {
-            return administradorService.consultarUsuarios();
+            return usuarioService.consultarUsuarios();
         }
         // Si se filtra solo por estado activo/inactivo
         if (activo != null && isAdmin == null) {
             return activo
-                    ? administradorService.consultarUsuariosActivos()
-                    : administradorService.consultarUsuariosInactivos();
+                    ? usuarioService.consultarUsuariosActivos()
+                    : usuarioService.consultarUsuariosInactivos();
         }
         // Si se filtra solo por rol
         if (activo == null && isAdmin != null) {
             return isAdmin
-                    ? administradorService.consultarUsuariosAdmins()
-                    : administradorService.consultarUsuariosActiveNoAdmins(); // O se pueden combinar activos e
+                    ? usuarioService.consultarUsuariosAdmins()
+                    : usuarioService.consultarUsuariosActiveNoAdmins(); // O se pueden combinar activos e
                                                                               // inactivos
         }
         // Si se filtran ambos
         if (activo && isAdmin) {
-            return administradorService.consultarUsuariosActiveAdmins();
+            return usuarioService.consultarUsuariosActiveAdmins();
         } else if (activo && !isAdmin) {
-            return administradorService.consultarUsuariosActiveNoAdmins();
+            return usuarioService.consultarUsuariosActiveNoAdmins();
         } else if (!activo && isAdmin) {
-            return administradorService.consultarUsuariosInactiveAdmins();
+            return usuarioService.consultarUsuariosInactiveAdmins();
         } else { // !activo && !isAdmin
-            return administradorService.consultarUsuariosInactiveNoAdmins();
+            return usuarioService.consultarUsuariosInactiveNoAdmins();
         }
     }
 
@@ -123,7 +145,7 @@ public class AdministradorController {
      *         de datos inválidos.
      */
 
-    @PostMapping("/usuario")
+    @PostMapping
     @Operation(summary = "Agregar usuario", description = "Endpoint para agregar un nuevo usuario. El identificador es generado automáticamente.")
 
     @ApiResponses(value = {
@@ -131,12 +153,15 @@ public class AdministradorController {
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
 
-    public ResponseEntity<Void> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
-        administradorService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
+    public ResponseEntity<Object> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+        try{
+            Usuario usuarioCreado = usuarioService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
                 usuarioDTO.getApellido(), usuarioDTO.getCorreo(), usuarioDTO.getIsAdmin());
-        return ResponseEntity.status(201).build();
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCreado);
+        } catch (ElysiumExceptions ex){
+            throw ex;
+        }
     }
-
     /*
      * Endpoint para actualizar la información de un usuario.
      * 
@@ -151,7 +176,7 @@ public class AdministradorController {
      * @return {@code ResponseEntity} con código 204 (No Content) si se actualiza
      * correctamente, o 400 en caso de error.
      */
-    @PatchMapping("/usuario/{id}")
+    @PatchMapping("/{id}")
     @Operation(summary = "Actualizar información de usuario", description = "Endpoint para actualizar parcialmente la información de un usuario. Los campos no provistos no se modifican.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Usuario actualizado correctamente"),
@@ -159,7 +184,7 @@ public class AdministradorController {
     })
     public ResponseEntity<Void> actualizarInformacionUsuario(@PathVariable int id,
             @RequestBody UsuarioDTO actualizarUsuarioDTO) {        
-        administradorService.actualizarInformacionUsuario(id, actualizarUsuarioDTO);
+        usuarioService.actualizarInformacionUsuario(id, actualizarUsuarioDTO);
         return ResponseEntity.noContent().build();
     }
 
@@ -169,14 +194,21 @@ public class AdministradorController {
      * @param salon salon to add
      * @return ResponseEntity  with code 204 if the salon is added correctly, or 400 in case of invalid data.
      */
-    @PostMapping("/{id}/salon")
+    @PostMapping("/salones/{id}")
     @Operation(summary = "Agregar salón", description = "Endpoint para agregar un nuevo salón a la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Salón agregado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     public ResponseEntity<Void> agregarSalon(@PathVariable int id, @Valid @RequestBody SalonDTO salondto) {
-        administradorService.agregarSalon(id, salondto.getMnemonic(), salondto.getName(), salondto.getDescription(), salondto.getLocation(), salondto.getCapacity(), salondto.getResources());
+        usuarioService.agregarSalon(
+            id,
+            salondto.getMnemonic(),
+            salondto.getName(),
+            salondto.getDescription(),
+            salondto.getLocation(),
+            salondto.getCapacity(), 
+            salondto.getResources());
         return ResponseEntity.noContent().build();
     }
 
@@ -192,10 +224,26 @@ public class AdministradorController {
             @ApiResponse(responseCode = "200", description = "Reserva creada correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
-    @PostMapping("{id}/reserva")
+    @PostMapping("{id}/reservas")
     public ResponseEntity<String> crearReserva(@PathVariable int id,@RequestBody
     ReservaDTO reservaDTO){
-        administradorService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
+        usuarioService.crearReserva(reservaDTO.getFechaReserva(), reservaDTO.getHora(),reservaDTO.getDiaSemana(), reservaDTO.getProposito(),reservaDTO.getMateria(), reservaDTO.getIdSalon(),reservaDTO.isDuracionBloque(), reservaDTO.getPrioridad(), id);
         return ResponseEntity.ok("Reserva creada");
-    }   
+    }
+
+    /**
+     * Endpoint para listar las reservas de un usuario.
+     * 
+     * @param id Identificador del usuario a consultar.
+     * @return ResponseEntity con un mensaje de éxito.
+     */
+    @Operation(summary = "Listar reservas", description = "Endpoint para listar las reservas de un usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reservas listadas"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @GetMapping("{id}/reservas")
+    public List<Reserva> listarReservas(@PathVariable int id){
+        return usuarioService.listarReservas(id);        
+    }
 }
