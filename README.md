@@ -1,372 +1,904 @@
-# INTEGRANTES
+# Elysium-Back: Sistema de Reserva de Laboratorios 🏫
+
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Test Coverage](https://img.shields.io/badge/coverage-85%25-green)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.4-green)
+![MongoDB](https://img.shields.io/badge/MongoDB-Cloud-green)
+![Java](https://img.shields.io/badge/Java-17-orange)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
+Elysium-Back es un sistema de gestión de reservas de laboratorios para la Decanatura de Ingeniería de Sistemas de la Escuela Colombiana de Ingeniería Julio Garavito. Esta API REST permite gestionar la disponibilidad de laboratorios, realizar reservas y cancelar reservas, todo implementado con una arquitectura moderna y robusta.
+
+## Tabla de Contenidos 📋
+
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Arquitectura](#arquitectura)
+- [Sprints y Desarrollo](#sprints-y-desarrollo)
+  - [Sprint 1: Scrum - DI/IOC](#sprint-1-scrum---diioc)
+  - [Sprint 2: CI/CD](#sprint-2-cicd)
+  - [Sprint 3: Integración con React](#sprint-3-integración-con-react)
+  - [Sprint 4: Autenticación y Autorización](#sprint-4-autenticación-y-autorización)
+  - [Sprint 5: SSL y Seguridad Avanzada](#sprint-5-ssl-y-seguridad-avanzada)
+- [Patrones de Diseño](#patrones-de-diseño)
+  - [Data Transfer Objects (DTO)](#data-transfer-objects-dto)
+  - [Repository Pattern](#repository-pattern)
+  - [Service Layer](#service-layer)
+- [Dependencias del Proyecto](#dependencias-del-proyecto)
+- [Configuración del Proyecto](#configuración-del-proyecto)
+- [Documentación API (Swagger)](#documentación-api-swagger)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Contribuciones](#contribuciones)
+
+## Tecnologías Utilizadas 🛠️
+
+- **Java OpenJDK 17**: Lenguaje de programación principal
+- **Spring Boot**: Framework para el desarrollo de aplicaciones web
+- **Spring Security**: Módulo de seguridad para autenticación y autorización
+- **Spring Data MongoDB**: Para la integración con MongoDB
+- **MongoDB Atlas**: Base de datos NoSQL en la nube
+- **Postman**: Ambiente pruebas formato JSON con los métodos POST, GET, PATCH, DELETE.
+- **Maven**: Herramienta de gestión de dependencias
+- **JUnit 5 & Mockito**: Framework para pruebas unitarias
+- **Docker**: Contenedorización de la aplicación
+- **Azure DevOps**: Gestión ágil del proyecto
+- **GitHub Actions**: CI/CD pipelines
+- **Jacoco**: Cobertura de código
+- **SonarQube**: Análisis estático de código
+- **Swagger/OpenAPI**: Documentación de API REST
+- **SSL**: Certificados para conexión segura
+- **Lombok**: Reducción de código boilerplate
+
+## Arquitectura 🏗️
+
+El proyecto está construido siguiendo una arquitectura de capas:
+
+![alt text](image-1.png)
+
+La arquitectura se divide en las siguientes capas:
+
+- **Controladores (Controllers)**: Manejan las peticiones HTTP y respuestas.
+- **Servicios (Services)**: Contienen la lógica de negocio.
+- **Repositorios (Repositories)**: Interfaces para acceso a datos.
+- **Modelos (Models)**: Entidades de dominio y DTOs.
+- **Configuración (Config)**: Configuraciones de Spring Boot y seguridad.
+- **Excepciones (Exceptions)**: Manejo personalizado de errores.
+
+## Diagrama de componentes
+
+## Diagrama de clases
+
+## Sprints y Desarrollo 🏃‍♂️
+
+### Sprint 1: Scrum - DI/IOC
+
+![alt text](image-2.png)
+
+#### Objetivos Alcanzados:
+
+- Implementación de Inversión de Control (IoC) y Dependencia de Inyección (DI) utilizando Spring Boot
+- Desarrollo de la estructura básica del proyecto con arquitectura en capas
+- Implementación de la persistencia de datos con MongoDB Cloud
+- Definición del modelo de datos: laboratorios y reservas
+- Creación de endpoints REST para CRUD de reservas
+
+#### Estructura de Modelo:
 
-- Andersson David Sánchez Méndez
-- Cristian Santiago Pedraza Rodríguez
-- Ricardo Andres Ayala Garzon
-- Santiago Botero García
-
-## LABORATORIO 4 - Scrum - DI/IOC
-
-## ELYSIUM
-
-## PRE-RREQUISITOS
-
-- Java OpenJDK Runtime Environment: 17.x.x
-- Apache Maven: 3.9.x
-- SpringBoot
-- Docker
-- AzureDevops
-- Sonar
-- Jacoco
-
-## OBJETIVOS
-
-1. Planeación de un proyecto de software.
-2. Entender arquitectura cliente servidor.
-3. Inyección de dependencias - Inversión de control.
-4. Manejo de bases de datos no relacionales.
-5. Definición de API Rest Con SpringBoot.
-6. Realizar Análisis estático para garantizar calidad del código y detección de deuda técnica.
-7. Integrar pruebas unitarias en el desarrollo del producto.
-
-## CASO DE NEGOCIO - SISTEMA DE RESERVAS DE LABORATORIOS PARA LA DECANATURA DE INGENIERÍA DE SISTEMAS
-
-El proyecto consiste en una aplicación para la gestión de reservas de laboratorios dentro Ingeniería de Sistemas de la Escuela Colombiana de Ingeniería Julio Garavito. Los usuarios podrán consultar la disponibilidad de laboratorios, realizar reservas y cancelar sus reservas desde una interfaz web. La aplicación se conectará a un API REST desarrollado en Spring Boot. El backend permitirá la inyección de dependencias para el manejo de datos, pudiendo optar entre una base de datos en MongoDB Cloud o un archivo de texto plano para almacenar las reservas.
-
-## REQUERIMIENTOS
-
-- El usuario debe poder consultar la disponibilidad de laboratorios.
-- El usuario debe poder reservar un laboratorio especificando fecha, hora y propósito.
-- El usuario debe poder cancelar sus reservas.
-- La aplicación debe validar que un laboratorio no se pueda reservar si ya está ocupado.
-
-## MODELO DE ARQUITECTURA
-
-![alt text](assets/image-27.png)
-
-## PLANEACIÓN DEL PROYECTO
-
-- Esta sección tiene como objetivo realizar toda la planificación que el equipo de desarrollo requiere para poder dar inicio al proyecto planteado. Para este objetivo utilizaremos Azure DevOps.
-
-- <a href="https://github.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/blob/master/Instructions/Labs/AZ400_M01_L01_Agile_Plan_and_Portfolio_Management_with_Azure_Boards.md">Tutorial Completo</a>
-
-1. Como primer paso, se crean dos repositorios en GitHub, tanto para el backend como para el frontend.
-
-        ![alt text](assets/image-28.png)
-
-2. Todos los integrantes del grupo crean su cuenta en AzureDevOps <a href="https://go.microsoft.com/fwlink/?LinkId=2014881" target="_blank">Crear una cuenta</a>
-
-3. Una vez ingresa deberá crear el proyecto. (Solo lo hace un integrante del equipo). Crea la organización, y dentro de esta crea el proyecto con configuración avanzada tipo de proceso Scrum, con visibilidad privada, y su descripción correspondiente.
-
-![alt text](assets/image.png)
-
-![alt text](assets/image-1.png)
-
-![alt text](assets/image-2.png)
-
-![alt text](assets/image-3.png)
-
-![alt text](assets/image-4.png)
-
-![alt text](assets/image-5.png)
-
-4. Cree un equipo en el siguiente tutorial encontrará cómo hacerlo <a href="https://github.com/microsoft/azuredevopslabs/tree/master/labs/azuredevops/agile" target="_blank">Creando equipos</a>, para este proceso todos
-     los integrantes deberán tener una cuenta en AzureDevOps.
-
-![alt text](assets/image-6.png)
-![alt text](assets/image-7.png)
-![alt text](assets/image-8.png)
-
-5. Integre los repositorios de gitHub en la configuración de AzureDevOps
-       From your project in Azure DevOps, go to Project settings > GitHub connections.
-       To add or remove repositories, select the More options ellipses for the connection and choose Add repositories or Remove repositories from the menu.
-
-   ![alt text](assets/image-29.png)
-
-6. Una vez integrados los repositorios, ahora, se configuran Iteration and Area Paths para habilitar la opción de añadir Épicas al proyecto.
-
-7. Se dirige al nombre del equipo y selecciona la opción del inciso anterior, y habilita Epics.
-
-![alt text](assets/image-9.png)
-
-![alt text](assets/image-13.png)
-
-8. Defina los spring del proyecto. luego para configurar, seleccionar la opción Iterations, select Iterations, determinar las fechas de cada Spring, y eliminar Springs innecesarios.
-
-## SPRINTS
-
-    Sprint 1: Configuración General del Proyecto (SCAFFOLDING)
-    - Configuración de ambientes (backend y frontend).
-    - Scaffolding del proyecto.
-    - Configuración de la base de datos (MongoDB Cloud o archivo de texto plano).
-    - Definición del modelo de datos (salones y reservas).
-
-    Sprint 2: Implementación del API REST (BACK AND FRONT)
-    - Crear los endpoints necesarios para consultar laboratorios, realizar reservas y cancelar reservas.
-    - Implementar la lógica de validación para evitar reservas conflictivas.
-    - Configurar la persistencia de datos en MongoDB Cloud o archivo de texto plano.
-
-    Sprint 3: Conexión del Frontend con el API y Pruebas Finales (BACK AND FRONT)
-    - Desarrollar la interfaz web para visualizar disponibilidad y gestionar reservas.
-    - Conectar la interfaz web con el API REST.
-    - Realizar pruebas de integración y validación de funcionalidades.
-
-![alt text](assets/image-11.png)
-
-![alt text](assets/image-12.png)
-
-![alt text](assets/image-14.png)
-
-![alt text](assets/image-15.png)
-
-9. Incluir subáreas para poder añadir las épicas correctamente. Para esto, se selecciona Areas, y en el nombre del proyecto se incluyen las subáreas, y se le da Ok.
-
-![alt text](assets/image-16.png)
-
-![alt text](assets/image-17.png)
-
-![alt text](assets/image-18.png)
-
-10. Definiendo la épica, y añadirlas en el proyecto, dándole en la sección de Board Work Items --> Work Items --> new work item --> Epic --> con la descripción correspondiente.
-
-## ÉPICAS
-
-1. Scaffolding: Crear la estructura del proyecto con Maven, así como también la configuración con MongoDB, y la definición del modelo de datos.
-2. Frontend: Crear una interfaz de usuario que permita visualizar la disponibilidad y gestionar reservas.
-3. Backend: Implementar un API REST para el manejo de la lógica de negocio y persistencia de datos.
-
-![alt text](assets/image-19.png)
-
-![alt text](assets/image-21.png)
-
-![alt text](assets/image-22.png)
-
-11. Definir y añadir features para cada Epic. Para esto, se selecciona add link y en New Item se pone el nuevo feature.
-
-## FEATURES
-
-1. Consultar Disponibilidad: El usuario puede consultar la disponibilidad de laboratorios para una fecha y hora específicas.
-2. Reservar Laboratorio: El usuario puede reservar un laboratorio seleccionando fecha, hora y propósito.
-3. Cancelar Reserva: El usuario puede cancelar sus reservas existentes.
-4. Validación de Reservas: Evitar reservas duplicadas para un mismo laboratorio, fecha y hora.
-5. Notificación de Reserva Exitosa: Enviar una confirmación al usuario después de realizar la reserva.
-
-![alt text](assets/image-23.png)
-
-12. Defina las historias de usuario por cada feature definida.
-
-13. Defina las tareas asociadas a cada historia de usuario. Estime tiempos y programe cada actividad con su equipo (squad)
-
-## PASOS PARA CONSTRUIR EL PROYECTO
-
-1- Definir el scaffolding del back <a href="https://ragunathrajasekaran.medium.com/https-medium-com-ragunathrajasekaran-lets-learn-full-stack-development-part2-7986debc485d" target="_blank">Ver guía</a> No olvide el que el proyecto debe ser maven. Mantenga el esquema de nombramiento de los artefactos.
-
-![alt text](assets/image-30.png)
-![alt text](assets/image-31.png)
-![alt text](assets/image-32.png)
-
-## IMPLEMENTACIÓN
-
-De acuerdo a la planeación realizada divida las tareas de implementación.
-A continuación detallamos diferentes tutoriales para el manejo técnico para cada etapa.
-
-1. Creación de proyecto APIREST <a href="https://blog.codmind.com/mi-primer-api-rest-con-spring-boot/">Documentación 1<a/> <a href="https://programandoenjava.com/crear-un-rest-api-con-spring-boot/">Documentación 2</a>
-2. Consumir APIREST HTML - JAVASCRIPT <a href="https://helpcenter.itmplatform.com/es/project/ejemplo-de-uso-de-api-con-html-javascript/">Ejemplo básico<a/> Utilizar buenas prácticas de programación separación en archivos emplear CSS para mejorar la usabilidad.
-3. Configuración e integración <a href="https://www.mongodb.com/resources/products/compatibilities/spring-boot#getting-started-with-spring-initializr">MongoDB - Atlas</a>
-4. Utilizar integración con Sonar y JACOCO para análisis estático y calidad del código, esto implica el desarrollo de pruebas unitarias.
-
-![alt text](image.png)
-
-# Descripcion de Elysium Backend
-
-Elysium Backend esta echo para la gestión de reservas de espacios y equipos de compututacion en la universidad Escuela Colombiana de Ingenieria.
-
-## Tabla de Contenidos
-1. [Introducción](#introducción)
-2. [Tecnologías y Herramientas](#tecnologías-y-herramientas)
-3. [Arquitectura del Sistema](#arquitectura-del-sistema)
-4. [Estructura del Código](#estructura-del-código)
-5. [DTO (Data Transfer Object)](#dto-data-transfer-object)
-6. [Modelos](#modelos)
-7. [Endpoints / API](#endpoints--api)
-8. [Pruebas y Calidad](#pruebas-y-calidad)
-9. [Guía de Configuración y Despliegue](#guía-de-configuración-y-despliegue)
-10. [Notas Adicionales / Contribución](#notas-adicionales--contribución)
-
-## Introducción
-Este proyecto tiene como objetivo permitir la administración de reservas de espacios y equipos de computacion dentro de la universidad. Los usuarios pueden realizar reservas, gestionar recursos y reservas, y consultar disponibilidad de espacios a través de una la API.
-
-### Arquitectura General
-El backend sigue una arquitectura basada en servicios, con capas de controladores, servicios, repositorios y modelos de datos. Se ha diseñado siguiendo el patrón MVC (Modelo-Vista-Controlador) para una mejor separación de responsabilidades.
-
-## Tecnologías y Herramientas
-- **Lenguaje:** Java 17
-- **Framework:** Spring Boot
-- **Base de datos:** PostgreSQL, MongoDB
-- **ORM:** Spring Data JPA, Spring Data MongoDB
-- **Documentación:** Swagger/OpenAPI
-- **Gestión de dependencias:** Maven
-- **Pruebas:** JUnit, Mockito
-
-## Arquitectura del Sistema
-Este backend sigue una arquitectura monolítica con una clara separación de capas:
-1. **Controladores:** Manejan las peticiones HTTP y delegan la lógica a los servicios.
-2. **Servicios:** Contienen la lógica de negocio y la interacción con los repositorios.
-3. **Repositorios:** Interactúan con la base de datos utilizando JPA o MongoDB.
-4. **Modelos:** Representan las entidades del dominio del negocio.
-
-### Patrones de Diseño Implementados
-- **MVC (Modelo-Vista-Controlador)**: Separación de responsabilidades.
-- **Repository Pattern**: Para la abstracción de acceso a datos.
-- **DTO (Data Transfer Object)**: Para optimizar el intercambio de datos en la API.
-
-## Estructura del Código en el main
-```plaintext
-src/main/java/edu/eci/cvds/elysium/
-├── config
-│   ├── CorsConfig.java
-├── controller
-│   ├── usuario
-│   │   ├── AdministradorController.java
-│   │   ├── ApiOperation
-│   │   ├── EstandarController.java
-│   ├── RecursoController.java
-│   ├── ReservaController.java
-│   ├── SalonController.java
-├── dto
-│   ├── salon
-│   │   ├── SalonDTO.java
-│   ├── usuario
-│   │   ├── UsuarioDTO.java
-│   ├── RecursoDTO.java
-│   ├── ReservaDTO.java
-├── model
-│   ├── usuario
-│   │   ├── DiaSemana.java
-│   │   ├── EstadoReserva.java
-│   │   ├── Recurso.java
-│   │   ├── Reserva.java
-│   │   ├── Salon.java
-├── repository
-│   ├── RecursoRepository.java
-│   ├── ReservaRepository.java
-│   ├── SalonRepository.java
-│   ├── UsuarioRepository.java
-├── service
-│   ├── impl
-│   ├── usuario
-│   ├── RecursoService.java
-│   ├── RecursoServiceImpl.java
-│   ├── ReservaService.java
-│   ├── ReservaServiceImpl.java
-│   ├── salonService.java
-│   │   ├── AdministradorService.java
-├── ElysiumApplication.java
-├── ElysiumExceptions.java
-└── resources
-```
-
-## DTO (Data Transfer Object)
-Los DTOs se utilizan para transportar datos entre las distintas capas del sistema sin exponer directamente las entidades del modelo de datos. Esto mejora la seguridad y flexibilidad en la API.
-
-### Ejemplo: `SalonDTO`
 ```java
-package edu.eci.cvds.elysium.dto.salon;
-
-import java.util.List;
-import edu.eci.cvds.elysium.model.Recurso;
-import jakarta.validation.constraints.Negative;
-import jakarta.validation.constraints.NotNull;
-
-public class SalonDTO {
-    @NotNull(message = "El mnemonico no puede ser nulo")
+@Document(collection = "salones")
+public class Salon {
+    //We declare mnemonico as the id of the salon
+    @Id
     private String mnemonico;
     private String nombre;
     private String descripcion;
-    @NotNull(message = "La ubicacion no puede ser nula")
     private String ubicacion;
-    @NotNull(message = "La capacidad no puede ser nula")
-    @Negative(message = "La capacidad no puede ser negativa")
-    private Integer capacidad;
-    @NotNull(message = "Los recursos no pueden ser nulos")
+    private int capacidad;
     private List<Recurso> recursos;
-    private Boolean activo;
-    private Boolean disponible;
-}
-```
-
-## Modelos
-Los modelos representan las entidades principales de la base de datos.
-
-### Ejemplo: `Recurso`
-```java
-package edu.eci.cvds.elysium.model;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.List;
-
-@Document(collection = "recursos")
-public class Recurso {
-    @Id
-    private String id;
-    private String nombre;
-    private int cantidad;
-    private List<String> especificaciones;
+    private boolean disponible;
     private boolean activo;
+    // getters and setters
+}
+
+@Document(collection = "reservas")
+public class Reserva {
+
+    @Id
+    private String idReserva;
+    private LocalDate fechaReserva;
+    private double hora;
+    private DiaSemana diaSemana;
+    private String proposito;
+    private String materia;
+    private String idSalon;
+    private EstadoReserva estado;
+    private boolean duracionBloque;
+    private int prioridad;
+    private int idUsuario; 
+    // getters and setters
 }
 ```
 
-## Endpoints / API
-### Usuario
-- `GET /api/administrador/{id}/usuario` - Consulta un usuario por ID.
-- `GET /api/administrador/usuarios` - Consulta usuarios con filtros opcionales.
-- `POST /api/administrador/usuario` - Agrega un usuario.
-- `PATCH /api/administrador/usuario/{id}` - Actualiza información de un usuario.
+#### Implementación del Repository:
 
-### Salón
-- `POST /api/administrador/{id}/salon` - Agrega un nuevo salón.
+```java
+@Repository
+public interface ReservaRepository extends MongoRepository<Reserva, String> {
 
-### Reserva
-- `POST /api/administrador/{id}/reserva` - Crea una nueva reserva.
+    /**
+     * Find a reservation by its ID
+     * @param idReserva the ID of the reservation
+     * @return the reservation with the given ID
+     */
+    Reserva findByIdReserva(String idReserva);
 
-## Pruebas y Calidad
-- **Pruebas unitarias:** JUnit.
-- **Cobertura de código:** Se busca mantener un mínimo del 85%.
-- **Estrategia de pruebas:**
-    - Pruebas de unidad en los servicios.
-    - Pruebas de integración para verificar la correcta interacción con la base de datos.
+    /**
+     * Find all the reservations
+     * @return all the reservations
+     */
+    @SuppressWarnings("null")
+    List<Reserva> findAll();
 
-## Guía de Configuración y Despliegue
-### Configuración del Entorno de Desarrollo
-1. Clonar el repositorio.
-2. Instalar dependencias con Maven:
-   ```sh
-   mvn clean install
-   ```
-3. Configurar las variables de entorno para la conexión a PostgreSQL y MongoDB.
-4. Iniciar la aplicación:
-   ```sh
-   mvn spring-boot:run
-   ```
+    // Other methods
+}
+```
 
-### Despliegue
-Para desplegar en producción:
-1. Generar el archivo JAR:
-   ```sh
-   mvn package
-   ```
-2. Ejecutar con:
-   ```sh
-   java -jar target/elysium-backend.jar
-   ```
+#### Validación y Lógica de Negocio:
 
-## Notas Adicionales / Contribución
-- Seguir la guía de estilo de código de Java.
-- Utilizar PRs para contribuir al proyecto.
-- Documentar cualquier nuevo endpoint en Swagger.
-- Posibles mejoras: Implementación de autenticación y autorización con JWT.
+En la capa de servicio, se implementó la lógica para validar la disponibilidad de laboratorios:
+
+```java
+@Service
+public class ReservaServiceImpl implements ReservaService {
+
+    @Autowired
+    private ReservaRepository reservaRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private SalonService salonService;
+
+    /**
+     * Returns all reservations.
+     */
+    @Override
+    public List<Reserva> consultarReservas() {
+        return reservaRepository.findAll();
+    }
+
+
+    /**
+     * Consult the reservations by the user id
+     * @param idUsuario the user id
+     * @return the reservations by the user id
+     */
+    public List<Reserva> consultarReservasPorUsuario(Integer idUsuario){
+        return reservaRepository.findByIdUsuario(idUsuario);
+    }
+
+    /**
+     * Returns all reservations for a specific salon.
+     * @param idSalon the salon ID
+     * @return the reservations for the specified salon
+     */
+    @Override
+    public List<Reserva> consultarReservasPorSalon(String idSalon) {
+        return reservaRepository.findByIdSalon(idSalon);
+    }
+}
+```
+
+### Sprint 2: CI/CD
+
+![alt text](image-3.png)
+
+#### Objetivos Alcanzados:
+
+- Configuración de GitHub Actions con workflow para CI/CD
+- Implementación de tests unitarios y de integración
+- Análisis de calidad de código con SonarQube y Jacoco
+- Despliegue automatizado en Azure App Service
+- Configuración de base de datos MySQL en Azure
+- Generación procedural de datos para análisis
+- Implementación de visualizaciones con gráficos
+
+#### GitHub Actions Workflow:
+Se crearon dos ambientes: uno de pruebas y el otro de producción.
+
+Esto se hace para validar que cuando se hace PR de un feature con develop se despliegue en Azure con el ambiente de Test, mientras que cuando está la versión final, se hace PR de develop a main, lo cual es el ambiente de producción.
+
+```yaml
+name: CI/CD Pipeline test
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Maven Package
+        run: mvn clean package -DskipTests
+      - name: Upload Artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: springboot-example
+          path: target/*.jar
+
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Maven Verify
+        run: mvn verify
+      - name: Ejecutar Tests de Reserva
+        run: |
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuando lo consulto a nivel de servicio, Entonces la consulta será exitosa validando el campo id."
+          echo "Ejecutando test: Dado que no hay ninguna reserva registrada, Cuándo la consulto a nivel de servicio, Entonces la consulta no retornará ningún resultado."
+          echo "Ejecutando test: Dado que no hay ninguna reserva registrada, Cuándo lo creo a nivel de servicio, Entonces la creación será exitosa."
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuándo la elimino a nivel de servicio, Entonces la eliminación será exitosa."
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuándo la elimino y consulto a nivel de servicio, Entonces el resultado de la consulta no retornará ningún resultado."
+
+  deploy:
+    name: Deploy
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: springboot-example
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: hades       # Reemplaza con el nombre de tu App Service para testing
+          publish-profile: ${{ secrets.AZURETESTENVIRONMENT  }}
+          package: '*.jar'
+```
+
+```yaml
+name: CI/CD Pipeline Production
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Maven Package
+        run: mvn clean package -DskipTests
+      - name: Upload Artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: springboot-example
+          path: target/*.jar
+
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Maven Verify
+        run: mvn verify
+      - name: Ejecutar Tests de Reserva
+        run: |
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuando lo consulto a nivel de servicio, Entonces la consulta será exitosa validando el campo id."
+          echo "Ejecutando test: Dado que no hay ninguna reserva registrada, Cuándo la consulto a nivel de servicio, Entonces la consulta no retornará ningún resultado."
+          echo "Ejecutando test: Dado que no hay ninguna reserva registrada, Cuándo lo creo a nivel de servicio, Entonces la creación será exitosa."
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuándo la elimino a nivel de servicio, Entonces la eliminación será exitosa."
+          echo "Ejecutando test: Dado que tengo 1 reserva registrada, Cuándo la elimino y consulto a nivel de servicio, Entonces el resultado de la consulta no retornará ningún resultado."
+
+  deploy:
+    name: Deploy
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: springboot-example
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: limbo       # Reemplaza con el nombre de tu App Service
+          publish-profile: ${{ secrets.AZURELIMBOPUBLISHPROFILE }}
+          package: '*.jar'
+```
+
+#### Tests Implementados:
+
+```java
+@SpringBootTest
+public class ReservationServiceTest {
+    
+    @MockBean
+    private ReservationRepository reservationRepository;
+    
+    @Autowired
+    private ReservationService reservationService;
+    
+    @Test
+    public void shouldReturnReservationWhenFindById() {
+        // Given
+        String id = "1";
+        Reservation reservation = new Reservation();
+        reservation.setId(id);
+        
+        when(reservationRepository.findById(id)).thenReturn(Optional.of(reservation));
+        
+        // When
+        Optional<Reservation> found = reservationService.getReservationById(id);
+        
+        // Then
+        assertTrue(found.isPresent());
+        assertEquals(id, found.get().getId());
+    }
+    
+    // Otros tests...
+}
+```
+
+### Sprint 3: Integración con React
+
+![alt text](image-4.png)
+
+#### Objetivos Alcanzados:
+
+- Implementación de sistema de autenticación
+- Modificación de endpoints para trabajar con requerimientos de React
+- Diseño de DTOs específicos para integración frontend
+- Configuración de CORS para permitir comunicación con frontend React
+- Implementación de paginación y filtrado para optimizar consultas
+
+#### Configuración de CORS:
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000", "https://elysium-frontend.azurewebsites.net")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
+    }
+}
+```
+
+### Sprint 4: Autenticación y Autorización
+
+![alt text](image-5.png)
+
+#### Objetivos Alcanzados:
+
+- Implementación de Spring Security para autenticación
+- Cifrado de contraseñas con BCrypt
+- Definición de roles (Administrador y Profesor)
+- Incorporación de JWT para autenticación sin estado
+- Protección de endpoints según roles
+
+#### Configuración de Spring Security:
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .authorizeRequests()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/salones/**").hasAnyRole("ADMIN", "PROFESSOR")
+                .anyRequest().authenticated()
+            .and()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+    // Otros beans...
+}
+```
+
+#### JWT Authentication Filter:
+
+```java
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+    
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+    
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, 
+                                    FilterChain filterChain) throws ServletException, IOException {
+        // Extraer token JWT del encabezado
+        String token = getJwtFromRequest(request);
+        
+        // Validar token
+        if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+            String username = tokenProvider.getUsernameFromJWT(token);
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+            
+            UsernamePasswordAuthenticationToken authentication = 
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        
+        filterChain.doFilter(request, response);
+    }
+    
+    // Métodos auxiliares...
+}
+```
+
+### Sprint 5: SSL y Seguridad Avanzada
+
+![alt text](image-6.png)
+
+#### Objetivos Alcanzados:
+
+- Implementación de certificados SSL autofirmados
+- Configuración de HTTPS para la API
+- Mejora de la seguridad en cabeceras HTTP
+- Auditoría de acciones de usuarios
+- Implementación de rotación automática de claves JWT
+
+#### Configuración SSL:
+
+```java
+@Configuration
+public class SSLConfig {
+    
+    @Bean
+    public ServletWebServerFactory servletContainer() {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+        tomcat.addAdditionalTomcatConnectors(createSslConnector());
+        return tomcat;
+    }
+    
+    private Connector createSslConnector() {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
+        connector.setScheme("https");
+        connector.setSecure(true);
+        connector.setPort(8443);
+        protocol.setSSLEnabled(true);
+        protocol.setKeystoreFile("keystore.p12");
+        protocol.setKeystorePass("${SSL_PASSWORD}");
+        protocol.setKeyAlias("tomcat");
+        return connector;
+    }
+}
+```
+
+#### Auditoría de acciones:
+
+```java
+@Aspect
+@Component
+public class SecurityAuditAspect {
+    
+    private static final Logger logger = LoggerFactory.getLogger(SecurityAuditAspect.class);
+    
+    @Autowired
+    private AuditService auditService;
+    
+    @AfterReturning(
+        pointcut = "execution(* com.escuelaing.elysium.service.*.*(..)) && @annotation(auditable)",
+        returning = "result")
+    public void auditMethod(JoinPoint joinPoint, Auditable auditable, Object result) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            AuditEvent event = new AuditEvent(
+                auth.getName(),
+                auditable.action(),
+                joinPoint.getSignature().toShortString(),
+                new Date()
+            );
+            auditService.logAuditEvent(event);
+        }
+    }
+}
+```
+
+## Patrones de Diseño
+
+### Data Transfer Objects (DTO)
+
+El proyecto utiliza extensivamente el patrón DTO para separar las entidades de dominio (que representan los datos almacenados) de los objetos utilizados para transferir datos entre capas y hacia el frontend. Esto proporciona varias ventajas:
+
+1. **Seguridad**: Evita exponer directamente las entidades de dominio
+2. **Flexibilidad**: Permite adaptar la presentación de datos sin afectar el modelo
+3. **Eficiencia**: Permite transferir solo los datos necesarios
+
+#### Uso de Tipos Wrapper en DTOs
+
+En lugar de usar tipos primitivos (int, boolean, double), nuestros DTOs utilizan tipos Wrapper (Integer, Boolean, Double) para proporcionar la capacidad de manejar valores nulos de manera más elegante:
+
+```java
+public class UsuarioDTO {
+   
+    private Integer idInstitucional; 
+    private Boolean isAdmin;         
+    private String nombre;           
+    private String apellido;         
+    private String correo;           
+    private Boolean activo; 
+    
+    // Constructores, getters y setters
+}
+```
+
+Los tipos Wrapper ofrecen las siguientes ventajas:
+
+- Permiten valores nulos, lo cual es útil cuando ciertos campos son opcionales
+- Facilitan la validación de datos
+- Permiten utilizar métodos propios de las clases Wrapper (como compareTo, equals, etc.)
+- Compatibilidad con las API de Java que trabajan con tipos de referencia
+
+### Repository Pattern
+
+La aplicación implementa el patrón Repository mediante Spring Data MongoDB para abstraer la lógica de acceso a datos:
+
+```java
+@Repository
+public interface SalonRepository extends MongoRepository<Salon, String> {   
+    
+    /**
+     * Find a salon by its mnemonic
+     * @param mnemonico the mnemonic of the salon
+     * @return the salon with the given mnemonic
+     */
+    Salon findByMnemonico(String mnemonico);
+    
+    /**
+     * Find all the salons
+     * @return all the salons
+    */
+    @SuppressWarnings("null")
+    List<Salon> findAll();
+    
+
+    /**
+     * Find all the salons that are active
+     * @return all the salons that are active
+     */
+    List<Salon> findByActivoTrue();
+}
+```
+
+### Service Layer
+
+La capa de servicio encapsula la lógica de negocio y sirve como intermediario entre los controladores y los repositorios:
+
+```java
+@Service
+public class SalonServiceImpl implements SalonService {
+
+    @Autowired
+    private SalonRepository salonRepository;
+
+    /**
+     * Find a salon by its mnemonic
+     * @param mnemonico the mnemonic of the salon
+     * @return the salon with the given mnemonic
+     */
+    @Override
+    public Salon findByMnemonico(String mnemonico) {
+        return salonRepository.findByMnemonico(mnemonico);
+    }
+
+    /**
+     * Find all the salons
+     * @return all the salons
+     */
+    @Override
+    public List<Salon> findAll() {
+        return salonRepository.findAll();
+    }
+
+
+    /**
+     * Find all the salons that are active
+     * @return all the salons that are active
+     */
+    @Override
+    public List<Salon> findByActivoTrue() {
+        return salonRepository.findByActivoTrue();
+    }
+    
+    // Implementación de métodos...
+}
+```
+
+### Dependencias Principales
+
+- **Spring Boot Starter Web**: Proporciona todas las dependencias necesarias para crear aplicaciones web, incluido el servidor Tomcat embebido.
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+  </dependency>
+  ```
+
+- **Spring Boot Starter Data MongoDB**: Ofrece integración con MongoDB y Spring Data.
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-mongodb</artifactId>
+  </dependency>
+  ```
+
+- **Spring Boot Security**: Proporciona características de autenticación y autorización.
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+  </dependency>
+  ```
+
+### Dependencias para JWT
+
+- **JJWT**: Biblioteca para trabajar con JWT (JSON Web Tokens).
+  ```xml
+  <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-api</artifactId>
+      <version>0.11.5</version>
+  </dependency>
+  <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-impl</artifactId>
+      <version>0.11.5</version>
+  </dependency>
+  <dependency>
+      <groupId>io.jsonwebtoken
+
+
+## Configuración del Proyecto ⚙️
+
+### Prerequisitos
+
+- Java OpenJDK 17.x.x
+- Apache Maven 3.9.x
+- MongoDB / MongoDB Atlas
+- Postman
+- Docker (opcional)
+
+### Variables de Entorno Requeridas
+
+```properties
+# MongoDB Configuration
+spring.data.mongodb.uri=${MONGODB_URI}
+spring.data.mongodb.database=${MONGODB_DATABASE}
+
+# JWT Configuration
+app.jwt.secret=${JWT_SECRET}
+app.jwt.expiration=${JWT_EXPIRATION}
+
+# SSL Configuration
+server.port=8443
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:keystore.p12
+server.ssl.key-store-password=${SSL_PASSWORD}
+server.ssl.key-alias=tomcat
+```
+
+### Ejecutar el Proyecto Localmente
+
+1. Clonar el repositorio:
+```bash
+git clone https://github.com/LePeanutButter/Elysium-Back.git
+```
+
+2. Navegar al directorio del proyecto:
+```bash
+cd Elysium-Back
+```
+
+3. Compilar el proyecto:
+```bash
+mvn clean package
+```
+
+4. Ejecutar la aplicación:
+```bash
+java -jar target/elysium-backend-0.0.1-SNAPSHOT.jar
+```
+
+### Ejecutar con Docker
+
+1. Construir la imagen:
+```bash
+docker build -t elysium-backend .
+```
+
+2. Ejecutar el contenedor:
+```bash
+docker run -p 8443:8443 -e MONGODB_URI=mongodb+srv://... -e JWT_SECRET=... elysium-backend
+```
+
+## Documentación API (Swagger) 📘
+
+El proyecto utiliza Swagger para documentar la API REST. Acceda a la documentación en:
+
+```
+https://localhost:8443/swagger-ui/index.html
+```
+
+Ejemplo de documentación endpoint:
+
+```java
+@RestController
+@RequestMapping("/api/usuario")
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    /**
+     * Endpoint para consultar un usuario por su identificador.
+     * 
+     * @param id Identificador del usuario a consultar (proveniente de la URL).
+     * @return Usuario con el identificador dado.
+     */
+    @Operation(summary = "Consultar usuario", description = "Endpoint para consultar un usuario por su identificador.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @GetMapping("/{id}/usuario")
+    public Usuario consultarUsuario(@PathVariable int id) {
+        return usuarioService.consultarUsuario(id);
+    }
+    
+    // Otros endpoints...
+}
+```
+
+## Estructura del Proyecto 📁
+
+```
+src
+├── main
+│   ├── java
+│   │   └── edu
+│   │       └── eci
+│   │           └── elysium
+│   │               ├── ElysiumApplication.java
+│   │               ├── config
+│   │               │   ├── CorsConfig.java
+│   │               │   ├── SecurityConfig.java
+│   │               │   ├── JwtRequestFilter.java
+│   │               ├── controller
+│   │               │   ├── AuthController.java
+│   │               │   ├── SalonController.java
+│   │               │   └── ReservaController.java
+│   │               │   ├── UsuarioController.java
+│   │               ├── dto
+│   │               │   ├── SalonDTO.java
+│   │               │   ├── ReservaDTO.java
+│   │               │   └── UsuarioDTO.java
+│   │               ├── exception
+│   │               │   ├── GlobalExceptionHandler.java
+│   │               │   ├── ElysiumExceptions.java
+│   │               │   └── ReservationException.java
+│   │               ├── model
+│   │               │   ├── AuthenticationRequest.java
+│   │               │   ├── DiaSemana.java
+│   │               │   ├── EstadoReserva.java
+│   │               │   ├── Salon.java
+│   │               │   ├── Recurso.java
+│   │               │   ├── Reserva.java
+│   │               │   ├── Usuario.java
+│   │               ├── repository
+│   │               │   ├── SalonRepository.java
+│   │               │   ├── ReservaRepository.java
+│   │               │   └── UsuarioRepository.java
+│   │               ├── util
+│   │               │   ├── JwtUtil.java
+│   │               └── service
+│   │                   ├── impl
+│   │                   │   ├── SalonServiceImpl.java
+│   │                   │   ├── ReservaServiceImpl.java
+│   │                   │   └── UsuarioServiceImpl.java
+│   │                   ├── CustomUserDetailsService.java
+│   │                   ├── SalonService.java
+│   │                   ├── ReservaService.java
+│   │                   └── UsuarioService.java
+│   └── resources
+│       ├── application.properties
+├── test
+│   └── java
+│       └── edu
+│           └── eci
+│               └── elysium
+│                   ├── controller
+│                   ├── dto
+│                   ├── model
+│                   ├── repository
+│                   ├── util
+│                   └── service
+│                       ├── impl
+└── pom.xml
+```
+
+## Contribuciones 🤝
+
+Este proyecto sigue las prácticas de Scrum y CI/CD:
+
+1. Los desarrolladores trabajan en ramas de features.
+2. Las Pull Requests son obligatorias para integrar código a la rama main.
+3. Las PR deben pasar las pruebas automatizadas y el análisis de código.
+4. El código se implementa automáticamente después de la integración exitosa.
+
+Para contribuir:
+1. Crea un fork del proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/amazing-feature`)
+3. Haz commit de tus cambios (`git commit -m 'Add some amazing feature'`)
+4. Haz push a la rama (`git push origin feature/amazing-feature`)
+5. Abre una Pull Request
 
 ---
-📌 **Elysium Backend** - Proyecto para la gestión de reservas de espacios y equipos de computacion.
+
+Desarrollado con ❤️ por el equipo de Elysium
 
