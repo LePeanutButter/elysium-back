@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import edu.eci.cvds.elysium.service.CustomUserDetailsService;
 import edu.eci.cvds.elysium.util.JwtUtil;
-
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 
@@ -45,7 +45,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http
+                .cors(withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/api/register", "/api/login", "/error").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
