@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import edu.eci.cvds.elysium.service.CustomUserDetailsService;
 import edu.eci.cvds.elysium.util.JwtUtil;
-
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 
