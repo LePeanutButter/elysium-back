@@ -11,6 +11,7 @@ Elysium-Back es un sistema de gestión de reservas de laboratorios para la Decan
 
 ## Tabla de Contenidos 📋
 
+- [Integrantes](#integrantes)
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
 - [Arquitectura](#arquitectura)
 - [Sprints y Desarrollo](#sprints-y-desarrollo)
@@ -28,6 +29,14 @@ Elysium-Back es un sistema de gestión de reservas de laboratorios para la Decan
 - [Documentación API (Swagger)](#documentación-api-swagger)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Contribuciones](#contribuciones)
+
+## Integrantes
+
+- Andersson David Sánchez Méndez
+- Cristian Santiago Pedraza Rodríguez
+- Ricardo Andres Ayala Garzon
+- Santiago Botero García
+
 
 ## Tecnologías Utilizadas 🛠️
 
