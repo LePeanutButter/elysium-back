@@ -252,6 +252,9 @@ public class SalonServiceImpl implements SalonService {
             if (dto.getCapacity() != null) {
                 salon.setCapacidad(dto.getCapacity());
             }
+            if (dto.getActivo() != null) {
+                salon.setActivo(dto.getActivo());
+            }
 
             salonRepository.save(salon);
         }
