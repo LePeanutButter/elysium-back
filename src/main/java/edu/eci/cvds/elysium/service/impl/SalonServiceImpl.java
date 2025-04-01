@@ -165,7 +165,6 @@ public class SalonServiceImpl implements SalonService {
      * Find all the salons that have the given name and location
      * @param nombre the name of the salon
      * @param ubicacion the location of the salon
-     * @return all the salons that have the given name and location
      */
     @Override
     public void agregarSalon(String nombre, String mnemonico,String descripcion, String ubicacion, int capacidad, List<Recurso> recursos) {
@@ -251,6 +250,12 @@ public class SalonServiceImpl implements SalonService {
             }
             if (dto.getCapacity() != null) {
                 salon.setCapacidad(dto.getCapacity());
+            }
+            if (dto.getActivo() != null) {
+                salon.setActivo(dto.getActivo());
+            }
+            if (dto.getResources() != null) {
+                salon.setRecursos(dto.getResources());
             }
 
             salonRepository.save(salon);
