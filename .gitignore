@@ -33,3 +33,5 @@ build/
 # application.properties
 ### VS Code ###
 /.vscode
+
+.env
