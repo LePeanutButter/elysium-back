@@ -74,9 +74,9 @@ La arquitectura se divide en las siguientes capas:
 
 ## Diagrama de componentes
 
-![alt text](<assets/Whatsapp Image 2025-04-02 at 01.34.42_8162a964.jpg>)
+![alt text](assets/componentDiagram.jpg)
 
-Link: https://uml.planttext.com/plantuml/svg/hLVBRjGm5DrNwZ-OsI0MeoAMg1frNdqWIgkPgLW02vEuKwkE7Mo7CaBzTwuJEx4TPreecr5oVCxrVTZtPawKnb9N1KDBjbEqAj1wfpGfq5mKfU24QxIWU2jnSNXmUF0g9xUK4xHQpZVJJsSVboXZM2cpfEufBp7mKEQKQxrZ187jTybbzFlm0A4PpkwtKbGydmic9FfyHpMf5uJCYMp06GEM0QTIYeS0UpIRb_28jmIDN12dKd1DU3v2nyShacdCjunC9isMNuwFMoScawzyHN2cqRGi6Ssmfe9_GrYX6WKmfPXUNw0raJzfHchkjAJsDSckz1qyMkFeKkGLipfOQLxJVYam2ZHFuR1XrOsgiAGYK3biMBN639u3aONsQ3JM15rY3gal06jK1komeGAPiW_LfoMRD7_4Eo97pK8wjNCejHIC4Tdcj8FICfkFIDb3qs9RWaZSGutuqVm48TbZyaHOrXF_Y8NGNizyMGYbPVDAQL7S0751DAPCXVl6S3gm5Ic5ebh8tVDYw_X-U1sQ5jTdCf96sDxKHD8UEbIqh99KxmPZSWIe_YtTDbu5K5hsuK6lo8-AA7rAcRO72S3cRL1peobpLFESTdeX2aphRaFOKyNmIx0dyLswzoRPJssQkDXSgPfb7jBkDtchPDqp1_s_57mhlAnxxzPitNuo9geSciylI2l7pCuuPStcMEFlMC6cjNmnGrCDOstK6WJ4xU_wxt9-SOvpQ9YBMHF8pD_lTJk04ELsJqbO7OkweoN4xCOB6eydtln0xr6bI6-zdHFfzN0gf3dX34XpWfRVKhpT1vqDzXzWHHuCi48VdfETQEIq95C7EsVWgyFrPQG5KjPSL9DmTDYinUqlI4l4jXSoZhXdqs_bSH8ZSjZ0WzXSYud325kFSwnfAc0WipVBcEdmmM1_OaRXXi1HVw3wBfPq4NSyBI3bZjuusXY3pCjkJ4HUHrdn4kMDbYYnFdaWKH7iCPDcUmdOxuU9peCXmCBqsu7OFAPd5emLzU5rXp-YrPXFwlllHUKJ4rao3HSeMcAkReKiR0mBrmBXS73u7ZEk7nvutRGHpwBZauwhffL4AggqEGtfiFgiT5nzdjzVnzq5BugAsszik9nTpnY_VJEElWh1ulbcStrqVRNUe2DSqYCcjlGVP99imIqpgsDb_-fRyTdIQYlR3lz2sstyNyH7lsd-234qpVjbfbJJjckJByb6x9CfzeMPeRSuCqUEkcSqGYFtlTyI4klcJkzRjwVEeoHQUxoB5z-R_cgwySUUH3QYrVGyI7WRcKc5Sm8N1Fw6_m40
+[Diagrama de Componentes de Elysium](https://uml.planttext.com/plantuml/svg/hLVBRjGm5DrNwZ-OsI0MeoAMg1frNdqWIgkPgLW02vEuKwkE7Mo7CaBzTwuJEx4TPreecr5oVCxrVTZtPawKnb9N1KDBjbEqAj1wfpGfq5mKfU24QxIWU2jnSNXmUF0g9xUK4xHQpZVJJsSVboXZM2cpfEufBp7mKEQKQxrZ187jTybbzFlm0A4PpkwtKbGydmic9FfyHpMf5uJCYMp06GEM0QTIYeS0UpIRb_28jmIDN12dKd1DU3v2nyShacdCjunC9isMNuwFMoScawzyHN2cqRGi6Ssmfe9_GrYX6WKmfPXUNw0raJzfHchkjAJsDSckz1qyMkFeKkGLipfOQLxJVYam2ZHFuR1XrOsgiAGYK3biMBN639u3aONsQ3JM15rY3gal06jK1komeGAPiW_LfoMRD7_4Eo97pK8wjNCejHIC4Tdcj8FICfkFIDb3qs9RWaZSGutuqVm48TbZyaHOrXF_Y8NGNizyMGYbPVDAQL7S0751DAPCXVl6S3gm5Ic5ebh8tVDYw_X-U1sQ5jTdCf96sDxKHD8UEbIqh99KxmPZSWIe_YtTDbu5K5hsuK6lo8-AA7rAcRO72S3cRL1peobpLFESTdeX2aphRaFOKyNmIx0dyLswzoRPJssQkDXSgPfb7jBkDtchPDqp1_s_57mhlAnxxzPitNuo9geSciylI2l7pCuuPStcMEFlMC6cjNmnGrCDOstK6WJ4xU_wxt9-SOvpQ9YBMHF8pD_lTJk04ELsJqbO7OkweoN4xCOB6eydtln0xr6bI6-zdHFfzN0gf3dX34XpWfRVKhpT1vqDzXzWHHuCi48VdfETQEIq95C7EsVWgyFrPQG5KjPSL9DmTDYinUqlI4l4jXSoZhXdqs_bSH8ZSjZ0WzXSYud325kFSwnfAc0WipVBcEdmmM1_OaRXXi1HVw3wBfPq4NSyBI3bZjuusXY3pCjkJ4HUHrdn4kMDbYYnFdaWKH7iCPDcUmdOxuU9peCXmCBqsu7OFAPd5emLzU5rXp-YrPXFwlllHUKJ4rao3HSeMcAkReKiR0mBrmBXS73u7ZEk7nvutRGHpwBZauwhffL4AggqEGtfiFgiT5nzdjzVnzq5BugAsszik9nTpnY_VJEElWh1ulbcStrqVRNUe2DSqYCcjlGVP99imIqpgsDb_-fRyTdIQYlR3lz2sstyNyH7lsd-234qpVjbfbJJjckJByb6x9CfzeMPeRSuCqUEkcSqGYFtlTyI4klcJkzRjwVEeoHQUxoB5z-R_cgwySUUH3QYrVGyI7WRcKc5Sm8N1Fw6_m40)
 
 ## Diagrama de clases
 
@@ -86,21 +86,21 @@ Link: https://uml.planttext.com/plantuml/svg/hLVBRjGm5DrNwZ-OsI0MeoAMg1frNdqWIgk
 
 - ÉPICA
 
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.35.57_a39fcd2f.jpg>)
+![alt text](assets/epica.jpg)
 
 - FEATURES
 
 Cada back tiene su rama feature correspondiente
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.45.32_2e2692df.jpg>)
+![alt text](assets/backFeature.jpg)
 
 Cada feature tiene su descripción, su criterio de aceptación historias de usuario y sus tareas asociadas.
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.47.38_614837e4.jpg>)
+![alt text](assets/feature.jpg)
 
 Cada historia de usuario tiene descripción, criterio de aceptación, feature y tareas asociadas
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.50.52_eda63399.jpg>)
+![alt text](assets/historia.jpg)
 
 Cada tarea tiene su descripción
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.51.48_8f857843.jpg>)
+![alt text](assets/tarea.jpg)
 
 ### Sprint 1: Scrum - DI/IOC
 
@@ -114,7 +114,7 @@ Cada tarea tiene su descripción
 - Definición del modelo de datos: laboratorios y reservas
 - Creación de endpoints REST para CRUD de reservas
 
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.34.02_79e581b5.jpg>)
+![alt text](assets/sprint1.jpg)
 
 #### Estructura de Modelo:
 
@@ -237,7 +237,7 @@ public class ReservaServiceImpl implements ReservaService {
 - Generación procedural de datos para análisis
 - Implementación de visualizaciones con gráficos
 
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.53.29_7dccf1c7.jpg>)
+![alt text](assets/sprint2.jpg)
 
 #### Jacoco y SonarCloud
 
@@ -260,10 +260,11 @@ Cada ambiente en la nube tiene su propia collection en mongo.
 Se crearon las variables de entorno para cada ambiente:
 
 - Test
+[AmbientePruebas](https://hades-g4apbhdua4gtbbf5.canadacentral-01.azurewebsites.net/api)
 
-![alt text](<assets/Whatsapp Image 2025-04-01 at 17.33.52_3b63d91c.jpg>)
-![alt text](<assets/Whatsapp Image 2025-04-01 at 17.40.02_a3cecf1e.jpg>)
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.06.50_09f83ef1.jpg>)
+![alt text](assets/bdt.jpg)
+![alt text](assets/hadesE.jpg)
+![alt text](assets/hadesA.jpg)
 ![alt text](assets/image-7.png)
 
 ```yaml
@@ -335,9 +336,11 @@ jobs:
 
 - Producción:
 
-![alt text](<assets/Whatsapp Image 2025-04-01 at 17.36.19_6f9ec53f.jpg>)
-![alt text](<assets/Whatsapp Image 2025-04-01 at 17.38.28_012fda31.jpg>)
-![alt text](<assets/Whatsapp Image 2025-04-01 at 17.37.00_d83d23c3.jpg>)
+[AmbienteProducción](https://limbo-cfgvasfjc6argbhh.canadacentral-01.azurewebsites.net/api/)
+
+![alt text](assets/bdp.jpg)
+![alt text](assets/limboE.jpg)
+![alt text](assets/limboA.jpg)
 ![alt text](assets/image-8.png)
 
 ```yaml
@@ -452,7 +455,7 @@ public class ReservationServiceTest {
 - Configuración de CORS para permitir comunicación con frontend React
 - Implementación de paginación y filtrado para optimizar consultas
 
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.55.45_06d7137b.jpg>)
+![alt text](assets/sprint3.jpg)
 
 #### Configuración de CORS:
 
@@ -484,7 +487,7 @@ public class WebConfig implements WebMvcConfigurer {
 - Incorporación de JWT para autenticación sin estado
 - Protección de endpoints según roles
 
-![alt text](<assets/Whatsapp Image 2025-04-02 at 02.57.34_80d8d956.jpg>)
+![alt text](assets/sprint4.jpg)
 
 #### Configuración de Spring Security:
 
@@ -571,8 +574,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 - Auditoría de acciones de usuarios
 - Implementación de rotación automática de claves JWT
 
-![alt text](<assets/Whatsapp Image 2025-03-30 at 09.39.56_923b0882.jpg>)
-![alt text](<assets/Whatsapp Image 2025-04-02 at 03.00.16_f3a8a205.jpg>)
+![alt text](assets/jwt.jpg)
+![alt text](assets/sprint5.jpg)
 
 #### Configuración SSL:
 
@@ -859,10 +862,10 @@ https://localhost:8080/swagger-ui/index.html
 
 Esta es la docuemntación desde la API de producción:
 
-![alt text](<assets/WhatsApp Image 2025-04-02 at 03.40.13_c8eabd19.jpg>)
-![alt text](<assets/WhatsApp Image 2025-04-02 at 03.40.29_3911a49f.jpg>)
-![alt text](<assets/WhatsApp Image 2025-04-02 at 03.41.02_b7bd4bfe.jpg>)
-![alt text](<assets/WhatsApp Image 2025-04-02 at 03.41.11_414b2ee3.jpg>)
+![alt text](assets/sw1.jpg)
+![alt text](assets/sw2.jpg)
+![alt text](assets/sw3.jpg)
+![alt text](assets/sw4.jpg)
 
 Ejemplo de documentación endpoint:
 
