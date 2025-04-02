@@ -25,6 +25,8 @@ public class UsuarioDTO {
     
     private Boolean activo;         // opcional
 
+    private String password;
+
     /**
      * Default constructor
      */
@@ -68,5 +70,11 @@ public class UsuarioDTO {
      * @return the user's active status
      */
     public Boolean getActivo() { return activo; }
+
+    /**
+     * Get the user's password
+     * @return the user's password
+     */
+    public String getPassword() { return password; }
 
 }

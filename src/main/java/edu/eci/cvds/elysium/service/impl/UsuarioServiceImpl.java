@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.eci.cvds.elysium.ElysiumExceptions;
@@ -32,8 +33,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private SalonRepository salonRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
      * Consult a user by its institutional id.
+     * 
      * @param idInstitucional Institutional id of the user to consult.
      * @return User with the given id.
      */
@@ -45,6 +50,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Consult a list of all users.
+     * 
      * @return List of all users.
      */
     @Override
@@ -54,6 +60,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Consult the active users.
+     * 
      * @return List of active users.
      */
     @Override
@@ -65,9 +72,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario consultarUsuarioPorCorreo(String correo) {
         return usuarioRepository.findByCorreoInstitucional(correo);
     }
-    
+
     /**
      * Consult the inactive users.
+     * 
      * @return List of inactive users.
      */
     @Override
@@ -77,6 +85,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Consult the users that are administrators.
+     * 
      * @return List of administrators.
      */
     @Override
@@ -86,6 +95,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Consult the users that are not administrators.
+     * 
      * @return List of users that are not administrators.
      */
     @Override
@@ -95,6 +105,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Consult the users that are not administrators and are active.
+     * 
      * @return List of users that are not administrators and are active.
      */
     @Override
@@ -104,6 +115,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Consult the users that are not administrators.
+     * 
      * @return List of users that are not administrators.
      */
     @Override
@@ -111,9 +123,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByActivoTrueAndIsAdminFalse();
     }
 
-
     /**
      * Consult the users that are not administrators and are inactive.
+     * 
      * @return List of users that are not administrators and are inactive.
      */
     @Override
@@ -123,7 +135,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Update the information of a user.
-     * @param id The ID of the user to update.
+     * 
+     * @param id  The ID of the user to update.
      * @param dto The new information of the user.
      * @throws ElysiumExceptions if the user doesn't exist or validation fails
      */
@@ -134,21 +147,21 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuario == null) {
             throw new ElysiumExceptions(ElysiumExceptions.USUARIO_NO_ENCONTRADO);
         }
-        
+
         // Validate email format if provided
         if (dto.getCorreo() != null) {
             String emailRegex = "^[a-zA-Z]+\\.[a-zA-Z]+@escuelaing\\.edu\\.co$";
             if (!dto.getCorreo().matches(emailRegex)) {
                 throw new ElysiumExceptions(ElysiumExceptions.CORREO_NO_VALIDO);
             }
-            
+
             // Check if email already exists for another user
             Usuario userWithSameEmail = usuarioRepository.findByCorreoInstitucional(dto.getCorreo());
             if (userWithSameEmail != null && userWithSameEmail.getIdInstitucional() != id) {
                 throw new ElysiumExceptions(ElysiumExceptions.YA_EXISTE_CORREO);
             }
         }
-        
+
         // Update fields only if they are not null
         if (dto.getNombre() != null) {
             usuario.setNombre(dto.getNombre());
@@ -164,30 +177,31 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
         if (dto.getActivo() != null) {
             usuario.setActivo(dto.getActivo());
-        }   
+        }
 
         // Save the updated user
         usuarioRepository.save(usuario);
-    }  
+    }
 
     /**
      * Add a new user.
-     * @param idInstitucional The institutional ID of the user.
-     * @param nombre The name of the user.
-     * @param apellido The last name of the user.
+     * 
+     * @param idInstitucional     The institutional ID of the user.
+     * @param nombre              The name of the user.
+     * @param apellido            The last name of the user.
      * @param correoInstitucional The institutional email of the user.
-     * @param isAdmin If the user is an administrator.
+     * @param isAdmin             If the user is an administrator.
      * @throws ElysiumExceptions if validation fails
      */
     @Override
     public Usuario agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,
-            boolean isAdmin) throws ElysiumExceptions {
-        
+            boolean isAdmin, String password) throws ElysiumExceptions {
+
         // Validate all required fields
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new ElysiumExceptions(ElysiumExceptions.NOMBRE_NO_VALIDO);
         }
-        
+
         if (apellido == null || apellido.trim().isEmpty()) {
             throw new ElysiumExceptions(ElysiumExceptions.APELLIDO_NO_VALIDO);
         }
@@ -213,8 +227,17 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new ElysiumExceptions(ElysiumExceptions.YA_EXISTE_CORREO);
         }
 
-        // Crear y guardar usuario con valores consistentes
+        // Si no se envía password, usamos el idInstitucional como contraseña
+        String passwordToUse = (password != null && !password.trim().isEmpty())
+                ? password
+                : String.valueOf(idInstitucional);
+
+        // Encriptar la contraseña
+        String encodedPassword = passwordEncoder.encode(passwordToUse);
+
+        // Crear usuario con la contraseña encriptada
         Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, true, isAdmin);
+        nuevoUsuario.setPassword(encodedPassword);
         usuarioRepository.save(nuevoUsuario);
 
         return usuarioRepository.findByIdInstitucional(idInstitucional);
@@ -222,51 +245,53 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Add a salon.
-     * @param id The ID of the user that adds the salon.
-     * @param mnemonico The mnemonic of the salon.
-     * @param nombre The name of the salon.
+     * 
+     * @param id          The ID of the user that adds the salon.
+     * @param mnemonico   The mnemonic of the salon.
+     * @param nombre      The name of the salon.
      * @param descripcion The description of the salon.
-     * @param ubicacion The location of the salon.
-     * @param capacidad The capacity of the salon.
-     * @param recursos The resources of the salon.
+     * @param ubicacion   The location of the salon.
+     * @param capacidad   The capacity of the salon.
+     * @param recursos    The resources of the salon.
      * @throws ElysiumExceptions if validation fails
      */
     @Override
-    public void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion, Integer capacidad,
+    public void agregarSalon(int id, String mnemonico, String nombre, String descripcion, String ubicacion,
+            Integer capacidad,
             List<Recurso> recursos) throws ElysiumExceptions {
-        
+
         // Validate user exists and is admin
         Usuario usuario = usuarioRepository.findByIdInstitucional(id);
         if (usuario == null) {
             throw new ElysiumExceptions(ElysiumExceptions.USUARIO_NO_ENCONTRADO);
         }
-        
+
         if (!usuario.getIsAdmin()) {
             throw new ElysiumExceptions(ElysiumExceptions.NO_ES_ADMIN);
         }
-        
+
         // Validate salon data
         if (mnemonico == null || mnemonico.trim().isEmpty()) {
             throw new ElysiumExceptions(ElysiumExceptions.MNEMONICO_NO_VALIDO);
         }
-        
+
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new ElysiumExceptions(ElysiumExceptions.NOMBRE_SALON_NO_VALIDO);
         }
-        
+
         if (ubicacion == null || ubicacion.trim().isEmpty()) {
             throw new ElysiumExceptions(ElysiumExceptions.UBICACION_NO_VALIDA);
         }
-        
+
         if (capacidad == null || capacidad <= 0) {
             throw new ElysiumExceptions(ElysiumExceptions.CAPACIDAD_NO_VALIDA);
         }
-        
+
         // Check if salon already exists
         if (salonRepository.existsById(mnemonico)) {
             throw new ElysiumExceptions(ElysiumExceptions.YA_EXISTE_SALON);
         }
-        
+
         // Create and save salon
         Salon nuevoSalon = new Salon(nombre, mnemonico, descripcion, ubicacion, capacidad, recursos);
         salonRepository.save(nuevoSalon);
@@ -274,53 +299,56 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     /**
      * Create a reservation
-     * @param fechaReserva date of the reservation
-     * @param hora hour of the reservation
-     * @param diaSemana day of the week of the reservation
-     * @param proposito purpose of the reservation
-     * @param materia subject of the reservation
-     * @param idSalon id of the salon
-     * @param duracionBloque if the reservation is for a block of time
-     * @param prioridad priority of the reservation
+     * 
+     * @param fechaReserva    date of the reservation
+     * @param hora            hour of the reservation
+     * @param diaSemana       day of the week of the reservation
+     * @param proposito       purpose of the reservation
+     * @param materia         subject of the reservation
+     * @param idSalon         id of the salon
+     * @param duracionBloque  if the reservation is for a block of time
+     * @param prioridad       priority of the reservation
      * @param idInstitucional institutional id of the user
      * @throws ElysiumExceptions if validation fails
      */
     @Override
-    public void crearReserva(LocalDate fechaReserva, double hora, DiaSemana diaSemana, String proposito, String materia, 
-            String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) throws ElysiumExceptions {    
-        
+    public void crearReserva(LocalDate fechaReserva, double hora, DiaSemana diaSemana, String proposito, String materia,
+            String idSalon, boolean duracionBloque, int prioridad, int idInstitucional) throws ElysiumExceptions {
+
         // Validate user exists
         Usuario usuario = usuarioRepository.findByIdInstitucional(idInstitucional);
         if (usuario == null) {
             throw new ElysiumExceptions(ElysiumExceptions.USUARIO_NO_ENCONTRADO);
         }
-        
+
         // Validate salon exists
         if (!salonRepository.existsById(idSalon)) {
             throw new ElysiumExceptions(ElysiumExceptions.SALON_NO_ENCONTRADO);
         }
-        
+
         // Validate date is not in the past
         if (fechaReserva != null && fechaReserva.isBefore(LocalDate.now())) {
             throw new ElysiumExceptions(ElysiumExceptions.FECHA_PASADA);
         }
-        
+
         // Validate hour is valid (between 7.0 and 19.0)
         if (hora < 7.0 || hora > 19.0) {
             throw new ElysiumExceptions(ElysiumExceptions.HORA_NO_VALIDA);
         }
-        
+
         // Validate purpose is provided
         if (proposito == null || proposito.trim().isEmpty()) {
             throw new ElysiumExceptions(ElysiumExceptions.PROPOSITO_NO_VALIDO);
         }
-        
+
         // If validation passes, create reservation
-        reservaService.crearReserva(fechaReserva, hora, diaSemana, proposito, materia, idSalon, duracionBloque, prioridad, idInstitucional);            
+        reservaService.crearReserva(fechaReserva, hora, diaSemana, proposito, materia, idSalon, duracionBloque,
+                prioridad, idInstitucional);
     }
 
     /**
      * List the reservations of a user
+     * 
      * @param idInstitucional institutional id of the user
      * @return List of reservations
      * @throws ElysiumExceptions if validation fails
@@ -332,7 +360,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuario == null) {
             throw new ElysiumExceptions(ElysiumExceptions.USUARIO_NO_ENCONTRADO);
         }
-        
+
         return reservaService.consultarReservasPorUsuario(idInstitucional);
     }
 }
