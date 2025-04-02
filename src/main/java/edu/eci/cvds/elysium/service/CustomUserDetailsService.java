@@ -19,6 +19,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    public CustomUserDetailsService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
     @Override
     public UserDetails loadUserByUsername(String correoInstitucional) throws UsernameNotFoundException {
         Usuario user = usuarioRepository.findByCorreoInstitucional(correoInstitucional);

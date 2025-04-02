@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.eci.cvds.elysium.ElysiumExceptions;
@@ -31,6 +32,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private SalonRepository salonRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Consult a user by its institutional id.
@@ -213,8 +217,15 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new ElysiumExceptions(ElysiumExceptions.YA_EXISTE_CORREO);
         }
 
-        // Crear y guardar usuario con valores consistentes
+        // usamos el idInstitucional como contraseña
+        String passwordToUse = String.valueOf(idInstitucional);
+
+        // Encriptar la contraseña
+        String encodedPassword = passwordEncoder.encode(passwordToUse);
+
+        // Crear usuario con la contraseña encriptada
         Usuario nuevoUsuario = new Usuario(idInstitucional, nombre, apellido, correoInstitucional, true, isAdmin);
+        nuevoUsuario.setPassword(encodedPassword);
         usuarioRepository.save(nuevoUsuario);
 
         return usuarioRepository.findByIdInstitucional(idInstitucional);
