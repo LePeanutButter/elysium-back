@@ -12,6 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000") // Cambiar el origen al necesario
                 .allowedOrigins("https://cicero-hfg6f7g3echkbvcf.canadacentral-01.azurewebsites.net/")
+                .allowedOrigins("https://limbo-cfgvasfjc6argbhh.canadacentral-01.azurewebsites.net/")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
