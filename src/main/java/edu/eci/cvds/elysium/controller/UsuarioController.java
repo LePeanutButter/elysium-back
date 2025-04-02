@@ -179,7 +179,7 @@ public class UsuarioController {
     public ResponseEntity<?> agregarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         try {
             Usuario usuarioCreado = usuarioService.agregarUsuario(usuarioDTO.getId(), usuarioDTO.getNombre(),
-                    usuarioDTO.getApellido(), usuarioDTO.getCorreo(), usuarioDTO.getIsAdmin(), usuarioDTO.getPassword());
+                    usuarioDTO.getApellido(), usuarioDTO.getCorreo(), usuarioDTO.getIsAdmin());
             
             Map<String, Object> response = new HashMap<>();
             response.put("status", "SUCCESS");

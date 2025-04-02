@@ -84,7 +84,7 @@ public interface UsuarioService {
      * @param correoInstitucional institutional email of the user
      * @param isAdmin boolean that indicates if the user is an administrator
      */
-    Usuario agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin, String password) throws ElysiumExceptions;
+    Usuario agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional, boolean isAdmin) throws ElysiumExceptions;
 
     /**
      * Method that allows to update the information of a user

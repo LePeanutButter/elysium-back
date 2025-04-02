@@ -195,7 +195,7 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @Override
     public Usuario agregarUsuario(int idInstitucional, String nombre, String apellido, String correoInstitucional,
-            boolean isAdmin, String password) throws ElysiumExceptions {
+            boolean isAdmin) throws ElysiumExceptions {
 
         // Validate all required fields
         if (nombre == null || nombre.trim().isEmpty()) {
@@ -227,10 +227,8 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new ElysiumExceptions(ElysiumExceptions.YA_EXISTE_CORREO);
         }
 
-        // Si no se envía password, usamos el idInstitucional como contraseña
-        String passwordToUse = (password != null && !password.trim().isEmpty())
-                ? password
-                : String.valueOf(idInstitucional);
+        // usamos el idInstitucional como contraseña
+        String passwordToUse = String.valueOf(idInstitucional);
 
         // Encriptar la contraseña
         String encodedPassword = passwordEncoder.encode(passwordToUse);
