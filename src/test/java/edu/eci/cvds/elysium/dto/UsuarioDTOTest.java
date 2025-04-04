@@ -1,44 +1,55 @@
-// package edu.eci.cvds.elysium.dto;
+package edu.eci.cvds.elysium.dto;
 
-// import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import java.lang.reflect.Field;
 
-// import org.junit.jupiter.api.Test;
 
-// import edu.eci.cvds.elysium.dto.usuario.UsuarioDTO;
 
-// public class UsuarioDTOTest {
 
-//     @Test
-//     public void testConstructorAndGetters() {
-//         int expectedId = 1;
-//         String expectedNombre = "Juan";
-//         String expectedApellido = "Perez";
-//         String expectedCorreo = "juan.perez@example.com";
-//         boolean expectedIsAdmin = true;
+public class UsuarioDTOTest {
 
-//         UsuarioDTO usuario = new UsuarioDTO(expectedId, expectedNombre, expectedApellido, expectedCorreo, expectedIsAdmin);
+    @Test
+    public void testDefaultValues() {
+        UsuarioDTO usuario = new UsuarioDTO();
+        assertNull(usuario.getId(), "Default id should be null");
+        assertNull(usuario.getNombre(), "Default nombre should be null");
+        assertNull(usuario.getApellido(), "Default apellido should be null");
+        assertNull(usuario.getCorreo(), "Default correo should be null");
+        assertNull(usuario.getIsAdmin(), "Default isAdmin should be null");
+        assertNull(usuario.getActivo(), "Default activo should be null");
+    }
 
-//         assertEquals(expectedId, usuario.getId());
-//         assertEquals(expectedNombre, usuario.getNombre());
-//         assertEquals(expectedApellido, usuario.getApellido());
-//         assertEquals(expectedCorreo, usuario.getCorreo());
-//         assertEquals(expectedIsAdmin, usuario.getIsAdmin());
-//     }
-    
-//     @Test
-//     public void testNonAdminUser() {
-//         int expectedId = 2;
-//         String expectedNombre = "Ana";
-//         String expectedApellido = "Gomez";
-//         String expectedCorreo = "ana.gomez@example.com";
-//         boolean expectedIsAdmin = false;
-        
-//         UsuarioDTO usuario = new UsuarioDTO(expectedId, expectedNombre, expectedApellido, expectedCorreo, expectedIsAdmin);
+    @Test
+    public void testGetters() throws NoSuchFieldException, IllegalAccessException {
+        UsuarioDTO usuario = new UsuarioDTO();
 
-//         assertEquals(expectedId, usuario.getId());
-//         assertEquals(expectedNombre, usuario.getNombre());
-//         assertEquals(expectedApellido, usuario.getApellido());
-//         assertEquals(expectedCorreo, usuario.getCorreo());
-//         assertFalse(usuario.getIsAdmin());
-//     }
-// }
+        Field idField = UsuarioDTO.class.getDeclaredField("idInstitucional");
+        Field nombreField = UsuarioDTO.class.getDeclaredField("nombre");
+        Field apellidoField = UsuarioDTO.class.getDeclaredField("apellido");
+        Field correoField = UsuarioDTO.class.getDeclaredField("correo");
+        Field isAdminField = UsuarioDTO.class.getDeclaredField("isAdmin");
+        Field activoField = UsuarioDTO.class.getDeclaredField("activo");
+
+        idField.setAccessible(true);
+        nombreField.setAccessible(true);
+        apellidoField.setAccessible(true);
+        correoField.setAccessible(true);
+        isAdminField.setAccessible(true);
+        activoField.setAccessible(true);
+
+        idField.set(usuario, 12345);
+        nombreField.set(usuario, "Juan");
+        apellidoField.set(usuario, "Perez");
+        correoField.set(usuario, "Juan.Perez@escuelaing.edu.co");
+        isAdminField.set(usuario, true);
+        activoField.set(usuario, true);
+
+        assertEquals(12345, usuario.getId());
+        assertEquals("Juan", usuario.getNombre());
+        assertEquals("Perez", usuario.getApellido());
+        assertEquals("Juan.Perez@escuelaing.edu.co", usuario.getCorreo());
+        assertTrue(usuario.getIsAdmin());
+        assertTrue(usuario.getActivo());
+    }
+}

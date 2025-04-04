@@ -32,6 +32,19 @@ public class ReservaServiceImpl implements ReservaService {
     @Autowired
     private SalonService salonService;
 
+
+    public void setReservaRepository(ReservaRepository reservaRepository) {
+        this.reservaRepository = reservaRepository;
+    }
+    
+    public void setUsuarioService(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+    
+    public void setSalonService(SalonService salonService) {
+        this.salonService = salonService;
+    }
+    
     /**
      * Returns all reservations.
      */
