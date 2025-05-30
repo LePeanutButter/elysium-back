@@ -1,244 +1,288 @@
-// package edu.eci.cvds.elysium.controller;
-// import java.util.Collections;
-// import java.util.List;
+package edu.eci.cvds.elysium.controller;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertNotNull;
-// import static org.junit.jupiter.api.Assertions.assertNull;
-// import static org.junit.jupiter.api.Assertions.assertTrue;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.junit.jupiter.api.extension.ExtendWith;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import static org.mockito.Mockito.verify;
-// import static org.mockito.Mockito.when;
-// import org.mockito.junit.jupiter.MockitoExtension;
-// import org.springframework.http.ResponseEntity;
+import edu.eci.cvds.elysium.dto.SalonDTO;
+import edu.eci.cvds.elysium.model.Salon;
+import edu.eci.cvds.elysium.service.SalonService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-// import edu.eci.cvds.elysium.dto.salon.SalonDTO;
-// import edu.eci.cvds.elysium.model.Salon;
-// import edu.eci.cvds.elysium.service.SalonService;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
+public class SalonControllerTest {
 
+    @Mock
+    private SalonService salonService;
 
+    @InjectMocks
+    private SalonController salonController;
 
-// @ExtendWith(MockitoExtension.class)
-// public class SalonControllerTest {
+    private Salon salon1, salon2;
+    private List<Salon> salonList;
+    private SalonDTO salonDTO;
+    private final String MNEMONICO = "S101";
 
-//     @Mock
-//     private SalonService salonService;
+    @BeforeEach
+    void setUp() {
+        salon1 = new Salon();
+        salon1.setNombre("Sala Principal");
+        salon1.setMnemonico(MNEMONICO);
+        salon1.setUbicacion("Edificio A");
+        salon1.setCapacidad(30);
+        salon1.setActivo(true);
+        salon1.setDisponible(true);
 
-//     @InjectMocks
-//     private SalonController salonController;
+        salon2 = new Salon();
+        salon2.setNombre("Sala Secundaria");
+        salon2.setMnemonico("S102");
+        salon2.setUbicacion("Edificio B");
+        salon2.setCapacidad(20);
+        salon2.setActivo(true);
+        salon2.setDisponible(false);
 
-//     private Salon testSalon;
+        salonList = Arrays.asList(salon1, salon2);
 
-//     @BeforeEach
-//     public void setUp() {
-//         testSalon = new Salon("Nuevo", "N1", "UbicacionNueva", 200,"Descripcion");
-//     }
+        salonDTO = new SalonDTO();
+        salonDTO.setName("Nueva Sala");
+        salonDTO.setMnemonic("S103");
+        salonDTO.setDescription("Descripción de la sala");
+        salonDTO.setLocation("Edificio C");
+        salonDTO.setCapacity(25);
+        salonDTO.setResources(null);
+    }
 
-//     @Test
-//     public void testGetSalonesBothTrue() {
-//         when(salonService.findByActivoTrueAndDisponibleTrue())
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(true, true, null, null, null, null);
-//         verify(salonService).findByActivoTrueAndDisponibleTrue();
-//         assertEquals(200, response.getStatusCodeValue());
-//         assertEquals(1, response.getBody().size());
-//     }
+    @Test
+    void testGetSalonesWithNoFilters() {
+        when(salonService.findAll()).thenReturn(salonList);
 
-//     @Test
-//     public void testGetSalonesActivoTrueDisponibleFalse() {
-//         when(salonService.findByActivoTrueAndDisponibleFalse())
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(true, false, null, null, null, null);
-//         verify(salonService).findByActivoTrueAndDisponibleFalse();
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+        ResponseEntity<List<Salon>> response = salonController.getSalones(
+                null, null, null, null, null, null);
 
-//     @Test
-//     public void testGetSalonesActivoFalseDisponibleTrue() {
-//         when(salonService.findByActivoFalseAndDisponibleTrue())
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(false, true, null, null, null, null);
-//         verify(salonService).findByActivoFalseAndDisponibleTrue();
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2, response.getBody().size());
+        verify(salonService).findAll();
+    }
 
-//     @Test
-//     public void testGetSalonesActivoFalseDisponibleFalse() {
-//         when(salonService.findByActivoFalseAndDisponibleFalse())
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(false, false, null, null, null, null);
-//         verify(salonService).findByActivoFalseAndDisponibleFalse();
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+    @Test
+    void testGetSalonesWithActivoFilter() {
+        when(salonService.findByActivoTrue()).thenReturn(salonList);
 
-//     @Test
-//     public void testGetSalonesOnlyActivo() {
-//         when(salonService.findByActivoTrue())
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(true, null, null, null, null, null);
-//         verify(salonService).findByActivoTrue();
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+        ResponseEntity<List<Salon>> response = salonController.getSalones(
+                true, null, null, null, null, null);
 
-//     @Test
-//     public void testGetSalonesOnlyDisponible() {
-//         when(salonService.findByDisponibleFalse())
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(null, false, null, null, null, null);
-//         verify(salonService).findByDisponibleFalse();
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2, response.getBody().size());
+        verify(salonService).findByActivoTrue();
+    }
 
-//     @Test
-//     public void testGetSalonesNombreAndUbicacion() {
-//         when(salonService.findByNombreAndUbicacionContainingIgnoreCase("Salon", "Ubicacion"))
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(null, null, "Salon", "Ubicacion", null, null);
-//         verify(salonService).findByNombreAndUbicacionContainingIgnoreCase("Salon", "Ubicacion");
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+    @Test
+    void testGetSalonesWithDisponibleFilter() {
+        List<Salon> disponibles = List.of(salon1);
+        when(salonService.findByDisponibleTrue()).thenReturn(disponibles);
 
-//     @Test
-//     public void testGetSalonesOnlyNombre() {
-//         when(salonService.findByNombreContainingIgnoreCase("Salon"))
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(null, null, "Salon", null, null, null);
-//         verify(salonService).findByNombreContainingIgnoreCase("Salon");
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+        ResponseEntity<List<Salon>> response = salonController.getSalones(
+                null, true, null, null, null, null);
 
-//     @Test
-//     public void testGetSalonesOnlyUbicacion() {
-//         when(salonService.findByUbicacionContainingIgnoreCase("Ubicacion"))
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(null, null, null, "Ubicacion", null, null);
-//         verify(salonService).findByUbicacionContainingIgnoreCase("Ubicacion");
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+        verify(salonService).findByDisponibleTrue();
+    }
 
-//     @Test
-//     public void testGetSalonesCapacidadMin() {
-//         when(salonService.findByCapacidadGreaterThanEqual(50))
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(null, null, null, null, 50, null);
-//         verify(salonService).findByCapacidadGreaterThanEqual(50);
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+    @Test
+    void testGetSalonesWithActivoAndDisponibleFilters() {
+        List<Salon> activosYDisponibles = List.of(salon1);
+        when(salonService.findByActivoTrueAndDisponibleTrue()).thenReturn(activosYDisponibles);
 
-//     @Test
-//     public void testGetSalonesCapacidadMax() {
-//         when(salonService.findByCapacidadLessThanEqual(150))
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(null, null, null, null, null, 150);
-//         verify(salonService).findByCapacidadLessThanEqual(150);
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+        ResponseEntity<List<Salon>> response = salonController.getSalones(
+                true, true, null, null, null, null);
 
-//     @Test
-//     public void testGetSalonesNoFilter() {
-//         when(salonService.findAll())
-//                 .thenReturn(Collections.singletonList(testSalon));
-//         ResponseEntity<List<Salon>> response = salonController.getSalones(null, null, null, null, null, null);
-//         verify(salonService).findAll();
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+        verify(salonService).findByActivoTrueAndDisponibleTrue();
+    }
 
-//     @Test
-//     public void testGetSalonByMnemonicoFound() {
-//         when(salonService.findByMnemonico("S1")).thenReturn(testSalon);
-//         ResponseEntity<Salon> response = salonController.getSalonByMnemonico("S1");
-//         verify(salonService).findByMnemonico("S1");
-//         assertEquals(200, response.getStatusCodeValue());
-//         assertNotNull(response.getBody());
-//     }
+    @Test
+    void testGetSalonesWithNombreFilter() {
+        List<Salon> filtrados = List.of(salon1);
+        when(salonService.findByNombreContainingIgnoreCase("Principal")).thenReturn(filtrados);
 
-//     @Test
-//     public void testGetSalonByMnemonicoNotFound() {
-//         when(salonService.findByMnemonico("S2")).thenReturn(null);
-//         ResponseEntity<Salon> response = salonController.getSalonByMnemonico("S2");
-//         verify(salonService).findByMnemonico("S2");
-//         assertEquals(404, response.getStatusCodeValue());
-//         assertNull(response.getBody());
-//     }
+        ResponseEntity<List<Salon>> response = salonController.getSalones(
+                null, null, "Principal", null, null, null);
 
-//     @Test
-//     public void testAgregarSalon() {
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+        verify(salonService).findByNombreContainingIgnoreCase("Principal");
+    }
+
+    @Test
+    void testGetSalonesWithUbicacionFilter() {
+        List<Salon> filtrados = List.of(salon1);
+        when(salonService.findByUbicacionContainingIgnoreCase("Edificio A")).thenReturn(filtrados);
+
+        ResponseEntity<List<Salon>> response = salonController.getSalones(
+                null, null, null, "Edificio A", null, null);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+        verify(salonService).findByUbicacionContainingIgnoreCase("Edificio A");
+    }
+
+    @Test
+    void testGetSalonesWithCapacidadMinFilter() {
+        when(salonService.findByCapacidadGreaterThanEqual(25)).thenReturn(List.of(salon1));
+
+        ResponseEntity<List<Salon>> response = salonController.getSalones(
+                null, null, null, null, 25, null);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+        verify(salonService).findByCapacidadGreaterThanEqual(25);
+    }
+
+    @Test
+    void testGetSalonesWithCapacidadMaxFilter() {
+        when(salonService.findByCapacidadLessThanEqual(25)).thenReturn(List.of(salon2));
+
+        ResponseEntity<List<Salon>> response = salonController.getSalones(
+                null, null, null, null, null, 25);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+        verify(salonService).findByCapacidadLessThanEqual(25);
+    }
+
+    @Test
+    void testGetSalonByMnemonicoFound() {
+        when(salonService.findByMnemonico(MNEMONICO)).thenReturn(salon1);
+
+        ResponseEntity<Salon> response = salonController.getSalonByMnemonico(MNEMONICO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(MNEMONICO, response.getBody().getMnemonico());
+        verify(salonService).findByMnemonico(MNEMONICO);
+    }
+
+    @Test
+    void testGetSalonByMnemonicoNotFound() {
+        when(salonService.findByMnemonico("NOEXISTE")).thenReturn(null);
+
+        ResponseEntity<Salon> response = salonController.getSalonByMnemonico("NOEXISTE");
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(salonService).findByMnemonico("NOEXISTE");
+    }
+
+    @Test
+    void testGetDisponible() {
+        when(salonService.getDisponible(MNEMONICO)).thenReturn(true);
+
+        ResponseEntity<Boolean> response = salonController.getDisponible(MNEMONICO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody());
+        verify(salonService).getDisponible(MNEMONICO);
+    }
+
+    @Test
+    void testAgregarSalon() {
+        doNothing().when(salonService).agregarSalon(
+                salonDTO.getName(),
+                salonDTO.getMnemonic(),
+                salonDTO.getDescription(),
+                salonDTO.getLocation(),
+                salonDTO.getCapacity(),
+                salonDTO.getResources()
+        );
+
+        ResponseEntity<Void> response = salonController.agregarSalon(salonDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(salonService).agregarSalon(
+                salonDTO.getName(),
+                salonDTO.getMnemonic(),
+                salonDTO.getDescription(),
+                salonDTO.getLocation(),
+                salonDTO.getCapacity(),
+                salonDTO.getResources()
+        );
+    }
+
+    @Test
+    void testActualizarSalon() {
+        doNothing().when(salonService).actualizarSalon(MNEMONICO, salonDTO);
+
+        ResponseEntity<Void> response = salonController.actualizarSalon(MNEMONICO, salonDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(salonService).actualizarSalon(MNEMONICO, salonDTO);
+    }
+
+    @Test
+    void testGetSalonesComprehensive() {
+        // Test all combinations of activo and disponible
+        when(salonService.findByActivoTrueAndDisponibleTrue()).thenReturn(List.of(salon1));
+        when(salonService.findByActivoTrueAndDisponibleFalse()).thenReturn(List.of(salon2));
+        when(salonService.findByActivoFalseAndDisponibleTrue()).thenReturn(new ArrayList<>());
+        when(salonService.findByActivoFalseAndDisponibleFalse()).thenReturn(new ArrayList<>());
         
-
-//         Salon newSalon = new Salon("Nuevo", "N1", "UbicacionNueva", 200,"Descripcion");
+        // Test activo=true, disponible=true
+        ResponseEntity<List<Salon>> response1 = salonController.getSalones(true, true, null, null, null, null);
+        assertEquals(HttpStatus.OK, response1.getStatusCode());
+        assertEquals(1, response1.getBody().size());
+        assertEquals(MNEMONICO, response1.getBody().get(0).getMnemonico());
         
-//         ResponseEntity<Void> response = salonController.agregarSalon(newSalon);
-//         verify(salonService).agregarSalon("Nuevo", "N1", "UbicacionNueva", 200,"Descripcion");
-//         assertEquals(200, response.getStatusCodeValue());
-//     }
-
-//     @Test
-//     public void testDeshabilitarSalon() {
-//         ResponseEntity<Void> response = salonController.deshabilitarSalon("S1");
-//         verify(salonService).deshabilitarSalon("S1");
-//         assertEquals(204, response.getStatusCodeValue());
-//     }
-
-//     @Test
-//     public void testHabilitarSalon() {
-//         ResponseEntity<Void> response = salonController.habilitarSalon("S1");
-//         verify(salonService).habilitarSalon("S1");
-//         assertEquals(204, response.getStatusCodeValue());
-//     }
-
-//     @Test
-//     public void testGetDisponible() {
-//         when(salonService.getDisponible("S1")).thenReturn(true);
-//         ResponseEntity<Boolean> response = salonController.getDisponible("S1");
-//         verify(salonService).getDisponible("S1");
-//         assertEquals(200, response.getStatusCodeValue());
-//         assertTrue(response.getBody());
-//     }
-
-//     @Test
-//     public void testSetDisponibleSuccess() {
-//         when(salonService.setDisponible("S1")).thenReturn(true);
-//         ResponseEntity<Void> response = salonController.setDisponible("S1");
-//         verify(salonService).setDisponible("S1");
-//         assertEquals(204, response.getStatusCodeValue());
-//     }
-
-//     @Test
-//     public void testSetDisponibleNotFound() {
-//         when(salonService.setDisponible("S2")).thenReturn(false);
-//         ResponseEntity<Void> response = salonController.setDisponible("S2");
-//         verify(salonService).setDisponible("S2");
-//         assertEquals(404, response.getStatusCodeValue());
-//     }
-
-//     @Test
-//     public void testSetNoDisponibleSuccess() {
-//         when(salonService.setNoDisponible("S1")).thenReturn(true);
-//         ResponseEntity<Void> response = salonController.setNoDisponible("S1");
-//         verify(salonService).setNoDisponible("S1");
-//         assertEquals(204, response.getStatusCodeValue());
-//     }
-
-//     @Test
-//     public void testSetNoDisponibleNotFound() {
-//         when(salonService.setNoDisponible("S2")).thenReturn(false);
-//         ResponseEntity<Void> response = salonController.setNoDisponible("S2");
-//         verify(salonService).setNoDisponible("S2");
-//         assertEquals(404, response.getStatusCodeValue());
-//     }
-
-//     @Test
-//     public void testActualizarSalon() {
-//         SalonDTO dto = new SalonDTO();
-//         // Se asume que el dto se procesa correctamente.
-//         ResponseEntity<Void> response = salonController.actualizarSalon("S1", dto);
-//         verify(salonService).actualizarSalon("S1", dto);
-//         assertEquals(204, response.getStatusCodeValue());
-//     }
-// }
+        // Test activo=true, disponible=false
+        ResponseEntity<List<Salon>> response2 = salonController.getSalones(true, false, null, null, null, null);
+        assertEquals(HttpStatus.OK, response2.getStatusCode());
+        assertEquals(1, response2.getBody().size());
+        assertEquals("S102", response2.getBody().get(0).getMnemonico());
+        
+        // Test activo=false, disponible=true
+        ResponseEntity<List<Salon>> response3 = salonController.getSalones(false, true, null, null, null, null);
+        assertEquals(HttpStatus.OK, response3.getStatusCode());
+        assertEquals(0, response3.getBody().size());
+        
+        // Test activo=false, disponible=false
+        ResponseEntity<List<Salon>> response4 = salonController.getSalones(false, false, null, null, null, null);
+        assertEquals(HttpStatus.OK, response4.getStatusCode());
+        assertEquals(0, response4.getBody().size());
+        
+        // Test nombre and ubicacion combined
+        when(salonService.findByNombreAndUbicacionContainingIgnoreCase("Sala Principal", "Edificio A"))
+            .thenReturn(List.of(salon1));
+        ResponseEntity<List<Salon>> response5 = salonController.getSalones(
+            null, null, "Sala Principal", "Edificio A", null, null);
+        assertEquals(HttpStatus.OK, response5.getStatusCode());
+        assertEquals(1, response5.getBody().size());
+        assertEquals(MNEMONICO, response5.getBody().get(0).getMnemonico());
+        
+        // Test capacidadMin and capacidadMax combined (not directly supported by the method)
+        // This will default to capacidadMin only
+        when(salonService.findByCapacidadGreaterThanEqual(20)).thenReturn(salonList);
+        ResponseEntity<List<Salon>> response6 = salonController.getSalones(
+            null, null, null, null, 20, 30);
+        assertEquals(HttpStatus.OK, response6.getStatusCode());
+        assertEquals(2, response6.getBody().size());
+        
+        // Verify all service method calls
+        verify(salonService).findByActivoTrueAndDisponibleTrue();
+        verify(salonService).findByActivoTrueAndDisponibleFalse();
+        verify(salonService).findByActivoFalseAndDisponibleTrue();
+        verify(salonService).findByActivoFalseAndDisponibleFalse();
+        verify(salonService).findByNombreAndUbicacionContainingIgnoreCase("Sala Principal", "Edificio A");
+        verify(salonService).findByCapacidadGreaterThanEqual(20);
+        verify(salonService, never()).findAll(); // This should never be called with our test parameters
+    }
+}

@@ -61,7 +61,7 @@ Elysium-Back es un sistema de gestión de reservas de laboratorios para la Decan
 
 El proyecto está construido siguiendo una arquitectura de capas:
 
-![alt text](image-1.png)
+![alt text](assets/image-1.png)
 
 La arquitectura se divide en las siguientes capas:
 
@@ -74,13 +74,37 @@ La arquitectura se divide en las siguientes capas:
 
 ## Diagrama de componentes
 
+![alt text](assets/componentDiagram.jpg)
+
+[Diagrama de Componentes de Elysium](https://uml.planttext.com/plantuml/svg/hLVBRjGm5DrNwZ-OsI0MeoAMg1frNdqWIgkPgLW02vEuKwkE7Mo7CaBzTwuJEx4TPreecr5oVCxrVTZtPawKnb9N1KDBjbEqAj1wfpGfq5mKfU24QxIWU2jnSNXmUF0g9xUK4xHQpZVJJsSVboXZM2cpfEufBp7mKEQKQxrZ187jTybbzFlm0A4PpkwtKbGydmic9FfyHpMf5uJCYMp06GEM0QTIYeS0UpIRb_28jmIDN12dKd1DU3v2nyShacdCjunC9isMNuwFMoScawzyHN2cqRGi6Ssmfe9_GrYX6WKmfPXUNw0raJzfHchkjAJsDSckz1qyMkFeKkGLipfOQLxJVYam2ZHFuR1XrOsgiAGYK3biMBN639u3aONsQ3JM15rY3gal06jK1komeGAPiW_LfoMRD7_4Eo97pK8wjNCejHIC4Tdcj8FICfkFIDb3qs9RWaZSGutuqVm48TbZyaHOrXF_Y8NGNizyMGYbPVDAQL7S0751DAPCXVl6S3gm5Ic5ebh8tVDYw_X-U1sQ5jTdCf96sDxKHD8UEbIqh99KxmPZSWIe_YtTDbu5K5hsuK6lo8-AA7rAcRO72S3cRL1peobpLFESTdeX2aphRaFOKyNmIx0dyLswzoRPJssQkDXSgPfb7jBkDtchPDqp1_s_57mhlAnxxzPitNuo9geSciylI2l7pCuuPStcMEFlMC6cjNmnGrCDOstK6WJ4xU_wxt9-SOvpQ9YBMHF8pD_lTJk04ELsJqbO7OkweoN4xCOB6eydtln0xr6bI6-zdHFfzN0gf3dX34XpWfRVKhpT1vqDzXzWHHuCi48VdfETQEIq95C7EsVWgyFrPQG5KjPSL9DmTDYinUqlI4l4jXSoZhXdqs_bSH8ZSjZ0WzXSYud325kFSwnfAc0WipVBcEdmmM1_OaRXXi1HVw3wBfPq4NSyBI3bZjuusXY3pCjkJ4HUHrdn4kMDbYYnFdaWKH7iCPDcUmdOxuU9peCXmCBqsu7OFAPd5emLzU5rXp-YrPXFwlllHUKJ4rao3HSeMcAkReKiR0mBrmBXS73u7ZEk7nvutRGHpwBZauwhffL4AggqEGtfiFgiT5nzdjzVnzq5BugAsszik9nTpnY_VJEElWh1ulbcStrqVRNUe2DSqYCcjlGVP99imIqpgsDb_-fRyTdIQYlR3lz2sstyNyH7lsd-234qpVjbfbJJjckJByb6x9CfzeMPeRSuCqUEkcSqGYFtlTyI4klcJkzRjwVEeoHQUxoB5z-R_cgwySUUH3QYrVGyI7WRcKc5Sm8N1Fw6_m40)
+
 ## Diagrama de clases
+
+![alt text](assets/Elysium_Class_Diagram.png)
 
 ## Sprints y Desarrollo 🏃‍♂️
 
+- ÉPICA
+
+![alt text](assets/epica.jpg)
+
+- FEATURES
+
+Cada back tiene su rama feature correspondiente
+![alt text](assets/backFeature.jpg)
+
+Cada feature tiene su descripción, su criterio de aceptación historias de usuario y sus tareas asociadas.
+![alt text](assets/feature.jpg)
+
+Cada historia de usuario tiene descripción, criterio de aceptación, feature y tareas asociadas
+![alt text](assets/historia.jpg)
+
+Cada tarea tiene su descripción
+![alt text](assets/tarea.jpg)
+
 ### Sprint 1: Scrum - DI/IOC
 
-![alt text](image-2.png)
+![alt text](assets/image-2.png)
 
 #### Objetivos Alcanzados:
 
@@ -89,6 +113,8 @@ La arquitectura se divide en las siguientes capas:
 - Implementación de la persistencia de datos con MongoDB Cloud
 - Definición del modelo de datos: laboratorios y reservas
 - Creación de endpoints REST para CRUD de reservas
+
+![alt text](assets/sprint1.jpg)
 
 #### Estructura de Modelo:
 
@@ -200,7 +226,7 @@ public class ReservaServiceImpl implements ReservaService {
 
 ### Sprint 2: CI/CD
 
-![alt text](image-3.png)
+![alt text](assets/image-3.png)
 
 #### Objetivos Alcanzados:
 
@@ -208,14 +234,38 @@ public class ReservaServiceImpl implements ReservaService {
 - Implementación de tests unitarios y de integración
 - Análisis de calidad de código con SonarQube y Jacoco
 - Despliegue automatizado en Azure App Service
-- Configuración de base de datos MySQL en Azure
 - Generación procedural de datos para análisis
 - Implementación de visualizaciones con gráficos
 
+![alt text](assets/sprint2.jpg)
+
+#### Jacoco y SonarCloud
+
+Se hicieron pruebas para toda la arquitectura del proyecto, evidenciando el porcentaje mínimo de cobertura.
+
+![alt text](assets/image-9.png)
+![alt text](assets/image-10.png)
+
+Se vinculó el repositorio con SonarCloud para validar el análisis estático aplicando los principios Clean Code.
+![alt text](assets/image-11.png)
+
 #### GitHub Actions Workflow:
+
 Se crearon dos ambientes: uno de pruebas y el otro de producción.
 
 Esto se hace para validar que cuando se hace PR de un feature con develop se despliegue en Azure con el ambiente de Test, mientras que cuando está la versión final, se hace PR de develop a main, lo cual es el ambiente de producción.
+
+Cada ambiente en la nube tiene su propia collection en mongo.
+
+Se crearon las variables de entorno para cada ambiente:
+
+- Test
+[AmbientePruebas](https://hades-g4apbhdua4gtbbf5.canadacentral-01.azurewebsites.net/api)
+
+![alt text](assets/bdt.jpg)
+![alt text](assets/hadesE.jpg)
+![alt text](assets/hadesA.jpg)
+![alt text](assets/image-7.png)
 
 ```yaml
 name: CI/CD Pipeline test
@@ -283,6 +333,15 @@ jobs:
           publish-profile: ${{ secrets.AZURETESTENVIRONMENT  }}
           package: '*.jar'
 ```
+
+- Producción:
+
+[AmbienteProducción](https://limbo-cfgvasfjc6argbhh.canadacentral-01.azurewebsites.net/api/)
+
+![alt text](assets/bdp.jpg)
+![alt text](assets/limboE.jpg)
+![alt text](assets/limboA.jpg)
+![alt text](assets/image-8.png)
 
 ```yaml
 name: CI/CD Pipeline Production
@@ -386,7 +445,7 @@ public class ReservationServiceTest {
 
 ### Sprint 3: Integración con React
 
-![alt text](image-4.png)
+![alt text](assets/image-4.png)
 
 #### Objetivos Alcanzados:
 
@@ -395,6 +454,8 @@ public class ReservationServiceTest {
 - Diseño de DTOs específicos para integración frontend
 - Configuración de CORS para permitir comunicación con frontend React
 - Implementación de paginación y filtrado para optimizar consultas
+
+![alt text](assets/sprint3.jpg)
 
 #### Configuración de CORS:
 
@@ -416,7 +477,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 ### Sprint 4: Autenticación y Autorización
 
-![alt text](image-5.png)
+![alt text](assets/image-5.png)
 
 #### Objetivos Alcanzados:
 
@@ -425,6 +486,8 @@ public class WebConfig implements WebMvcConfigurer {
 - Definición de roles (Administrador y Profesor)
 - Incorporación de JWT para autenticación sin estado
 - Protección de endpoints según roles
+
+![alt text](assets/sprint4.jpg)
 
 #### Configuración de Spring Security:
 
@@ -501,7 +564,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 ### Sprint 5: SSL y Seguridad Avanzada
 
-![alt text](image-6.png)
+![alt text](assets/image-6.png)
 
 #### Objetivos Alcanzados:
 
@@ -510,6 +573,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 - Mejora de la seguridad en cabeceras HTTP
 - Auditoría de acciones de usuarios
 - Implementación de rotación automática de claves JWT
+
+![alt text](assets/jwt.jpg)
+![alt text](assets/sprint5.jpg)
 
 #### Configuración SSL:
 
@@ -791,8 +857,15 @@ docker run -p 8443:8443 -e MONGODB_URI=mongodb+srv://... -e JWT_SECRET=... elysi
 El proyecto utiliza Swagger para documentar la API REST. Acceda a la documentación en:
 
 ```
-https://localhost:8443/swagger-ui/index.html
+https://localhost:8080/swagger-ui/index.html
 ```
+
+Esta es la docuemntación desde la API de producción:
+
+![alt text](assets/sw1.jpg)
+![alt text](assets/sw2.jpg)
+![alt text](assets/sw3.jpg)
+![alt text](assets/sw4.jpg)
 
 Ejemplo de documentación endpoint:
 
