@@ -1,0 +1,129 @@
+@startuml Elysium System Component Diagram
+
+!define RECTANGLE class
+
+skinparam componentStyle uml2
+skinparam component {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+package "Elysium Frontend" <<Rectangle>> {
+  [<<component>>\nReact Application] as ReactApp
+  [<<component>>\nAPI Service] as ApiService
+  [<<component>>\nAuthentication Module] as AuthModule
+  [<<component>>\nReservas Module] as ReservasModule
+  [<<component>>\nUsuarios Module] as UsuariosModule
+  [<<component>>\nSalones Module] as SalonesModule
+  [<<component>>\nState Management] as StateManagement
+}
+
+package "Elysium Backend" <<Rectangle>> {
+  package "API Layer" {
+    [<<component>>\nAuthController] as AuthController
+    [<<component>>\nUsuarioController] as UsuarioController
+    [<<component>>\nReservaController] as ReservaController
+  }
+  
+  package "Service Layer" {
+    [<<component>>\nUsuarioService] as UsuarioService
+    [<<component>>\nReservaService] as ReservaService
+    [<<component>>\nCustomUserDetailsService] as UserDetailsService
+  }
+  
+  package "Repository Layer" {
+    [<<component>>\nUsuarioRepository] as UsuarioRepository
+    [<<component>>\nSalonRepository] as SalonRepository
+    [<<component>>\nReservaRepository] as ReservaRepository
+  }
+  
+  package "Security" {
+    [<<component>>\nSecurityConfig] as SecurityConfig
+    [<<component>>\nJwtRequestFilter] as JwtFilter
+    [<<component>>\nJwtUtil] as JwtUtil
+  }
+  
+  package "Domain Model" {
+    [<<component>>\nUsuario] as Usuario
+    [<<component>>\nSalon] as Salon
+    [<<component>>\nReserva] as Reserva
+    [<<component>>\nDTOs] as DTOs
+  }
+  
+  package "Configuration" {
+    [<<component>>\nMongoConfig] as MongoConfig
+  }
+}
+
+cloud "External Systems" {
+  database "MongoDB Atlas" as MongoDB {
+    [ReservasECIHades DB] as DB
+  }
+}
+
+' Frontend internal relationships
+ReactApp --> ApiService : uses
+ReactApp --> AuthModule : uses
+ReactApp --> ReservasModule : uses
+ReactApp --> UsuariosModule : uses
+ReactApp --> SalonesModule : uses
+AuthModule --> ApiService : uses
+ReservasModule --> ApiService : uses
+UsuariosModule --> ApiService : uses
+SalonesModule --> ApiService : uses
+ReactApp --> StateManagement : uses
+
+' Backend controller to service relationships
+AuthController --> UserDetailsService : uses
+AuthController --> JwtUtil : uses
+UsuarioController --> UsuarioService : uses
+ReservaController --> ReservaService : uses
+
+' Security relationships
+SecurityConfig --> JwtFilter : configures
+JwtFilter --> UserDetailsService : validates with
+JwtFilter --> JwtUtil : validates tokens with
+
+' Service to repository relationships
+UsuarioService --> UsuarioRepository : uses
+UsuarioService --> ReservaService : uses
+ReservaService --> ReservaRepository : uses
+UserDetailsService --> UsuarioRepository : uses
+
+' Repository to model relationships
+UsuarioRepository --> Usuario : manages
+SalonRepository --> Salon : manages
+ReservaRepository --> Reserva : manages
+UsuarioService --> DTOs : transforms
+
+' Database connections
+MongoConfig --> DB : configures
+UsuarioRepository --> DB : persists to
+SalonRepository --> DB : persists to
+ReservaRepository --> DB : persists to
+
+' Frontend-Backend communication
+ApiService -0)- AuthController : HTTP/POST /api/login
+ApiService -0)- AuthController : HTTP/POST /api/register
+ApiService -0)- UsuarioController : HTTP/GET /api/usuarios
+ApiService -0)- UsuarioController : HTTP/POST /api/usuarios
+ApiService -0)- UsuarioController : HTTP/POST /api/usuarios/{id}/reservas
+ApiService -0)- UsuarioController : HTTP/POST /api/usuarios/salones/{id}
+ApiService -0)- UsuarioController : HTTP/GET /api/usuarios/{id}/reservas
+
+' Interfaces
+interface " " as AuthInterface
+interface " " as UserInterface
+interface " " as ReservaInterface
+
+AuthController -- AuthInterface
+ApiService )-- AuthInterface
+
+UsuarioController -- UserInterface
+ApiService )-- UserInterface
+
+ReservaController -- ReservaInterface
+ApiService )-- ReservaInterface
+
+@enduml
