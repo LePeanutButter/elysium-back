@@ -1,314 +1,380 @@
-// package edu.eci.cvds.elysium.service.impl;
+package edu.eci.cvds.elysium.service.impl;
 
-// import java.util.Arrays;
-// import java.util.Collections;
-// import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import edu.eci.cvds.elysium.ElysiumExceptions;
+import edu.eci.cvds.elysium.dto.SalonDTO;
+import edu.eci.cvds.elysium.model.Recurso;
+import edu.eci.cvds.elysium.model.Salon;
+import edu.eci.cvds.elysium.repository.SalonRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertFalse;
-// import static org.junit.jupiter.api.Assertions.assertNotNull;
-// import static org.junit.jupiter.api.Assertions.assertTrue;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.junit.jupiter.api.extension.ExtendWith;
-// import org.mockito.ArgumentCaptor;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import static org.mockito.Mockito.times;
-// import static org.mockito.Mockito.verify;
-// import static org.mockito.Mockito.when;
-// import org.mockito.junit.jupiter.MockitoExtension;
+@ExtendWith(MockitoExtension.class)
+public class SalonServiceImplTest {
 
-// import edu.eci.cvds.elysium.dto.salon.SalonDTO;
-// import edu.eci.cvds.elysium.model.Salon;
-// import edu.eci.cvds.elysium.repository.SalonRepository;
+    @Mock
+    private SalonRepository salonRepository;
 
-// @ExtendWith(MockitoExtension.class)
-// public class SalonServiceImplTest {
+    @InjectMocks
+    private SalonServiceImpl salonService;
 
-//     @Mock
-//     private SalonRepository salonRepository;
+    private Salon salon;
+    private List<Recurso> recursos;
 
-//     @InjectMocks
-//     private SalonServiceImpl salonService;
-
-//     @BeforeEach
-//     public void setUp() {
-//         // @InjectMocks handles the injection of the mock repository.
-//     }
-
-//     // Additional tests for methods not covered in existing tests
-
-//     @Test
-//     public void testFindByActivoTrue() {
-//         List<Salon> expected = Arrays.asList(
-//                 new Salon("Salon Activo1", "A101", "Ubicacion 1", 50,"Descripcion 1"),
-//                 new Salon("Salon Activo2", "A102", "Ubicacion 2", 60,"Descripcion 1"));
-//         when(salonRepository.findByActivoTrue()).thenReturn(expected);
-//         List<Salon> result = salonService.findByActivoTrue();
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByActivoTrue();
-//     }
-
-//     @Test
-//     public void testFindByActivoFalse() {
-//         List<Salon> expected = Collections.singletonList(new Salon("Salon Inactivo", "I201", "Ubicacion X", 40,"Descripcion 1"));
-//         when(salonRepository.findByActivoFalse()).thenReturn(expected);
-//         List<Salon> result = salonService.findByActivoFalse();
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByActivoFalse();
-//     }
-
-//     @Test
-//     public void testFindByDisponibleTrue() {
-//         List<Salon> expected = Arrays.asList(
-//                 new Salon("Salon Disp1", "D301", "Ubicacion A", 55,"Descripcion 1"),
-//                 new Salon("Salon Disp2", "D302", "Ubicacion B", 65,"Descripcion 1"));
-//         when(salonRepository.findByDisponibleTrue()).thenReturn(expected);
-//         List<Salon> result = salonService.findByDisponibleTrue();
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByDisponibleTrue();
-//     }
-
-//     @Test
-//     public void testFindByDisponibleFalse() {
-//         List<Salon> expected = Collections.singletonList(new Salon("Salon NoDisp", "ND401", "Ubicacion Z", 70,"Descripcion 1"));
-//         when(salonRepository.findByDisponibleFalse()).thenReturn(expected);
-//         List<Salon> result = salonService.findByDisponibleFalse();
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByDisponibleFalse();
-//     }
-
-//     @Test
-//     public void testFindByActivoTrueAndDisponibleTrue() {
-//         List<Salon> expected = Collections.singletonList(new Salon("Salon Both True", "BT501", "Ubicacion BT", 80,"Descripcion 1"));
-//         when(salonRepository.findByActivoTrueAndDisponibleTrue()).thenReturn(expected);
-//         List<Salon> result = salonService.findByActivoTrueAndDisponibleTrue();
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByActivoTrueAndDisponibleTrue();
-//     }
-
-//     @Test
-//     public void testFindByActivoTrueAndDisponibleFalse() {
-//         List<Salon> expected = Collections
-//                 .singletonList(new Salon("Salon Activo DispFalse", "ADF601", "Ubicacion ADF", 90,"Descripcion 1"));
-//         when(salonRepository.findByActivoTrueAndDisponibleFalse()).thenReturn(expected);
-//         List<Salon> result = salonService.findByActivoTrueAndDisponibleFalse();
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByActivoTrueAndDisponibleFalse();
-//     }
-
-//     @Test
-//     public void testFindByActivoFalseAndDisponibleTrue() {
-//         List<Salon> expected = Collections
-//                 .singletonList(new Salon("Salon Inactivo DispTrue", "IDT701", "Ubicacion IDT", 100,"Descripcion 1"));
-//         when(salonRepository.findByActivoFalseAndDisponibleTrue()).thenReturn(expected);
-//         List<Salon> result = salonService.findByActivoFalseAndDisponibleTrue();
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByActivoFalseAndDisponibleTrue();
-//     }
-
-//     @Test
-//     public void testFindByActivoFalseAndDisponibleFalse() {
-//         List<Salon> expected = Collections.singletonList(new Salon("Salon Both False", "BF801", "Ubicacion BF", 110,"Descripcion 1"));
-//         when(salonRepository.findByActivoFalseAndDisponibleFalse()).thenReturn(expected);
-//         List<Salon> result = salonService.findByActivoFalseAndDisponibleFalse();
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByActivoFalseAndDisponibleFalse();
-//     }
-
-//     @Test
-//     public void testFindByCapacidadGreaterThanEqual() {
-//         int capacidad = 60;
-//         List<Salon> expected = Arrays.asList(
-//                 new Salon("Salon Cap1", "C901", "Ubicacion C1", 60,"Descripcion 1"),
-//                 new Salon("Salon Cap2", "C902", "Ubicacion C2", 80,"Descripcion 1"));
-//         when(salonRepository.findByCapacidadGreaterThanEqual(capacidad)).thenReturn(expected);
-//         List<Salon> result = salonService.findByCapacidadGreaterThanEqual(capacidad);
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByCapacidadGreaterThanEqual(capacidad);
-//     }
-
-//     @Test
-//     public void testFindByCapacidadLessThanEqual() {
-//         int capacidad = 70;
-//         List<Salon> expected = Arrays.asList(
-//                 new Salon("Salon Cap3", "C903", "Ubicacion C3", 50,"Descripcion 1"),
-//                 new Salon("Salon Cap4", "C904", "Ubicacion C4", 70,"Descripcion 1"));
-//         when(salonRepository.findByCapacidadLessThanEqual(capacidad)).thenReturn(expected);
-//         List<Salon> result = salonService.findByCapacidadLessThanEqual(capacidad);
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByCapacidadLessThanEqual(capacidad);
-//     }
-
-//     @Test
-//     public void testFindByNombreAndUbicacionContainingIgnoreCase() {
-//         String nombre = "Salon";
-//         String ubicacion = "Ubicacion";
-//         List<Salon> expected = Collections.singletonList(new Salon("Salon Combo", "CB101", "Ubicacion Combo", 85,"Descripcion 1"));
-//         when(salonRepository.findByNombreAndUbicacionContainingIgnoreCase(nombre, ubicacion)).thenReturn(expected);
-//         List<Salon> result = salonService.findByNombreAndUbicacionContainingIgnoreCase(nombre, ubicacion);
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByNombreAndUbicacionContainingIgnoreCase(nombre, ubicacion);
-//     }
-
-//     @Test
-//     public void testInstantiation() {
-//         assertNotNull(salonService);
-//     }
-
-//     @Test
-//     public void testFindByMnemonico() {
-//         String mnemonico = "A101";
-//         Salon expectedSalon = new Salon("Salon A", mnemonico, "Ubicacion A", 50,"Descripcion 1");
-//         when(salonRepository.findByMnemonico(mnemonico)).thenReturn(expectedSalon);
-//         Salon result = salonService.findByMnemonico(mnemonico);
-//         assertEquals(expectedSalon, result);
-//         verify(salonRepository, times(1)).findByMnemonico(mnemonico);
-//     }
-
-//     @Test
-//     public void testFindAll() {
-//         List<Salon> expectedList = Arrays.asList(
-//                 new Salon("Salon A", "A101", "Ubicacion A", 50,"Descripcion 1"),
-//                 new Salon("Salon B", "B202", "Ubicacion B", 75,"Descripcion 1"));
-//         when(salonRepository.findAll()).thenReturn(expectedList);
-//         List<Salon> resultList = salonService.findAll();
-//         assertEquals(expectedList, resultList);
-//         verify(salonRepository, times(1)).findAll();
-//     }
-
-//     @Test
-//     public void testAgregarSalon() {
-//         String nombre = "Nuevo Salon";
-//         String mnemonico = "N303";
-//         String ubicacion = "Ubicacion Nueva";
-//         int capacidad = 100;
-//         String description = "Descripcion Nueva";
-//         // Call the service method
-//         salonService.agregarSalon(nombre, mnemonico, ubicacion, capacidad,description);
-//         // Capture the Salon passed to the repository
-//         ArgumentCaptor<Salon> salonCaptor = ArgumentCaptor.forClass(Salon.class);
-//         verify(salonRepository, times(1)).save(salonCaptor.capture());
-//         Salon savedSalon = salonCaptor.getValue();
-//         assertEquals(nombre, savedSalon.getNombre());
-//         assertEquals(mnemonico, savedSalon.getMnemonico());
-//         assertEquals(ubicacion, savedSalon.getUbicacion());
-//         assertEquals(capacidad, savedSalon.getCapacidad());
-//     }
-
-//     @Test
-//     public void testDeshabilitarSalon() {
-//         String mnemonico = "D404";
-//         Salon salon = new Salon("Salon D", mnemonico, "Ubicacion D", 60,"Descripcion 1");
-//         salon.setActivo(true);
-//         when(salonRepository.findByMnemonico(mnemonico)).thenReturn(salon);
-//         salonService.deshabilitarSalon(mnemonico);
-//         assertFalse(salon.isActivo());
-//         verify(salonRepository, times(1)).save(salon);
-//     }
-
-//     @Test
-//     public void testHabilitarSalon() {
-//         String mnemonico = "H505";
-//         Salon salon = new Salon("Salon H", mnemonico, "Ubicacion H", 80,"Descripcion 1");
-//         salon.setActivo(false);
-//         when(salonRepository.findByMnemonico(mnemonico)).thenReturn(salon);
-//         salonService.habilitarSalon(mnemonico);
-//         assertTrue(salon.isActivo());
-//         verify(salonRepository, times(1)).save(salon);
-//     }
-
-//     @Test
-//     public void testGetActivo() {
-//         String mnemonico = "G606";
-//         Salon salon = new Salon("Salon G", mnemonico, "Ubicacion G", 70,  "Descripcion 1");
-//         salon.setActivo(true);
-//         when(salonRepository.findByMnemonico(mnemonico)).thenReturn(salon);
-//         assertTrue(salonService.getActivo(mnemonico));
-//         // Test for non-existent salon
-//         when(salonRepository.findByMnemonico("NONEXIST")).thenReturn(null);
-//         assertFalse(salonService.getActivo("NONEXIST"));
-//     }
-
-//     @Test
-//     public void testActualizarSalon() {
-//         String mnemonico = "U707";
-//         Salon salon = new Salon("Salon U", mnemonico, "Ubicacion U", 90,"Descripcion 1");
-//         when(salonRepository.findByMnemonico(mnemonico)).thenReturn(salon);
-//         SalonDTO dto = new SalonDTO();
-//         dto.setNombre("Salon Updated");
-//         dto.setUbicacion("Ubicacion Updated");
-//         dto.setCapacidad(120);
-//         salonService.actualizarSalon(mnemonico, dto);
-//         // Assert that salon is updated based on DTO
-//         assertEquals("Salon Updated", salon.getNombre());
-//         assertEquals("Ubicacion Updated", salon.getUbicacion());
-//         assertEquals(120, salon.getCapacidad());
-//         verify(salonRepository, times(1)).save(salon);
-//     }
-
-//     @Test
-//     public void testGetDisponible() {
-//         String mnemonico = "D808";
-//         Salon salon = new Salon("Salon D", mnemonico, "Ubicacion D", 55,"Descripcion 1");
-//         salon.setDisponible(true);
-//         when(salonRepository.findByMnemonico(mnemonico)).thenReturn(salon);
-//         assertTrue(salonService.getDisponible(mnemonico));
-//         // Non existent salon returns false
-//         when(salonRepository.findByMnemonico("NONEXIST")).thenReturn(null);
-//         assertFalse(salonService.getDisponible("NONEXIST"));
-//     }
-
-//     @Test
-//     public void testSetDisponible() {
-//         String mnemonico = "SD909";
-//         Salon salon = new Salon("Salon SD", mnemonico, "Ubicacion SD", 65,"Descripcion 1");
-//         salon.setDisponible(false);
-//         when(salonRepository.findByMnemonico(mnemonico)).thenReturn(salon);
-//         boolean result = salonService.setDisponible(mnemonico);
-//         assertTrue(result);
-//         assertTrue(salon.isDisponible());
-//         verify(salonRepository, times(1)).save(salon);
-//         // Test when salon not found
-//         when(salonRepository.findByMnemonico("NONEXIST")).thenReturn(null);
-//         boolean result2 = salonService.setDisponible("NONEXIST");
-//         assertFalse(result2);
-//     }
-
-//     @Test
-//     public void testSetNoDisponible() {
-//         String mnemonico = "SND010";
-//         Salon salon = new Salon("Salon SND", mnemonico, "Ubicacion SND", 75,"Descripcion 1");
-//         salon.setDisponible(true);
-//         when(salonRepository.findByMnemonico(mnemonico)).thenReturn(salon);
-//         boolean result = salonService.setNoDisponible(mnemonico);
-//         assertTrue(result);
-//         assertFalse(salon.isDisponible());
-//         verify(salonRepository, times(1)).save(salon);
-//         // Test when salon not found
-//         when(salonRepository.findByMnemonico("NONEXIST")).thenReturn(null);
-//         boolean result2 = salonService.setNoDisponible("NONEXIST");
-//         assertFalse(result2);
-//     }
-
-//     @Test
-//     public void testFindByNombreContainingIgnoreCase() {
-//         String nombreFragment = "salon";
-//         List<Salon> expected = Collections.singletonList(new Salon("Salon X", "X111", "Ubicacion X", 40,"Descripcion 1"));
-//         when(salonRepository.findByNombreContainingIgnoreCase(nombreFragment)).thenReturn(expected);
-//         List<Salon> result = salonService.findByNombreContainingIgnoreCase(nombreFragment);
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByNombreContainingIgnoreCase(nombreFragment);
-//     }
-
-//     @Test
-//     public void testFindByUbicacionContainingIgnoreCase() {
-//         String ubicacionFragment = "ubicacion";
-//         List<Salon> expected = Collections.singletonList(new Salon("Salon Y", "Y222", "Ubicacion Y", 85,"Descripcion 1"));
-//         when(salonRepository.findByUbicacionContainingIgnoreCase(ubicacionFragment)).thenReturn(expected);
-//         List<Salon> result = salonService.findByUbicacionContainingIgnoreCase(ubicacionFragment);
-//         assertEquals(expected, result);
-//         verify(salonRepository, times(1)).findByUbicacionContainingIgnoreCase(ubicacionFragment);
-//     }
-// }
+    @BeforeEach
+    public void setUp() {
+        recursos = Arrays.asList(new Recurso("dsdg", 56, null), new Recurso("ds312g", 56, null));
+        salon = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+    }
+    
+    @Test
+    public void testFindByMnemonico() {
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(salon);
+        Salon found = salonService.findByMnemonico("SALON1");
+        assertNotNull(found);
+        assertEquals("SALON1", found.getMnemonico());
+        verify(salonRepository).findByMnemonico("SALON1");
+    }
+    
+    @Test
+    public void testFindAll() {
+        List<Salon> salons = Arrays.asList(salon, new Salon("Salon Dos", "SALON2", "Desc2", "Ub2", 30, recursos));
+        when(salonRepository.findAll()).thenReturn(salons);
+        List<Salon> result = salonService.findAll();
+        assertEquals(2, result.size());
+        verify(salonRepository).findAll();
+    }
+    
+    @Test
+    public void testFindByActivoTrue() {
+        List<Salon> activeSalons = Collections.singletonList(salon);
+        when(salonRepository.findByActivoTrue()).thenReturn(activeSalons);
+        List<Salon> result = salonService.findByActivoTrue();
+        assertEquals(1, result.size());
+        verify(salonRepository).findByActivoTrue();
+    }
+    
+    @Test
+    public void testAgregarSalonSuccess() {
+        // When salon doesn't exist
+        when(salonRepository.existsByMnemonico("SALON1")).thenReturn(false);
+        // Call method
+        salonService.agregarSalon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        // Capture and verify that a new salon is saved.
+        ArgumentCaptor<Salon> captor = ArgumentCaptor.forClass(Salon.class);
+        verify(salonRepository).save(captor.capture());
+        Salon saved = captor.getValue();
+        assertEquals("SALON1", saved.getMnemonico());
+        assertEquals("Salon Uno", saved.getNombre());
+    }
+    
+    @Test
+    public void testAgregarSalonAlreadyExists() {
+        // When salon already exists
+        when(salonRepository.existsByMnemonico("SALON1")).thenReturn(true);
+        // Call method. The method catches the exception internally.
+        salonService.agregarSalon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        // Verify that save is not called.
+        verify(salonRepository, never()).save(any(Salon.class));
+    }
+    
+    @Test
+    public void testAgregarSalonInvalidCapacity() {
+        // Capacity <= 0
+        when(salonRepository.existsByMnemonico("SALON1")).thenReturn(false);
+        salonService.agregarSalon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 0, recursos);
+        verify(salonRepository, never()).save(any(Salon.class));
+    }
+    
+    @Test
+    public void testAgregarSalonEmptyResources() {
+        // Empty recursos list.
+        when(salonRepository.existsByMnemonico("SALON1")).thenReturn(false);
+        salonService.agregarSalon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, Collections.emptyList());
+        verify(salonRepository, never()).save(any(Salon.class));
+    }
+    
+    @Test
+    public void testDeshabilitarSalon() {
+        // Initially active salon.
+        Salon active = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        active.setActivo(true);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(active);
+        salonService.deshabilitarSalon("SALON1");
+        // After disabling, activo should be false.
+        assertFalse(active.isActivo());
+        verify(salonRepository).save(active);
+    }
+    
+    @Test
+    public void testHabilitarSalon() {
+        // Initially inactive salon.
+        Salon inactive = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        inactive.setActivo(false);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(inactive);
+        salonService.habilitarSalon("SALON1");
+        assertTrue(inactive.isActivo());
+        verify(salonRepository).save(inactive);
+    }
+    
+    @Test
+    public void testGetActivo() {
+        Salon active = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        active.setActivo(true);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(active);
+        assertTrue(salonService.getActivo("SALON1"));
+        active.setActivo(false);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(active);
+        assertFalse(salonService.getActivo("SALON1"));
+    }
+    
+    @Test
+    public void testActualizarSalon() {
+        Salon existing = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(existing);
+        SalonDTO dto = new SalonDTO();
+        dto.setName("Salon Actualizado");
+        dto.setDescription("Nueva Descripcion");
+        dto.setLocation("Nueva Ubicacion");
+        dto.setCapacity(60);
+        dto.setActivo(false);
+        dto.setResources(Arrays.asList(new Recurso("dsdg", 56, null)));
+        
+        salonService.actualizarSalon("SALON1", dto);
+        assertEquals("Salon Actualizado", existing.getNombre());
+        assertEquals("Nueva Descripcion", existing.getDescripcion());
+        assertEquals("Nueva Ubicacion", existing.getUbicacion());
+        assertEquals(60, existing.getCapacidad());
+        assertFalse(existing.isActivo());
+        assertEquals(1, existing.getRecursos().size());
+        verify(salonRepository).save(existing);
+    }
+    
+    @Test
+    public void testGetDisponible() {
+        Salon available = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        available.setDisponible(true);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(available);
+        assertTrue(salonService.getDisponible("SALON1"));
+        available.setDisponible(false);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(available);
+        assertFalse(salonService.getDisponible("SALON1"));
+    }
+    
+    @Test
+    public void testSetDisponible() {
+        Salon salonDisp = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        salonDisp.setDisponible(false);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(salonDisp);
+        boolean result = salonService.setDisponible("SALON1");
+        assertTrue(result);
+        assertTrue(salonDisp.isDisponible());
+        verify(salonRepository).save(salonDisp);
+    }
+    
+    @Test
+    public void testSetNoDisponible() {
+        Salon salonNoDisp = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        salonNoDisp.setDisponible(true);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(salonNoDisp);
+        boolean result = salonService.setNoDisponible("SALON1");
+        assertTrue(result);
+        assertFalse(salonNoDisp.isDisponible());
+        verify(salonRepository).save(salonNoDisp);
+    }
+    
+    @Test
+    public void testFindByActivoFalse() {
+        List<Salon> inactiveSalons = Collections.singletonList(salon);
+        when(salonRepository.findByActivoFalse()).thenReturn(inactiveSalons);
+        List<Salon> result = salonService.findByActivoFalse();
+        assertEquals(1, result.size());
+        verify(salonRepository).findByActivoFalse();
+    }
+    
+    @Test
+    public void testFindByDisponibleTrue() {
+        List<Salon> availableSalons = Collections.singletonList(salon);
+        when(salonRepository.findByDisponibleTrue()).thenReturn(availableSalons);
+        List<Salon> result = salonService.findByDisponibleTrue();
+        assertEquals(1, result.size());
+        verify(salonRepository).findByDisponibleTrue();
+    }
+    
+    @Test
+    public void testFindByDisponibleFalse() {
+        List<Salon> unavailableSalons = Collections.singletonList(salon);
+        when(salonRepository.findByDisponibleFalse()).thenReturn(unavailableSalons);
+        List<Salon> result = salonService.findByDisponibleFalse();
+        assertEquals(1, result.size());
+        verify(salonRepository).findByDisponibleFalse();
+    }
+    
+    @Test
+    public void testFindByActivoTrueAndDisponibleTrue() {
+        List<Salon> activeAvailableSalons = Collections.singletonList(salon);
+        when(salonRepository.findByActivoTrueAndDisponibleTrue()).thenReturn(activeAvailableSalons);
+        List<Salon> result = salonService.findByActivoTrueAndDisponibleTrue();
+        assertEquals(1, result.size());
+        verify(salonRepository).findByActivoTrueAndDisponibleTrue();
+    }
+    
+    @Test
+    public void testFindByActivoTrueAndDisponibleFalse() {
+        List<Salon> activeUnavailableSalons = Collections.singletonList(salon);
+        when(salonRepository.findByActivoTrueAndDisponibleFalse()).thenReturn(activeUnavailableSalons);
+        List<Salon> result = salonService.findByActivoTrueAndDisponibleFalse();
+        assertEquals(1, result.size());
+        verify(salonRepository).findByActivoTrueAndDisponibleFalse();
+    }
+    
+    @Test
+    public void testFindByActivoFalseAndDisponibleTrue() {
+        List<Salon> inactiveAvailableSalons = Collections.singletonList(salon);
+        when(salonRepository.findByActivoFalseAndDisponibleTrue()).thenReturn(inactiveAvailableSalons);
+        List<Salon> result = salonService.findByActivoFalseAndDisponibleTrue();
+        assertEquals(1, result.size());
+        verify(salonRepository).findByActivoFalseAndDisponibleTrue();
+    }
+    
+    @Test
+    public void testFindByActivoFalseAndDisponibleFalse() {
+        List<Salon> inactiveUnavailableSalons = Collections.singletonList(salon);
+        when(salonRepository.findByActivoFalseAndDisponibleFalse()).thenReturn(inactiveUnavailableSalons);
+        List<Salon> result = salonService.findByActivoFalseAndDisponibleFalse();
+        assertEquals(1, result.size());
+        verify(salonRepository).findByActivoFalseAndDisponibleFalse();
+    }
+    
+    @Test
+    public void testFindByNombreContainingIgnoreCase() {
+        List<Salon> salonsWithName = Collections.singletonList(salon);
+        when(salonRepository.findByNombreContainingIgnoreCase("Salon")).thenReturn(salonsWithName);
+        List<Salon> result = salonService.findByNombreContainingIgnoreCase("Salon");
+        assertEquals(1, result.size());
+        verify(salonRepository).findByNombreContainingIgnoreCase("Salon");
+    }
+    
+    @Test
+    public void testFindByUbicacionContainingIgnoreCase() {
+        List<Salon> salonsWithLocation = Collections.singletonList(salon);
+        when(salonRepository.findByUbicacionContainingIgnoreCase("Ubicacion")).thenReturn(salonsWithLocation);
+        List<Salon> result = salonService.findByUbicacionContainingIgnoreCase("Ubicacion");
+        assertEquals(1, result.size());
+        verify(salonRepository).findByUbicacionContainingIgnoreCase("Ubicacion");
+    }
+    
+    @Test
+    public void testFindByCapacidadGreaterThanEqual() {
+        List<Salon> salonsWithCapacity = Collections.singletonList(salon);
+        when(salonRepository.findByCapacidadGreaterThanEqual(30)).thenReturn(salonsWithCapacity);
+        List<Salon> result = salonService.findByCapacidadGreaterThanEqual(30);
+        assertEquals(1, result.size());
+        verify(salonRepository).findByCapacidadGreaterThanEqual(30);
+    }
+    
+    @Test
+    public void testFindByCapacidadLessThanEqual() {
+        List<Salon> salonsWithCapacity = Collections.singletonList(salon);
+        when(salonRepository.findByCapacidadLessThanEqual(60)).thenReturn(salonsWithCapacity);
+        List<Salon> result = salonService.findByCapacidadLessThanEqual(60);
+        assertEquals(1, result.size());
+        verify(salonRepository).findByCapacidadLessThanEqual(60);
+    }
+    
+    @Test
+    public void testFindByNombreAndUbicacionContainingIgnoreCase() {
+        List<Salon> filteredSalons = Collections.singletonList(salon);
+        when(salonRepository.findByNombreAndUbicacionContainingIgnoreCase("Salon Uno", "Ubicacion"))
+            .thenReturn(filteredSalons);
+        List<Salon> result = salonService.findByNombreAndUbicacionContainingIgnoreCase("Salon Uno", "Ubicacion");
+        assertEquals(1, result.size());
+        verify(salonRepository).findByNombreAndUbicacionContainingIgnoreCase("Salon Uno", "Ubicacion");
+    }
+    
+    @Test
+    public void testSetDisponibleNonexistentSalon() {
+        when(salonRepository.findByMnemonico("NONEXISTENT")).thenReturn(null);
+        boolean result = salonService.setDisponible("NONEXISTENT");
+        assertFalse(result);
+        verify(salonRepository, never()).save(any(Salon.class));
+    }
+    
+    @Test
+    public void testSetNoDisponibleNonexistentSalon() {
+        when(salonRepository.findByMnemonico("NONEXISTENT")).thenReturn(null);
+        boolean result = salonService.setNoDisponible("NONEXISTENT");
+        assertFalse(result);
+        verify(salonRepository, never()).save(any(Salon.class));
+    }
+    
+    @Test
+    public void testActualizarSalonWithPartialData() {
+        Salon existing = new Salon("Salon Uno", "SALON1", "Descripcion", "Ubicacion", 50, recursos);
+        when(salonRepository.findByMnemonico("SALON1")).thenReturn(existing);
+        
+        // Create DTO with only some fields populated
+        SalonDTO dto = new SalonDTO();
+        dto.setName("Salon Actualizado");
+        // Other fields are null
+        
+        salonService.actualizarSalon("SALON1", dto);
+        assertEquals("Salon Actualizado", existing.getNombre());
+        // Verify other fields remain unchanged
+        assertEquals("Descripcion", existing.getDescripcion());
+        assertEquals("Ubicacion", existing.getUbicacion());
+        assertEquals(50, existing.getCapacidad());
+        verify(salonRepository).save(existing);
+    }
+    
+    @Test
+    public void testActualizarSalonNonexistent() {
+        when(salonRepository.findByMnemonico("NONEXISTENT")).thenReturn(null);
+        SalonDTO dto = new SalonDTO();
+        dto.setName("Nuevo Nombre");
+        
+        salonService.actualizarSalon("NONEXISTENT", dto);
+        // Verify that save was never called since the salon doesn't exist
+        verify(salonRepository, never()).save(any(Salon.class));
+    }
+    
+    @Test
+    public void testDeshabilitarSalonNonexistent() {
+        when(salonRepository.findByMnemonico("NONEXISTENT")).thenReturn(null);
+        salonService.deshabilitarSalon("NONEXISTENT");
+        // Verify that save was never called since the salon doesn't exist
+        verify(salonRepository, never()).save(any(Salon.class));
+    }
+    
+    @Test
+    public void testHabilitarSalonNonexistent() {
+        when(salonRepository.findByMnemonico("NONEXISTENT")).thenReturn(null);
+        salonService.habilitarSalon("NONEXISTENT");
+        // Verify that save was never called since the salon doesn't exist
+        verify(salonRepository, never()).save(any(Salon.class));
+    }
+    
+    @Test
+    public void testGetActivoNonexistent() {
+        when(salonRepository.findByMnemonico("NONEXISTENT")).thenReturn(null);
+        boolean result = salonService.getActivo("NONEXISTENT");
+        assertFalse(result);
+    }
+    
+    @Test
+    public void testGetDisponibleNonexistent() {
+        when(salonRepository.findByMnemonico("NONEXISTENT")).thenReturn(null);
+        boolean result = salonService.getDisponible("NONEXISTENT");
+        assertFalse(result);
+    }
+}

@@ -1,205 +1,255 @@
-// package edu.eci.cvds.elysium.controller;
+package edu.eci.cvds.elysium.controller;
 
-// import edu.eci.cvds.elysium.model.DiaSemanaModel;
-// import edu.eci.cvds.elysium.model.EstadoReservaModel;
-// import edu.eci.cvds.elysium.model.ReservaModel;
-// import edu.eci.cvds.elysium.service.ReservaService;
-// import edu.eci.cvds.elysium.dto.ReservaDTO;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import org.mockito.MockitoAnnotations;
-// import org.springframework.http.ResponseEntity;
-// import java.time.LocalDate;
-// import java.util.Arrays;
-// import java.util.List;
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.mockito.Mockito.*;
-// import static org.junit.jupiter.api.Assertions.assertTrue;
+import edu.eci.cvds.elysium.dto.ReservaDTO;
+import edu.eci.cvds.elysium.model.DiaSemana;
+import edu.eci.cvds.elysium.model.EstadoReserva;
+import edu.eci.cvds.elysium.model.Reserva;
+import edu.eci.cvds.elysium.service.ReservaService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+class ReservaControllerTest {
+
+    @Mock
+    private ReservaService reservaService;
+
+    @InjectMocks
+    private ReservaController reservaController;
+
+    private List<Reserva> reservas;
+    private Reserva reserva;
+    private ReservaDTO reservaDTO;
+    private LocalDate testDate;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        
+        // Initialize test data
+        reservas = new ArrayList<>();
+        reserva = new Reserva();
+        reserva.setIdReserva("reserva1");
+        reserva.setEstado(EstadoReserva.ACTIVA);
+        reservas.add(reserva);
+        
+        testDate = LocalDate.now();
+    
+    }
+
+    @Test
+    void testGetReservasWithNoFilters() {
+        // Arrange
+        when(reservaService.consultarReservas()).thenReturn(reservas);
+        
+        // Act
+        ResponseEntity<List<Reserva>> response = reservaController.getReservas(null, null, null, null, null, null);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reservas, response.getBody());
+        verify(reservaService, times(1)).consultarReservas();
+    }
+
+    @Test
+    void testGetReservasByIdSalon() {
+        // Arrange
+        String idSalon = "S101";
+        when(reservaService.consultarReservasPorSalon(idSalon)).thenReturn(reservas);
+        
+        // Act
+        ResponseEntity<List<Reserva>> response = reservaController.getReservas(idSalon, null, null, null, null, null);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reservas, response.getBody());
+        verify(reservaService, times(1)).consultarReservasPorSalon(idSalon);
+    }
+
+    @Test
+    void testGetReservasByFecha() {
+        // Arrange
+        when(reservaService.consultarReservasPorFecha(testDate)).thenReturn(reservas);
+        
+        // Act
+        ResponseEntity<List<Reserva>> response = reservaController.getReservas(null, testDate, null, null, null, null);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reservas, response.getBody());
+        verify(reservaService, times(1)).consultarReservasPorFecha(testDate);
+    }
+
+    @Test
+    void testGetReservasByHora() {
+        // Arrange
+        Double hora = 9.0;
+        when(reservaService.consultarReservasPorHora(hora)).thenReturn(reservas);
+        
+        // Act
+        ResponseEntity<List<Reserva>> response = reservaController.getReservas(null, null, hora, null, null, null);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reservas, response.getBody());
+        verify(reservaService, times(1)).consultarReservasPorHora(hora);
+    }
+
+    @Test
+    void testGetReservasByDiaSemana() {
+        // Arrange
+        DiaSemana diaSemana = DiaSemana.LUNES;
+        when(reservaService.consultarReservasPorDiaSemana(diaSemana)).thenReturn(reservas);
+        
+        // Act
+        ResponseEntity<List<Reserva>> response = reservaController.getReservas(null, null, null, diaSemana, null, null);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reservas, response.getBody());
+        verify(reservaService, times(1)).consultarReservasPorDiaSemana(diaSemana);
+    }
+
+    @Test
+    void testGetReservasByEstado() {
+        // Arrange
+        EstadoReserva estado = EstadoReserva.ACTIVA;
+        when(reservaService.consultarReservasPorEstado(estado)).thenReturn(reservas);
+        
+        // Act
+        ResponseEntity<List<Reserva>> response = reservaController.getReservas(null, null, null, null, estado, null);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reservas, response.getBody());
+        verify(reservaService, times(1)).consultarReservasPorEstado(estado);
+    }
+
+    @Test
+    void testGetReservasByDuracionBloque() {
+        // Arrange
+        Boolean duracionBloque = true;
+        when(reservaService.consultarReservasPorDuracionBloque(duracionBloque)).thenReturn(reservas);
+        
+        // Act
+        ResponseEntity<List<Reserva>> response = reservaController.getReservas(null, null, null, null, null, duracionBloque);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reservas, response.getBody());
+        verify(reservaService, times(1)).consultarReservasPorDuracionBloque(duracionBloque);
+    }
+
+    @Test
+    void testGetReservasByIdSalonAndEstado() {
+        // Arrange
+        String idSalon = "S101";
+        EstadoReserva estado = EstadoReserva.ACTIVA;
+        when(reservaService.consultarReservasPorSalonAndEstado(idSalon, estado)).thenReturn(reservas);
+        
+        // Act
+        ResponseEntity<List<Reserva>> response = reservaController.getReservas(idSalon, null, null, null, estado, null);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(reservas, response.getBody());
+        verify(reservaService, times(1)).consultarReservasPorSalonAndEstado(idSalon, estado);
+    }
+
+    @Test
+    void testConsultarReserva() {
+        // Arrange
+        String idReserva = "reserva1";
+        when(reservaService.consultarReserva(idReserva)).thenReturn(reserva);
+        
+        // Act
+        Reserva result = reservaController.consultarReserva(idReserva);
+        
+        // Assert
+        assertNotNull(result);
+        assertEquals(reserva, result);
+        verify(reservaService, times(1)).consultarReserva(idReserva);
+    }
 
 
+    @Test
+    void testActualizarReserva() {
+        // Arrange
+        String idReserva = "reserva1";
+        doNothing().when(reservaService).actualizarReserva(eq(idReserva), any(ReservaDTO.class));
+        
+        // Act
+        ResponseEntity<Void> response = reservaController.actualizarReserva(idReserva, reservaDTO);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(reservaService, times(1)).actualizarReserva(idReserva, reservaDTO);
+    }
 
+    @Test
+    void testDeshabilitarReserva() {
+        // Arrange
+        String idReserva = "reserva1";
+        doNothing().when(reservaService).deshabilitarReserva(idReserva);
+        
+        // Act
+        ResponseEntity<String> response = reservaController.deshabilitarReserva(idReserva);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Reserva deshabilitada", response.getBody());
+        verify(reservaService, times(1)).deshabilitarReserva(idReserva);
+    }
 
-// public class ReservaControllerTest {
-
-//     @Mock
-//     private ReservaService reservaService;
-
-//     @InjectMocks
-//     private ReservaController reservaController;
-
-//     @BeforeEach
-//     public void setUp() {
-//         MockitoAnnotations.openMocks(this);
-//     }
-
-//     @Test
-//     public void testConsultarReservas() {
-//         List<ReservaModel> reservas = Arrays.asList(new ReservaModel(), new ReservaModel());
-//         when(reservaService.consultarReservas()).thenReturn(reservas);
-
-//         List<ReservaModel> result = reservaController.consultarReservas();
-//         assertEquals(reservas, result);
-//     }
-
-//     @Test
-//     public void testConsultarReservasPorSalon() {
-//         String idSalon = "1";
-//         List<ReservaModel> reservas = Arrays.asList(new ReservaModel(), new ReservaModel());
-//         when(reservaService.consultarReservasPorSalon(idSalon)).thenReturn(reservas);
-
-//         List<ReservaModel> result = reservaController.consultarReservasPorSalon(idSalon);
-//         assertEquals(reservas, result);
-//     }
-
-//     @Test
-//     public void testConsultarReservasPorFecha() {
-//         LocalDate fecha = LocalDate.now();
-//         List<ReservaModel> reservas = Arrays.asList(new ReservaModel(), new ReservaModel());
-//         when(reservaService.consultarReservasPorFecha(fecha)).thenReturn(reservas);
-
-//         List<ReservaModel> result = reservaController.consultarReservasPorFecha(fecha);
-//         assertEquals(reservas, result);
-//     }
-
-//     @Test
-//     public void testConsultarReservasPorDiaSemana() {
-//         DiaSemanaModel diaSemana = DiaSemanaModel.LUNES;
-//         List<ReservaModel> reservas = Arrays.asList(new ReservaModel(), new ReservaModel());
-//         when(reservaService.consultarReservasPorDiaSemana(diaSemana)).thenReturn(reservas);
-
-//         List<ReservaModel> result = reservaController.consultarReservasPorDiaSemana(diaSemana);
-//         assertEquals(reservas, result);
-//     }
-
-//     @Test
-//     public void testConsultarReservasPorEstado() {
-//         EstadoReservaModel estado = EstadoReservaModel.ACTIVA;
-//         List<ReservaModel> reservas = Arrays.asList(new ReservaModel(), new ReservaModel());
-//         when(reservaService.consultarReservasPorEstado(estado)).thenReturn(reservas);
-
-//         List<ReservaModel> result = reservaController.consultarReservasPorEstado(estado);
-//         assertEquals(reservas, result);
-//     }
-
-//     @Test
-//     public void testConsultarReservasPorDuracionBloque() {
-//         boolean duracionBloque = true;
-//         List<ReservaModel> reservas = Arrays.asList(new ReservaModel(), new ReservaModel());
-//         when(reservaService.consultarReservasPorDuracionBloque(duracionBloque)).thenReturn(reservas);
-
-//         List<ReservaModel> result = reservaController.consultarReservasPorDuracionBloque(duracionBloque);
-//         assertEquals(reservas, result);
-//     }
-
-//     @Test
-//     public void testConsultarReserva() {
-//         String idReserva = "1";
-//         ReservaModel reserva = new ReservaModel();
-//         when(reservaService.consultarReserva(idReserva)).thenReturn(reserva);
-
-//         ReservaModel result = reservaController.consultarReserva(idReserva);
-//         assertEquals(reserva, result);
-//     }
-
-//     @Test
-//     public void testCrearReserva() {
-//         ReservaDTO reservaDTO = new ReservaDTO();
-
-//         doNothing().when(reservaService).crearReserva(
-//                 anyString(),
-//                 any(LocalDate.class),
-//                 any(DiaSemanaModel.class),
-//                 anyString(),
-//                 anyString(),
-//                 anyBoolean(),
-//                 anyInt()
-//         );
-
-//         ResponseEntity<String> response = reservaController.crearReserva(reservaDTO);
-//         assertEquals("Reserva creada", response.getBody());
-//     }
-
-//     // @Test
-//     // public void testActualizarReserva() {
-//     //     ReservaDTO reservaDTO = new ReservaDTO();
-//     //     doNothing().when(reservaService).actualizarReserva(anyString(), anyString(), any(LocalDate.class), any(DiaSemanaModel.class), anyString(), anyBoolean());
-
-//     //     ResponseEntity<String> response = reservaController.actualizarReserva(reservaDTO);
-//     //     assertEquals("Reserva actualizada", response.getBody());
-//     // }
-
-//     @Test
-//     public void testDeleteReserva() {
-//         String idReserva = "1";
-//         doNothing().when(reservaService).deleteReserva(idReserva);
-
-//         ResponseEntity<String> response = reservaController.deleteReserva(idReserva);
-//         assertEquals("Reserva eliminada", response.getBody());
-//     }
-
-//     @Test
-//     public void testCancelReserva() {
-//         String idReserva = "1";
-//         doNothing().when(reservaService).cancelReserva(idReserva);
-
-//         ResponseEntity<String> response = reservaController.cancelReserva(idReserva);
-//         assertEquals("Reserva cancelada", response.getBody());
-//     }
-
-//     @Test
-//     public void testRechazarReserva() {
-//         String idReserva = "1";
-//         doNothing().when(reservaService).rechazarReserva(idReserva);
-
-//         ResponseEntity<String> response = reservaController.rechazarReserva(idReserva);
-//         assertEquals("Reserva rechazada", response.getBody());
-//     }
-
-//     @Test
-//     public void testCrearReservaConPrioridadValida() {
-//         ReservaDTO reservaDTO = new ReservaDTO("1", LocalDate.now(), DiaSemanaModel.LUNES, "Meeting", "101", true, 3);
-
-//         doNothing().when(reservaService).crearReserva(
-//                 anyString(),
-//                 any(LocalDate.class),
-//                 any(DiaSemanaModel.class),
-//                 anyString(),
-//                 anyString(),
-//                 anyBoolean(),
-//                 anyInt()
-//         );
-
-//         ResponseEntity<String> response = reservaController.crearReserva(reservaDTO);
-//         assertEquals(200, response.getStatusCodeValue());
-//         assertEquals("Reserva creada", response.getBody());
-//     }
-
-//     @Test
-//     public void testActualizarReservaConPrioridadValida() {
-//         ReservaDTO reservaDTO = new ReservaDTO("3", 'p', LocalDate.now(), DiaSemanaModel.MIERCOLES, "303", false, 4);
-
-//         doNothing().when(reservaService).actualizarReserva(
-//                 anyString(), anyChar(), any(LocalDate.class), any(DiaSemanaModel.class), anyString(), anyBoolean(), anyInt()
-//         );
-
-//         ResponseEntity<String> response = reservaController.actualizarReserva(reservaDTO);
-//         assertEquals(200, response.getStatusCodeValue());
-//         assertEquals("Reserva actualizada", response.getBody());
-//     }
-
-//     @Test
-//     public void testActualizarReservaConPrioridadInvalidaDebeLanzarExcepcion() {
-//         ReservaDTO reservaDTO = new ReservaDTO("4", 'p', LocalDate.now(), DiaSemanaModel.JUEVES, "404", false, 3);
-
-//         doThrow(new IllegalArgumentException("La prioridad debe estar entre 1 y 5."))
-//                 .when(reservaService)
-//                 .actualizarReserva(anyString(), anyChar(), any(LocalDate.class), any(DiaSemanaModel.class), anyString(), anyBoolean(), anyInt());
-
-//         ResponseEntity<String> response = reservaController.actualizarReserva(reservaDTO);
-
-//         assertEquals(400, response.getStatusCodeValue());
-//         assertTrue(response.getBody().contains("La prioridad debe estar entre 1 y 5."));
-//     }
-// }
+    @Test
+    void testCrearReserva() {
+        // Arrange
+        ReservaDTO mockReservaDTO = mock(ReservaDTO.class);
+        LocalDate fechaReserva = LocalDate.now();
+        Double hora = 10.0;
+        DiaSemana diaSemana = DiaSemana.LUNES;
+        String proposito = "Clase de programación";
+        String materia = "CVDS";
+        String idSalon = "S101";
+        boolean duracionBloque = true;
+        int prioridad = 1;
+        int idUsuario = 123;
+        
+        // Configure mock to return values when getters are called
+        when(mockReservaDTO.getFechaReserva()).thenReturn(fechaReserva);
+        when(mockReservaDTO.getHora()).thenReturn(hora);
+        when(mockReservaDTO.getDiaSemana()).thenReturn(diaSemana);
+        when(mockReservaDTO.getProposito()).thenReturn(proposito);
+        when(mockReservaDTO.getMateria()).thenReturn(materia);
+        when(mockReservaDTO.getIdSalon()).thenReturn(idSalon);
+        when(mockReservaDTO.isDuracionBloque()).thenReturn(duracionBloque);
+        when(mockReservaDTO.getPrioridad()).thenReturn(prioridad);
+        when(mockReservaDTO.getIdUsuario()).thenReturn(idUsuario);
+        
+        doNothing().when(reservaService).crearReserva(
+            fechaReserva, hora, diaSemana, proposito, materia, idSalon, duracionBloque, prioridad, idUsuario
+        );
+        
+        // Act
+        ResponseEntity<String> response = reservaController.crearReserva(mockReservaDTO);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Reserva creada", response.getBody());
+        verify(reservaService, times(1)).crearReserva(
+            fechaReserva, hora, diaSemana, proposito, materia, idSalon, duracionBloque, prioridad, idUsuario
+        );
+    }
+}

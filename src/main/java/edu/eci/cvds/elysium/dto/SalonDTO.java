@@ -2,8 +2,6 @@ package edu.eci.cvds.elysium.dto;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import edu.eci.cvds.elysium.model.Recurso;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.NotNull;
